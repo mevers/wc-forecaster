@@ -20,6 +20,12 @@ The command reads `config/model.yaml` and writes forecast artefacts to `outputs/
 
 Useful outputs include winner odds, round probabilities, derived team ratings, fixture probabilities, the most likely bracket, most likely matchups, a tuning summary, a run manifest, and a winner-odds chart.
 
+## Render bracket
+
+```sh
+python3 scripts/draw_knockout_bracket.py
+```
+
 This reads the CSV and JSON artefacts in `outputs/` and writes `outputs/knockout_bracket.png`.
 
 ## Data
