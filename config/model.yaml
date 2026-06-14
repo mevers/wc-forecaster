@@ -1,0 +1,43 @@
+data:
+  historical_results: data/historical_results/results.csv
+  groups: data/world_cup_2026/groups.csv
+  fixtures: data/world_cup_2026/fixtures.csv
+  third_place_slots: data/world_cup_2026/third_place_slots.csv
+  output_dir: outputs
+forecast:
+  as_of: "2026-06-14"
+  simulations: 50000
+  seed: 20260614
+fit:
+  tune: true
+  backtest_years: [2018, 2022]
+  # Used directly when tune=false; fallback if tuning has no World Cup backtest matches.
+  half_life: 2.5
+  # Candidate values tested when tune=true. The selected value replaces half_life during the run.
+  half_life_years: [1.5, 2.5, 4.0]
+elo:
+  # 1500 and 400 are standard Elo scale choices. K values follow World Football Elo-style match weights.
+  initial: 1500.0
+  divisor: 400.0
+  # World Football Elo uses 100 points for home advantage; this model uses a smaller 70-point prior.
+  venue_advantage: 70.0
+  k:
+    FIFA World Cup: 60.0
+    FIFA World Cup qualification: 40.0
+    UEFA Euro: 50.0
+    Copa America: 50.0
+    AFC Asian Cup: 50.0
+    Africa Cup of Nations: 50.0
+    CONCACAF Gold Cup: 50.0
+    Friendly: 20.0
+    default: 30.0
+knockout:
+  penalty_rating_scale: 500.0
+goals:
+  score_cap: 8
+  # Used directly when tune=false; fallback if tuning has no World Cup backtest matches.
+  min_expected_goals: 0.15
+  # Candidate values tested when tune=true. The selected value replaces min_expected_goals during the run.
+  min_expected_goals_values: [0.05, 0.10, 0.15, 0.20]
+form:
+  gamma: 0.05

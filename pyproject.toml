@@ -1,0 +1,30 @@
+[project]
+name = "wc-forecaster"
+version = "0.1.0"
+description = "Minimal 2026 World Cup prediction model."
+readme = "README.md"
+authors = [{ name = "Maurits Evers", email = "maurits.evers@gmail.com" }]
+requires-python = ">=3.11"
+dependencies = [
+  "matplotlib>=3.8",
+  "pyyaml>=6.0",
+]
+
+[project.scripts]
+wc-forecaster = "wc_forecaster.cli:main"
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0",
+  "ruff>=0.5",
+]
+
+[tool.ruff]
+line-length = 100
+
+[tool.pyright]
+include = ["src", "tests"]
+pythonVersion = "3.11"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]

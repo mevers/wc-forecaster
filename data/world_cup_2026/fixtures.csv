@@ -1,0 +1,73 @@
+match_no,group,date,home,away,home_score,away_score,venue_advantage
+1,A,2026-06-11,Mexico,South Africa,2,0,1
+2,A,2026-06-11,South Korea,Czechia,2,1,0
+3,B,2026-06-12,Canada,Bosnia and Herzegovina,1,1,1
+4,D,2026-06-12,United States,Paraguay,4,1,1
+5,C,2026-06-13,Haiti,Scotland,0,1,0
+6,D,2026-06-13,Australia,Turkey,2,0,0
+7,C,2026-06-13,Brazil,Morocco,1,1,0
+8,B,2026-06-13,Qatar,Switzerland,1,1,0
+9,E,2026-06-14,Ivory Coast,Ecuador,,,0
+10,E,2026-06-14,Germany,Curacao,,,0
+11,F,2026-06-14,Netherlands,Japan,,,0
+12,F,2026-06-14,Sweden,Tunisia,,,0
+13,H,2026-06-15,Saudi Arabia,Uruguay,,,0
+14,H,2026-06-15,Spain,Cape Verde,,,0
+15,G,2026-06-15,Iran,New Zealand,,,0
+16,G,2026-06-15,Belgium,Egypt,,,0
+17,I,2026-06-16,France,Senegal,,,0
+18,I,2026-06-16,Iraq,Norway,,,0
+19,J,2026-06-16,Argentina,Algeria,,,0
+20,J,2026-06-16,Austria,Jordan,,,0
+21,L,2026-06-17,Ghana,Panama,,,0
+22,L,2026-06-17,England,Croatia,,,0
+23,K,2026-06-17,Portugal,DR Congo,,,0
+24,K,2026-06-17,Uzbekistan,Colombia,,,0
+25,A,2026-06-18,Mexico,South Korea,,,1
+26,A,2026-06-18,Czechia,South Africa,,,0
+27,B,2026-06-18,Switzerland,Bosnia and Herzegovina,,,0
+28,B,2026-06-18,Canada,Qatar,,,1
+29,C,2026-06-19,Brazil,Haiti,,,0
+30,C,2026-06-19,Scotland,Morocco,,,0
+31,D,2026-06-19,Turkey,Paraguay,,,0
+32,D,2026-06-19,United States,Australia,,,1
+33,E,2026-06-20,Germany,Ivory Coast,,,0
+34,E,2026-06-20,Ecuador,Curacao,,,0
+35,F,2026-06-20,Netherlands,Tunisia,,,0
+36,F,2026-06-20,Sweden,Japan,,,0
+37,H,2026-06-21,Uruguay,Cape Verde,,,0
+38,H,2026-06-21,Spain,Saudi Arabia,,,0
+39,G,2026-06-21,New Zealand,Egypt,,,0
+40,G,2026-06-21,Belgium,Iran,,,0
+41,J,2026-06-22,Austria,Argentina,,,0
+42,J,2026-06-22,Algeria,Jordan,,,0
+43,I,2026-06-22,France,Iraq,,,0
+44,I,2026-06-22,Norway,Senegal,,,0
+45,L,2026-06-23,England,Ghana,,,0
+46,L,2026-06-23,Panama,Croatia,,,0
+47,K,2026-06-23,Portugal,Uzbekistan,,,0
+48,K,2026-06-23,Colombia,DR Congo,,,0
+49,A,2026-06-24,Czechia,Mexico,,,-1
+50,A,2026-06-24,South Africa,South Korea,,,0
+51,B,2026-06-24,Switzerland,Canada,,,-1
+52,B,2026-06-24,Bosnia and Herzegovina,Qatar,,,0
+53,C,2026-06-24,Scotland,Brazil,,,0
+54,C,2026-06-24,Morocco,Haiti,,,0
+55,D,2026-06-25,Turkey,United States,,,-1
+56,D,2026-06-25,Paraguay,Australia,,,0
+57,E,2026-06-25,Ecuador,Germany,,,0
+58,E,2026-06-25,Curacao,Ivory Coast,,,0
+59,F,2026-06-25,Sweden,Netherlands,,,0
+60,F,2026-06-25,Japan,Tunisia,,,0
+61,G,2026-06-26,New Zealand,Belgium,,,0
+62,G,2026-06-26,Egypt,Iran,,,0
+63,H,2026-06-26,Uruguay,Spain,,,0
+64,H,2026-06-26,Cape Verde,Saudi Arabia,,,0
+65,I,2026-06-26,Norway,France,,,0
+66,I,2026-06-26,Senegal,Iraq,,,0
+67,J,2026-06-27,Jordan,Argentina,,,0
+68,J,2026-06-27,Algeria,Austria,,,0
+69,K,2026-06-27,Colombia,Portugal,,,0
+70,K,2026-06-27,DR Congo,Uzbekistan,,,0
+71,L,2026-06-27,Panama,England,,,0
+72,L,2026-06-27,Croatia,Ghana,,,0
