@@ -68,8 +68,8 @@ def write_ratings(path: Path, ratings: dict[str, float]) -> None:
 def predict(config_path: Path) -> None:
     status(f"Reading config: {config_path}")
     cfg = load_config(config_path)
-    out = Path(cfg["data"]["output_dir"])
     as_of = date.fromisoformat(cfg["forecast"]["as_of"])
+    out = Path(cfg["data"]["output_dir"]) / cfg["forecast"]["as_of"]
     status(f"Loading historical results: {cfg['data']['historical_results']}")
     historical = read_matches(cfg["data"]["historical_results"])
     training = [m for m in historical if not (m["date"].year == 2026 and m["tournament"] == "FIFA World Cup")]

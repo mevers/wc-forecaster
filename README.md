@@ -16,7 +16,7 @@ python3 -m pip install -e .
 wc-forecaster predict
 ```
 
-The command reads `config/model.yaml` and writes forecast artefacts to `outputs/`.
+The command reads `config/model.yaml` and writes forecast artefacts to `outputs/<as_of>/`.
 
 Key outputs are:
 
@@ -41,10 +41,10 @@ Use `most_likely_knockout_bracket.csv` when you need an internally consistent kn
 ## Render bracket
 
 ```sh
-python3 scripts/draw_knockout_bracket.py
+python3 scripts/draw_knockout_bracket.py --run-dir outputs/2026-06-14
 ```
 
-This reads `outputs/most_likely_knockout_bracket.csv` and the run manifest, then writes `outputs/knockout_bracket.png`.
+This reads `most_likely_knockout_bracket.csv` and `run_manifest.json` from that run directory, then writes `knockout_bracket.png` there.
 
 ## Data
 

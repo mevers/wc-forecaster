@@ -69,14 +69,15 @@ def test_predict_smoke(tmp_path: Path) -> None:
     config = tmp_path / "model.yaml"
     config.write_text(yaml.safe_dump(cfg), encoding="utf-8")
     predict(config)
-    assert (tmp_path / "out" / "winner_odds.csv").exists()
-    assert (tmp_path / "out" / "most_likely_group_tables.csv").exists()
-    assert (tmp_path / "out" / "most_likely_knockout_bracket.csv").exists()
-    with (tmp_path / "out" / "fixture_probabilities.csv").open(encoding="utf-8") as handle:
+    out = tmp_path / "out" / "2026-06-14"
+    assert (out / "winner_odds.csv").exists()
+    assert (out / "most_likely_group_tables.csv").exists()
+    assert (out / "most_likely_knockout_bracket.csv").exists()
+    with (out / "fixture_probabilities.csv").open(encoding="utf-8") as handle:
         fixture = next(csv.DictReader(handle))
     assert fixture["home_team"] == "Mexico"
     assert fixture["away_team"] == "South Africa"
-    with (tmp_path / "out" / "most_likely_knockout_bracket.csv").open(encoding="utf-8") as handle:
+    with (out / "most_likely_knockout_bracket.csv").open(encoding="utf-8") as handle:
         realised = {int(row["match_no"]): row for row in csv.DictReader(handle)}
     round_of_32_teams = [
         team
@@ -128,7 +129,7 @@ def test_predict_ignores_future_dated_scored_fixtures_for_ratings(tmp_path: Path
     config = tmp_path / "model.yaml"
     config.write_text(yaml.safe_dump(cfg), encoding="utf-8")
     predict(config)
-    with (tmp_path / "out" / "derived_team_ratings.csv").open(encoding="utf-8") as handle:
+    with (tmp_path / "out" / "2026-06-14" / "derived_team_ratings.csv").open(encoding="utf-8") as handle:
         next(handle)
         ratings = {row["team"]: float(row["rating"]) for row in csv.DictReader(handle)}
     assert ratings["Mexico"] > ratings["South Africa"]

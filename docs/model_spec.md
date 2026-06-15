@@ -256,7 +256,7 @@ $$
 
 ## Output artefacts
 
-`wc-forecaster predict` writes forecast artefacts to `data.output_dir`, which is `outputs/` in the default config. These files are deterministic for a fixed config, code version, input data, and random seed.
+`wc-forecaster predict` writes forecast artefacts to `data.output_dir/forecast.as_of`, which is `outputs/<as_of>/` in the default config. These files are deterministic for a fixed config, code version, input data, and random seed.
 
 The probability artefacts are:
 

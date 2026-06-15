@@ -500,19 +500,16 @@ def render_png(svg_path: Path, png_path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--bracket", type=Path, default=Path("outputs/most_likely_knockout_bracket.csv"))
-    parser.add_argument("--manifest", type=Path, default=Path("outputs/run_manifest.json"))
+    parser.add_argument("--run-dir", type=Path, required=True)
     parser.add_argument("--flags-dir", type=Path, default=Path("outputs/flags"))
-    parser.add_argument("--svg-output", type=Path, default=Path("outputs/knockout_bracket.svg"))
-    parser.add_argument("--png-output", type=Path, default=Path("outputs/knockout_bracket.png"))
     args = parser.parse_args()
     draw_svg(
-        args.svg_output,
-        read_realised_bracket(args.bracket),
-        read_manifest(args.manifest),
+        args.run_dir / "knockout_bracket.svg",
+        read_realised_bracket(args.run_dir / "most_likely_knockout_bracket.csv"),
+        read_manifest(args.run_dir / "run_manifest.json"),
         args.flags_dir,
     )
-    render_png(args.svg_output, args.png_output)
+    render_png(args.run_dir / "knockout_bracket.svg", args.run_dir / "knockout_bracket.png")
 
 
 if __name__ == "__main__":
