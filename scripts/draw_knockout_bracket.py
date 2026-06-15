@@ -493,8 +493,8 @@ def render_png(svg_path: Path, png_path: Path) -> None:
     cairosvg.svg2png(
         url=str(svg_path),
         write_to=str(png_path),
-        output_width=WIDTH,
-        output_height=HEIGHT,
+        output_width=WIDTH * 2,
+        output_height=HEIGHT * 2,
     )
 
 
