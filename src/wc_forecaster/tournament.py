@@ -80,6 +80,7 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
     rng = random.Random(cfg["forecast"]["seed"])
     title = Counter()
     reached = defaultdict(Counter)
+    group_metrics = defaultdict(lambda: defaultdict(Counter))
     matchups = defaultdict(Counter)
     match_winners = defaultdict(Counter)
     sims = cfg["forecast"]["simulations"]
@@ -96,6 +97,10 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
                 s_sim[match["home_team"]] = hs > aw
                 s_sim[match["away_team"]] = aw > hs
             ordered = rank(tab, ratings)
+            for team_name in teams:
+                group_metrics[group][team_name]["points"] += tab[team_name]["points"]
+                group_metrics[group][team_name]["goal_difference"] += tab[team_name]["gf"] - tab[team_name]["ga"]
+                group_metrics[group][team_name]["goals_for"] += tab[team_name]["gf"]
             qualifiers[f"1{group}"] = ordered[0]
             qualifiers[f"2{group}"] = ordered[1]
             thirds.append((ordered[2], group, tab[ordered[2]]["points"], tab[ordered[2]]["gf"] - tab[ordered[2]]["ga"], tab[ordered[2]]["gf"]))
@@ -120,4 +125,10 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
         title[winners[104]] += 1
         if status and (sim % step == 0 or sim == sims):
             status(f"Simulated {sim:,}/{sims:,} tournaments")
-    return {"title": title, "reached": reached, "matchups": matchups, "match_winners": match_winners}
+    return {
+        "title": title,
+        "reached": reached,
+        "group_metrics": group_metrics,
+        "matchups": matchups,
+        "match_winners": match_winners,
+    }

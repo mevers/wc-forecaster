@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 from wc_forecaster.data import read_matches, rows, team, write_csv
 from wc_forecaster.elo import apply_match
 from wc_forecaster.model import fit, match_probs, tune
-from wc_forecaster.bracket import expected_group_tables, most_likely_tournament_bracket
+from wc_forecaster.bracket import expected_group_tables, most_likely_knockout_bracket
 from wc_forecaster.tournament import simulate
 
 
@@ -128,7 +128,7 @@ def predict(config_path: Path) -> None:
         for group in groups
         for row in group_tables[group]
     ]
-    tournament_bracket_rows = most_likely_tournament_bracket(
+    knockout_bracket_rows = most_likely_knockout_bracket(
         group_tables,
         load_slots(cfg["data"]["third_place_slots"]),
         ratings,
@@ -142,8 +142,9 @@ def predict(config_path: Path) -> None:
     write_csv(out / "fixture_probabilities.csv", fixture_rows)
     write_csv(out / "most_likely_group_tables.csv", group_table_rows)
     write_csv(out / "most_likely_matchups.csv", matchup_rows)
-    write_csv(out / "most_likely_tournament_bracket.csv", tournament_bracket_rows)
-    write_csv(out / "most_likely_realised_bracket.csv", tournament_bracket_rows)
+    write_csv(out / "most_likely_knockout_bracket.csv", knockout_bracket_rows)
+    write_csv(out / "most_likely_tournament_bracket.csv", knockout_bracket_rows)
+    write_csv(out / "most_likely_realised_bracket.csv", knockout_bracket_rows)
     write_csv(out / "most_likely_bracket.csv", [{"match_no": match, "team": counter.most_common(1)[0][0], "probability": counter.most_common(1)[0][1] / sims} for match, counter in sorted(result["match_winners"].items())])
     (out / "tuning_summary.json").write_text(json.dumps(tuning, indent=2), encoding="utf-8")
     (out / "run_manifest.json").write_text(json.dumps({"as_of": cfg["forecast"]["as_of"], "simulations": sims, "coefficients": beta, "config": str(config_path)}, indent=2), encoding="utf-8")

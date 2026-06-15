@@ -25,34 +25,50 @@ LINE = "#8b969f"
 
 COUNTRY_CODES = {
     "Argentina": "ar",
+    "Algeria": "dz",
     "Australia": "au",
     "Austria": "at",
     "Belgium": "be",
     "Bosnia and Herzegovina": "ba",
     "Brazil": "br",
     "Canada": "ca",
+    "Cape Verde": "cv",
     "Colombia": "co",
     "Croatia": "hr",
+    "Curacao": "cw",
     "Czechia": "cz",
+    "DR Congo": "cd",
     "Ecuador": "ec",
     "Egypt": "eg",
     "England": "gb-eng",
     "France": "fr",
     "Germany": "de",
+    "Ghana": "gh",
+    "Haiti": "ht",
     "Iran": "ir",
+    "Iraq": "iq",
+    "Ivory Coast": "ci",
     "Japan": "jp",
+    "Jordan": "jo",
     "Mexico": "mx",
     "Morocco": "ma",
     "Netherlands": "nl",
+    "New Zealand": "nz",
     "Norway": "no",
     "Panama": "pa",
+    "Paraguay": "py",
     "Portugal": "pt",
+    "Qatar": "qa",
     "Saudi Arabia": "sa",
     "Scotland": "gb-sct",
+    "Senegal": "sn",
+    "South Africa": "za",
     "South Korea": "kr",
     "Spain": "es",
+    "Sweden": "se",
     "Switzerland": "ch",
     "Turkey": "tr",
+    "Tunisia": "tn",
     "United States": "us",
     "Uruguay": "uy",
     "Uzbekistan": "uz",
@@ -65,16 +81,10 @@ DISPLAY_NAMES = {
 
 
 @dataclass(frozen=True)
-class Winner:
-    team: str
-    probability: float
-
-
-@dataclass(frozen=True)
-class Matchup:
+class RealisedMatch:
     team_a: str
     team_b: str
-    probability: float
+    winner: str
 
 
 @dataclass(frozen=True)
@@ -109,18 +119,14 @@ class Box:
         return (self.cx, self.y + self.h)
 
 
-def read_winners(path: Path) -> dict[int, Winner]:
+def read_realised_bracket(path: Path) -> dict[int, RealisedMatch]:
     with path.open(newline="", encoding="utf-8") as handle:
         return {
-            int(row["match_no"]): Winner(row["team"], float(row["probability"]))
-            for row in csv.DictReader(handle)
-        }
-
-
-def read_matchups(path: Path) -> dict[int, Matchup]:
-    with path.open(newline="", encoding="utf-8") as handle:
-        return {
-            int(row["match_no"]): Matchup(row["team_a"], row["team_b"], float(row["probability"]))
+            int(row["match_no"]): RealisedMatch(
+                row["team_a"],
+                row["team_b"],
+                row["winner"],
+            )
             for row in csv.DictReader(handle)
         }
 
@@ -333,11 +339,6 @@ def loser(teams: tuple[str, str], winner: str) -> str:
     return teams[1] if teams[0] == winner else teams[0]
 
 
-def opening_teams(matchup: Matchup, winner: str) -> tuple[str, str]:
-    teams = (matchup.team_a, matchup.team_b)
-    return teams if winner in teams else (winner, matchup.team_a)
-
-
 def round_name(match_no: int) -> str:
     if match_no <= 88:
         return "Round of 32"
@@ -350,8 +351,7 @@ def round_name(match_no: int) -> str:
 
 def draw_svg(
     output: Path,
-    winners: dict[int, Winner],
-    matchups: dict[int, Matchup],
+    bracket: dict[int, RealisedMatch],
     manifest: dict[str, Any],
     flags_dir: Path,
 ) -> None:
@@ -418,15 +418,14 @@ def draw_svg(
         boxes[match_no] = Box(x_positions[key], centres[match_no] - card_h / 2, card_w, card_h)
 
     teams_by_match = {
-        match_no: opening_teams(matchups[match_no], winners[match_no].team)
-        for match_no in [*left_leaves, *right_leaves]
+        match_no: (match.team_a, match.team_b)
+        for match_no, match in bracket.items()
+        if match_no != 104
     }
-    for match_no, (first, second) in children.items():
-        teams_by_match[match_no] = (winners[first].team, winners[second].team)
-    final_teams = (winners[101].team, winners[102].team)
+    final_teams = (bracket[104].team_a, bracket[104].team_b)
     third_place_teams = (
-        loser(teams_by_match[101], winners[101].team),
-        loser(teams_by_match[102], winners[102].team),
+        loser(teams_by_match[101], bracket[101].winner),
+        loser(teams_by_match[102], bracket[102].winner),
     )
 
     flag_cache: dict[str, str] = {}
@@ -474,14 +473,14 @@ def draw_svg(
                 match_no,
                 round_name(match_no),
                 teams_by_match[match_no],
-                winners[match_no].team,
+                bracket[match_no].winner,
                 flag_cache,
                 NAVY if match_no <= 88 else NAVY_2,
             )
         )
     svg.append(match_card(flags_dir, third_box, 103, "Third-place play-off", third_place_teams, None, flag_cache, BRONZE))
-    svg.append(final_card(flags_dir, final_box, final_teams, winners[104].team, flag_cache))
-    svg.append(text(1200, 1572, "Bold rows advance. Later-round pairings are derived from the projected winners so the visual remains a coherent bracket.", 18, MUTED, 500, "middle", 0.86))
+    svg.append(final_card(flags_dir, final_box, final_teams, bracket[104].winner, flag_cache))
+    svg.append(text(1200, 1572, "Bold rows advance. Groups use expected table performance; knockouts use head-to-head advancement probability.", 18, MUTED, 500, "middle", 0.86))
     svg.append("</svg>")
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text("\n".join(svg), encoding="utf-8")
@@ -501,8 +500,7 @@ def render_png(svg_path: Path, png_path: Path) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--bracket", type=Path, default=Path("outputs/most_likely_bracket.csv"))
-    parser.add_argument("--matchups", type=Path, default=Path("outputs/most_likely_matchups.csv"))
+    parser.add_argument("--bracket", type=Path, default=Path("outputs/most_likely_knockout_bracket.csv"))
     parser.add_argument("--manifest", type=Path, default=Path("outputs/run_manifest.json"))
     parser.add_argument("--flags-dir", type=Path, default=Path("outputs/flags"))
     parser.add_argument("--svg-output", type=Path, default=Path("outputs/knockout_bracket.svg"))
@@ -510,8 +508,7 @@ def main() -> None:
     args = parser.parse_args()
     draw_svg(
         args.svg_output,
-        read_winners(args.bracket),
-        read_matchups(args.matchups),
+        read_realised_bracket(args.bracket),
         read_manifest(args.manifest),
         args.flags_dir,
     )

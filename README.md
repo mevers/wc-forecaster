@@ -7,7 +7,7 @@ Minimal Python model for forecasting the live 2026 FIFA World Cup and rendering 
 ```sh
 python3.14 -m venv .venv
 . .venv/bin/activate
-python3 -m pip install -e ".[dev]"
+python3 -m pip install -e .
 ```
 
 ## Predict
@@ -18,7 +18,25 @@ wc-forecaster predict
 
 The command reads `config/model.yaml` and writes forecast artefacts to `outputs/`.
 
-Useful outputs include winner odds, round probabilities, derived team ratings, fixture probabilities, the most likely bracket, most likely matchups, a tuning summary, a run manifest, and a winner-odds chart.
+Key outputs are:
+
+- `winner_odds.csv`: Title probabilities by team.
+- `round_probabilities.csv`: Probabilities of reaching each tournament round.
+- `fixture_probabilities.csv`: Group-stage fixtures with 1X2 probabilities.
+- `derived_team_ratings.csv`: Pre-simulation model rating snapshot. It is based on historical and completed 2026 WC games.
+- `most_likely_group_tables.csv`: Expected group standings after group stage. This is used to seed the knockout bracket.
+- `most_likely_knockout_bracket.csv`: Canonical most likely knockout bracket.
+- `tuning_summary.json` and `run_manifest.json`: Tuning and run metadata. `run_manifest.json` is used in `scripts/draw_knockout_bracket.py`.
+- `winner_odds.png`: WC winner probability chart.
+
+Deprecated outputs:
+
+- `most_likely_bracket.csv`: Deprecated legacy marginal winner summary for each knockout match slot; not a bracket input.
+- `most_likely_matchups.csv`: Deprecated legacy marginal pairing summary for each knockout match slot; not a bracket input.
+- `most_likely_tournament_bracket.csv`: Deprecated copy of the expected-table knockout bracket, with winners chosen by head-to-head advancement probability.
+- `most_likely_realised_bracket.csv`: Deprecated copy of the same expected-table knockout bracket, seeded from expected group standings and resolved by head-to-head advancement probability.
+
+Use `most_likely_knockout_bracket.csv` when you need an internally consistent knockout bracket. Do not use the deprecated marginal knockout files to draw or describe the bracket. See `docs/model_spec.md` for the full artefact definitions and `docs/most_likely_knockout_bracket_methodology.md` for the bracket methodology.
 
 ## Render bracket
 
@@ -26,7 +44,7 @@ Useful outputs include winner odds, round probabilities, derived team ratings, f
 python3 scripts/draw_knockout_bracket.py
 ```
 
-This reads the CSV and JSON artefacts in `outputs/` and writes `outputs/knockout_bracket.png`.
+This reads `outputs/most_likely_knockout_bracket.csv` and the run manifest, then writes `outputs/knockout_bracket.png`.
 
 ## Data
 

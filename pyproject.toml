@@ -1,6 +1,6 @@
 [project]
 name = "wc-forecaster"
-version = "0.1.0"
+version = "0.2.0"
 description = "Minimal 2026 World Cup prediction model."
 readme = "README.md"
 authors = [{ name = "Maurits Evers", email = "maurits.evers@gmail.com" }]

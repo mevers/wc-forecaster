@@ -71,12 +71,12 @@ def test_predict_smoke(tmp_path: Path) -> None:
     predict(config)
     assert (tmp_path / "out" / "winner_odds.csv").exists()
     assert (tmp_path / "out" / "most_likely_group_tables.csv").exists()
-    assert (tmp_path / "out" / "most_likely_tournament_bracket.csv").exists()
+    assert (tmp_path / "out" / "most_likely_knockout_bracket.csv").exists()
     with (tmp_path / "out" / "fixture_probabilities.csv").open(encoding="utf-8") as handle:
         fixture = next(csv.DictReader(handle))
     assert fixture["home_team"] == "Mexico"
     assert fixture["away_team"] == "South Africa"
-    with (tmp_path / "out" / "most_likely_tournament_bracket.csv").open(encoding="utf-8") as handle:
+    with (tmp_path / "out" / "most_likely_knockout_bracket.csv").open(encoding="utf-8") as handle:
         realised = {int(row["match_no"]): row for row in csv.DictReader(handle)}
     round_of_32_teams = [
         team
