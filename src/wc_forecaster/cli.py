@@ -22,6 +22,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 from wc_forecaster.data import read_matches, rows, team, write_csv
 from wc_forecaster.elo import apply_match
 from wc_forecaster.model import fit, match_probs, tune
+from wc_forecaster.bracket import expected_group_tables, most_likely_tournament_bracket
 from wc_forecaster.tournament import simulate
 
 
@@ -79,6 +80,7 @@ def predict(config_path: Path) -> None:
     status("Loading 2026 tournament state")
     groups = load_groups(cfg["data"]["groups"])
     fixtures = read_matches(cfg["data"]["fixtures"])
+    fixtures = [{**m, "home_score": None, "away_score": None} if m["date"] > as_of else m for m in fixtures]
     played = sorted((m for m in fixtures if m["home_score"] is not None), key=lambda m: m["date"])
     status(f"Applying {len(played)} completed 2026 World Cup matches")
     for match in played:
@@ -98,17 +100,50 @@ def predict(config_path: Path) -> None:
     fixture_rows = []
     for match in fixtures:
         probs = match_probs(match["home_team"], match["away_team"], match["venue_advantage"], ratings, beta, s, cfg)
-        fixture_rows.append({"match_no": match["match_no"], "home": match["home_team"], "away": match["away_team"], **probs})
+        fixture_rows.append(
+            {
+                "match_no": match["match_no"],
+                "home_team": match["home_team"],
+                "away_team": match["away_team"],
+                "home": probs["home"],
+                "draw": probs["draw"],
+                "away": probs["away"],
+            }
+        )
     matchup_rows = [
         {"match_no": match, "team_a": pair[0], "team_b": pair[1], "probability": count / sims}
         for match, counter in sorted(result["matchups"].items())
         for pair, count in [counter.most_common(1)[0]]
     ]
+    group_tables = expected_group_tables(groups, result, sims, ratings)
+    group_table_rows = [
+        {
+            "group": row["group"],
+            "position": row["position"],
+            "team": row["team"],
+            "expected_points": row["expected_points"],
+            "expected_goal_difference": row["expected_goal_difference"],
+            "expected_goals_for": row["expected_goals_for"],
+        }
+        for group in groups
+        for row in group_tables[group]
+    ]
+    tournament_bracket_rows = most_likely_tournament_bracket(
+        group_tables,
+        load_slots(cfg["data"]["third_place_slots"]),
+        ratings,
+        beta,
+        s,
+        cfg,
+    )
     write_csv(out / "winner_odds.csv", winner_rows)
     write_csv(out / "round_probabilities.csv", sorted(round_rows, key=lambda r: (r["team"], r["round"])))
     write_ratings(out / "derived_team_ratings.csv", ratings)
     write_csv(out / "fixture_probabilities.csv", fixture_rows)
+    write_csv(out / "most_likely_group_tables.csv", group_table_rows)
     write_csv(out / "most_likely_matchups.csv", matchup_rows)
+    write_csv(out / "most_likely_tournament_bracket.csv", tournament_bracket_rows)
+    write_csv(out / "most_likely_realised_bracket.csv", tournament_bracket_rows)
     write_csv(out / "most_likely_bracket.csv", [{"match_no": match, "team": counter.most_common(1)[0][0], "probability": counter.most_common(1)[0][1] / sims} for match, counter in sorted(result["match_winners"].items())])
     (out / "tuning_summary.json").write_text(json.dumps(tuning, indent=2), encoding="utf-8")
     (out / "run_manifest.json").write_text(json.dumps({"as_of": cfg["forecast"]["as_of"], "simulations": sims, "coefficients": beta, "config": str(config_path)}, indent=2), encoding="utf-8")
