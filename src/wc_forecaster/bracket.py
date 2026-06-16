@@ -5,6 +5,10 @@ from typing import Any
 from wc_forecaster.model import match_probs
 from wc_forecaster.tournament import BRACKET, RO32, third_assignment
 
+BRACKET_METHOD_EXPECTED_TABLE = "expected-table"
+BRACKET_METHOD_MODAL_PATH = "modal-path"
+BRACKET_METHODS = [BRACKET_METHOD_EXPECTED_TABLE, BRACKET_METHOD_MODAL_PATH]
+
 
 def expected_group_tables(groups: dict[str, list[str]], result: dict[str, Any], sims: int, ratings: dict[str, float]) -> dict[str, list[dict[str, Any]]]:
     out = {}
@@ -103,3 +107,30 @@ def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], 
         s_bracket[team_a] = winner == team_a
         s_bracket[team_b] = winner == team_b
     return sorted(rows_, key=lambda row: row["match_no"])
+
+
+def modal_knockout_bracket(result: dict[str, Any], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
+    path = result["bracket_paths"].most_common(1)[0][0]
+    rows_ = []
+    s_bracket = s.copy()
+    for match_no, team_a, team_b, winner in path:
+        team_a_prob, team_b_prob = advancement_probabilities(team_a, team_b, ratings, beta, s_bracket, cfg)
+        rows_.append(
+            {
+                "match_no": match_no,
+                "team_a": team_a,
+                "team_b": team_b,
+                "winner": winner,
+                "team_a_advance_probability": team_a_prob,
+                "team_b_advance_probability": team_b_prob,
+            }
+        )
+        s_bracket[team_a] = winner == team_a
+        s_bracket[team_b] = winner == team_b
+    return sorted(rows_, key=lambda row: row["match_no"])
+
+
+def knockout_bracket(method: str, group_tables: dict[str, list[dict[str, Any]]], result: dict[str, Any], slots: dict[int, set[str]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
+    if method == BRACKET_METHOD_MODAL_PATH:
+        return modal_knockout_bracket(result, ratings, beta, s, cfg)
+    return most_likely_knockout_bracket(group_tables, slots, ratings, beta, s, cfg)

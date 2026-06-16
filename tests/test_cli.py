@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import csv
+import json
+from collections import Counter
 from pathlib import Path
 
 import yaml
 
-from wc_forecaster.bracket import advancement_probabilities, expected_group_tables
+from wc_forecaster.bracket import advancement_probabilities, expected_group_tables, modal_knockout_bracket
 from wc_forecaster.cli import load_config, predict
 from wc_forecaster.tournament import BRACKET, RO32
 
@@ -45,6 +47,20 @@ def test_advancement_probabilities_favour_stronger_team() -> None:
     assert round(team_a + team_b, 10) == 1
 
 
+def test_modal_knockout_bracket_uses_most_common_simulated_path() -> None:
+    result = {
+        "bracket_paths": Counter(
+            {
+                ((73, "A", "B", "B"),): 2,
+                ((73, "A", "B", "A"),): 1,
+            }
+        )
+    }
+    rows = modal_knockout_bracket(result, {"A": 1600, "B": 1400}, [0.2, 0.1, 0.0], {}, CFG)
+    assert rows[0]["winner"] == "B"
+    assert rows[0]["team_a_advance_probability"] > rows[0]["team_b_advance_probability"]
+
+
 def test_predict_smoke(tmp_path: Path) -> None:
     hist = tmp_path / "results.csv"
     hist.write_text(
@@ -79,6 +95,8 @@ def test_predict_smoke(tmp_path: Path) -> None:
     assert fixture["away_team"] == "South Africa"
     with (out / "most_likely_knockout_bracket.csv").open(encoding="utf-8") as handle:
         realised = {int(row["match_no"]): row for row in csv.DictReader(handle)}
+    manifest = json.loads((out / "run_manifest.json").read_text(encoding="utf-8"))
+    assert manifest["bracket_method"] == "expected-table"
     round_of_32_teams = [
         team
         for match_no in RO32

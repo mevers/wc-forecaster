@@ -16,6 +16,11 @@ python3 -m pip install -e .
 wc-forecaster predict
 ```
 
+Use `--bracket-method modal-path` to write the same bracket artefacts from the
+most common simulated knockout bracket path. The default is `expected-table`,
+which ranks groups by average simulated table performance before building the
+bracket.
+
 The command reads `config/model.yaml` and writes forecast artefacts to `outputs/<as_of>/`.
 
 Key outputs are:
