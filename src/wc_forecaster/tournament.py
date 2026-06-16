@@ -81,9 +81,9 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
     title = Counter()
     reached = defaultdict(Counter)
     group_metrics = defaultdict(lambda: defaultdict(Counter))
+    group_tables = defaultdict(Counter)
     matchups = defaultdict(Counter)
     match_winners = defaultdict(Counter)
-    bracket_paths = Counter()
     sims = cfg["forecast"]["simulations"]
     step = max(1, sims // 10)
     for sim in range(1, sims + 1):
@@ -102,6 +102,7 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
                 group_metrics[group][team_name]["points"] += tab[team_name]["points"]
                 group_metrics[group][team_name]["goal_difference"] += tab[team_name]["gf"] - tab[team_name]["ga"]
                 group_metrics[group][team_name]["goals_for"] += tab[team_name]["gf"]
+            group_tables[group][tuple((team_name, tab[team_name]["points"], tab[team_name]["gf"] - tab[team_name]["ga"], tab[team_name]["gf"]) for team_name in ordered)] += 1
             qualifiers[f"1{group}"] = ordered[0]
             qualifiers[f"2{group}"] = ordered[1]
             thirds.append((ordered[2], group, tab[ordered[2]]["points"], tab[ordered[2]]["gf"] - tab[ordered[2]]["ga"], tab[ordered[2]]["gf"]))
@@ -109,13 +110,11 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
         thirds_by_match = third_assignment(best_thirds, slots)
         winners = {}
         knockout_teams: dict[int, tuple[str, str]] = {}
-        bracket_path = []
         for match_no, pair in RO32.items():
             home = qualifiers[pair[0]]
             away = thirds_by_match[match_no].split(":")[0] if pair[1] == "3" else qualifiers[pair[1]]
             matchups[match_no][(home, away)] += 1
             winners[match_no] = winner(rng, home, away, ratings, beta, s_sim, cfg)
-            bracket_path.append((match_no, home, away, winners[match_no]))
             match_winners[match_no][winners[match_no]] += 1
             reached["round_of_32"][home] += 1
             reached["round_of_32"][away] += 1
@@ -130,19 +129,17 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
             right_team = winners[right]
             matchups[match_no][(left_team, right_team)] += 1
             winners[match_no] = winner(rng, left_team, right_team, ratings, beta, s_sim, cfg)
-            bracket_path.append((match_no, left_team, right_team, winners[match_no]))
             match_winners[match_no][winners[match_no]] += 1
             knockout_teams[match_no] = (left_team, right_team)
             reached[next(name for start, name in sorted(ROUNDS.items(), reverse=True) if match_no >= start)][winners[match_no]] += 1
         title[winners[104]] += 1
-        bracket_paths[tuple(bracket_path)] += 1
         if status and (sim % step == 0 or sim == sims):
             status(f"Simulated {sim:,}/{sims:,} tournaments")
     return {
         "title": title,
         "reached": reached,
         "group_metrics": group_metrics,
+        "group_tables": group_tables,
         "matchups": matchups,
         "match_winners": match_winners,
-        "bracket_paths": bracket_paths,
     }

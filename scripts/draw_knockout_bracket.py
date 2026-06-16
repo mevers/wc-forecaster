@@ -11,6 +11,8 @@ from pathlib import Path
 from typing import Any
 from xml.sax.saxutils import escape
 
+from wc_forecaster.bracket import BRACKET_METHOD_EXPECTED_TABLE, BRACKET_METHODS
+
 
 WIDTH = 2400
 HEIGHT = 1695
@@ -119,7 +121,7 @@ class Box:
         return (self.cx, self.y + self.h)
 
 
-def read_realised_bracket(path: Path) -> dict[int, RealisedMatch]:
+def read_realised_bracket(path: Path, bracket_method: str) -> dict[int, RealisedMatch]:
     with path.open(newline="", encoding="utf-8") as handle:
         return {
             int(row["match_no"]): RealisedMatch(
@@ -128,6 +130,7 @@ def read_realised_bracket(path: Path) -> dict[int, RealisedMatch]:
                 row["winner"],
             )
             for row in csv.DictReader(handle)
+            if row["bracket_method"] == bracket_method
         }
 
 
@@ -354,6 +357,7 @@ def draw_svg(
     bracket: dict[int, RealisedMatch],
     manifest: dict[str, Any],
     flags_dir: Path,
+    bracket_method: str,
 ) -> None:
     left_leaves = [73, 75, 74, 77, 83, 84, 81, 82]
     right_leaves = [76, 78, 79, 80, 86, 88, 85, 87]
@@ -461,7 +465,7 @@ def draw_svg(
         *background(),
         text(1200, 88, "WORLD CUP", 118, INK, 900, "middle"),
         text(1200, 208, "2026", 182, "#ed1b2f", 900, "middle"),
-        text(1200, 292, f"Most likely knockout bracket from {simulations:,} simulations · as at {as_of}", 23, MUTED, 500, "middle"),
+        text(1200, 292, f"Most likely knockout bracket ({bracket_method}) from {simulations:,} simulations · as at {as_of}", 23, MUTED, 500, "middle"),
         *connectors,
         trophy(1200, 1120),
     ]
@@ -478,7 +482,7 @@ def draw_svg(
                 NAVY if match_no <= 88 else NAVY_2,
             )
         )
-    svg.append(match_card(flags_dir, third_box, 103, "Third-place play-off", third_place_teams, None, flag_cache, BRONZE))
+    svg.append(match_card(flags_dir, third_box, 103, "Third-place play-off", third_place_teams, bracket[103].winner, flag_cache, BRONZE))
     svg.append(final_card(flags_dir, final_box, final_teams, bracket[104].winner, flag_cache))
     svg.append(text(1200, 1572, "Bold rows advance. Groups use expected table performance; knockouts use head-to-head advancement probability.", 18, MUTED, 500, "middle", 0.86))
     svg.append("</svg>")
@@ -501,15 +505,17 @@ def render_png(svg_path: Path, png_path: Path) -> None:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-dir", type=Path, required=True)
+    parser.add_argument("--bracket-method", choices=BRACKET_METHODS, default=BRACKET_METHOD_EXPECTED_TABLE)
     parser.add_argument("--flags-dir", type=Path, default=Path("outputs/flags"))
     args = parser.parse_args()
     draw_svg(
-        args.run_dir / "knockout_bracket.svg",
-        read_realised_bracket(args.run_dir / "most_likely_knockout_bracket.csv"),
+        args.run_dir / f"knockout_bracket_{args.bracket_method}.svg",
+        read_realised_bracket(args.run_dir / "most_likely_knockout_bracket.csv", args.bracket_method),
         read_manifest(args.run_dir / "run_manifest.json"),
         args.flags_dir,
+        args.bracket_method,
     )
-    render_png(args.run_dir / "knockout_bracket.svg", args.run_dir / "knockout_bracket.png")
+    render_png(args.run_dir / f"knockout_bracket_{args.bracket_method}.svg", args.run_dir / f"knockout_bracket_{args.bracket_method}.png")
 
 
 if __name__ == "__main__":

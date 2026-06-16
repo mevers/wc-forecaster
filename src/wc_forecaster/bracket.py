@@ -6,8 +6,8 @@ from wc_forecaster.model import match_probs
 from wc_forecaster.tournament import BRACKET, RO32, third_assignment
 
 BRACKET_METHOD_EXPECTED_TABLE = "expected-table"
-BRACKET_METHOD_MODAL_PATH = "modal-path"
-BRACKET_METHODS = [BRACKET_METHOD_EXPECTED_TABLE, BRACKET_METHOD_MODAL_PATH]
+BRACKET_METHOD_MODAL_GROUP_TABLE = "modal-group-table"
+BRACKET_METHODS = [BRACKET_METHOD_EXPECTED_TABLE, BRACKET_METHOD_MODAL_GROUP_TABLE]
 
 
 def expected_group_tables(groups: dict[str, list[str]], result: dict[str, Any], sims: int, ratings: dict[str, float]) -> dict[str, list[dict[str, Any]]]:
@@ -46,6 +46,32 @@ def advancement_probabilities(team_a: str, team_b: str, ratings: dict[str, float
     return team_a_advance, 1 - team_a_advance
 
 
+def modal_group_tables(groups: dict[str, list[str]], result: dict[str, Any]) -> dict[str, list[dict[str, Any]]]:
+    return {
+        group: [
+            {
+                "group": group,
+                "position": position,
+                "team": row[0],
+                "expected_points": row[1],
+                "expected_goal_difference": row[2],
+                "expected_goals_for": row[3],
+            }
+            for position, row in enumerate(result["group_tables"][group].most_common(1)[0][0], 1)
+        ]
+        for group in groups
+    }
+
+
+def append_match(rows_: list[dict[str, Any]], match_no: int, team_a: str, team_b: str, ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> str:
+    team_a_prob, team_b_prob = advancement_probabilities(team_a, team_b, ratings, beta, s, cfg)
+    winner = team_a if team_a_prob >= team_b_prob else team_b
+    rows_.append({"match_no": match_no, "team_a": team_a, "team_b": team_b, "winner": winner, "team_a_advance_probability": team_a_prob, "team_b_advance_probability": team_b_prob})
+    s[team_a] = winner == team_a
+    s[team_b] = winner == team_b
+    return winner
+
+
 def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], slots: dict[int, set[str]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
     qualifiers = {}
     thirds = []
@@ -69,68 +95,33 @@ def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], 
     thirds_by_match = third_assignment(best_thirds, slots)
     rows_ = []
     winners = {}
+    semi_losers = {}
     s_bracket = s.copy()
     for match_no, pair in RO32.items():
         team_a = qualifiers[pair[0]]
         team_b = thirds_by_match[match_no].split(":")[0] if pair[1] == "3" else qualifiers[pair[1]]
-        team_a_prob, team_b_prob = advancement_probabilities(team_a, team_b, ratings, beta, s_bracket, cfg)
-        winner = team_a if team_a_prob >= team_b_prob else team_b
-        rows_.append(
-            {
-                "match_no": match_no,
-                "team_a": team_a,
-                "team_b": team_b,
-                "winner": winner,
-                "team_a_advance_probability": team_a_prob,
-                "team_b_advance_probability": team_b_prob,
-            }
-        )
-        winners[match_no] = winner
-        s_bracket[team_a] = winner == team_a
-        s_bracket[team_b] = winner == team_b
+        winners[match_no] = append_match(rows_, match_no, team_a, team_b, ratings, beta, s_bracket, cfg)
     for match_no, left, right in BRACKET:
+        if match_no == 104:
+            append_match(rows_, 103, semi_losers[101], semi_losers[102], ratings, beta, s_bracket, cfg)
         team_a = winners[left]
         team_b = winners[right]
-        team_a_prob, team_b_prob = advancement_probabilities(team_a, team_b, ratings, beta, s_bracket, cfg)
-        winner = team_a if team_a_prob >= team_b_prob else team_b
-        rows_.append(
-            {
-                "match_no": match_no,
-                "team_a": team_a,
-                "team_b": team_b,
-                "winner": winner,
-                "team_a_advance_probability": team_a_prob,
-                "team_b_advance_probability": team_b_prob,
-            }
-        )
+        winner = append_match(rows_, match_no, team_a, team_b, ratings, beta, s_bracket, cfg)
         winners[match_no] = winner
-        s_bracket[team_a] = winner == team_a
-        s_bracket[team_b] = winner == team_b
+        if match_no in {101, 102}:
+            semi_losers[match_no] = team_b if winner == team_a else team_a
     return sorted(rows_, key=lambda row: row["match_no"])
 
 
-def modal_knockout_bracket(result: dict[str, Any], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
-    path = result["bracket_paths"].most_common(1)[0][0]
-    rows_ = []
-    s_bracket = s.copy()
-    for match_no, team_a, team_b, winner in path:
-        team_a_prob, team_b_prob = advancement_probabilities(team_a, team_b, ratings, beta, s_bracket, cfg)
-        rows_.append(
-            {
-                "match_no": match_no,
-                "team_a": team_a,
-                "team_b": team_b,
-                "winner": winner,
-                "team_a_advance_probability": team_a_prob,
-                "team_b_advance_probability": team_b_prob,
-            }
-        )
-        s_bracket[team_a] = winner == team_a
-        s_bracket[team_b] = winner == team_b
-    return sorted(rows_, key=lambda row: row["match_no"])
-
-
-def knockout_bracket(method: str, group_tables: dict[str, list[dict[str, Any]]], result: dict[str, Any], slots: dict[int, set[str]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
-    if method == BRACKET_METHOD_MODAL_PATH:
-        return modal_knockout_bracket(result, ratings, beta, s, cfg)
+def knockout_bracket(method: str, groups: dict[str, list[str]], group_tables: dict[str, list[dict[str, Any]]], result: dict[str, Any], slots: dict[int, set[str]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
+    if method == BRACKET_METHOD_MODAL_GROUP_TABLE:
+        group_tables = modal_group_tables(groups, result)
     return most_likely_knockout_bracket(group_tables, slots, ratings, beta, s, cfg)
+
+
+def knockout_bracket_options(groups: dict[str, list[str]], group_tables: dict[str, list[dict[str, Any]]], result: dict[str, Any], slots: dict[int, set[str]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
+    return [
+        {"bracket_method": method, **row}
+        for method in BRACKET_METHODS
+        for row in knockout_bracket(method, groups, group_tables, result, slots, ratings, beta, s, cfg)
+    ]

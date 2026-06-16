@@ -21,7 +21,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 
 from wc_forecaster.data import read_matches, rows, team, write_csv
 from wc_forecaster.elo import apply_match
-from wc_forecaster.bracket import BRACKET_METHOD_EXPECTED_TABLE, BRACKET_METHODS, expected_group_tables, knockout_bracket
+from wc_forecaster.bracket import expected_group_tables, knockout_bracket_options
 from wc_forecaster.model import fit, match_probs, tune
 from wc_forecaster.tournament import simulate
 
@@ -65,7 +65,7 @@ def write_ratings(path: Path, ratings: dict[str, float]) -> None:
         writer.writerows({"team": k, "rating": round(v, 1)} for k, v in sorted(ratings.items(), key=lambda row: row[1], reverse=True))
 
 
-def predict(config_path: Path, bracket_method: str = BRACKET_METHOD_EXPECTED_TABLE) -> None:
+def predict(config_path: Path) -> None:
     status(f"Reading config: {config_path}")
     cfg = load_config(config_path)
     as_of = date.fromisoformat(cfg["forecast"]["as_of"])
@@ -128,7 +128,7 @@ def predict(config_path: Path, bracket_method: str = BRACKET_METHOD_EXPECTED_TAB
         for group in groups
         for row in group_tables[group]
     ]
-    knockout_bracket_rows = knockout_bracket(bracket_method, group_tables, result, load_slots(cfg["data"]["third_place_slots"]), ratings, beta, s, cfg)
+    knockout_bracket_rows = knockout_bracket_options(groups, group_tables, result, load_slots(cfg["data"]["third_place_slots"]), ratings, beta, s, cfg)
     write_csv(out / "winner_odds.csv", winner_rows)
     write_csv(out / "round_probabilities.csv", sorted(round_rows, key=lambda r: (r["team"], r["round"])))
     write_ratings(out / "derived_team_ratings.csv", ratings)
@@ -140,7 +140,7 @@ def predict(config_path: Path, bracket_method: str = BRACKET_METHOD_EXPECTED_TAB
     write_csv(out / "most_likely_realised_bracket.csv", knockout_bracket_rows)
     write_csv(out / "most_likely_bracket.csv", [{"match_no": match, "team": counter.most_common(1)[0][0], "probability": counter.most_common(1)[0][1] / sims} for match, counter in sorted(result["match_winners"].items())])
     (out / "tuning_summary.json").write_text(json.dumps(tuning, indent=2), encoding="utf-8")
-    (out / "run_manifest.json").write_text(json.dumps({"as_of": cfg["forecast"]["as_of"], "simulations": sims, "coefficients": beta, "config": str(config_path), "bracket_method": bracket_method}, indent=2), encoding="utf-8")
+    (out / "run_manifest.json").write_text(json.dumps({"as_of": cfg["forecast"]["as_of"], "simulations": sims, "coefficients": beta, "config": str(config_path)}, indent=2), encoding="utf-8")
     chart(out / "winner_odds.png", winner_rows, "team", "probability", "World Cup winner odds")
     status(f"Wrote forecast to {out}")
 
@@ -150,6 +150,5 @@ def main() -> None:
     sub = parser.add_subparsers(dest="command", required=True)
     predict_parser = sub.add_parser("predict")
     predict_parser.add_argument("--config", type=Path, default=Path("config/model.yaml"))
-    predict_parser.add_argument("--bracket-method", choices=BRACKET_METHODS, default=BRACKET_METHOD_EXPECTED_TABLE)
     args = parser.parse_args()
-    predict(args.config, args.bracket_method)
+    predict(args.config)

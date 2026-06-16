@@ -7,7 +7,7 @@ from pathlib import Path
 
 import yaml
 
-from wc_forecaster.bracket import advancement_probabilities, expected_group_tables, modal_knockout_bracket
+from wc_forecaster.bracket import advancement_probabilities, expected_group_tables, modal_group_tables
 from wc_forecaster.cli import load_config, predict
 from wc_forecaster.tournament import BRACKET, RO32
 
@@ -47,18 +47,24 @@ def test_advancement_probabilities_favour_stronger_team() -> None:
     assert round(team_a + team_b, 10) == 1
 
 
-def test_modal_knockout_bracket_uses_most_common_simulated_path() -> None:
+def test_modal_group_tables_use_most_common_complete_group_table() -> None:
     result = {
-        "bracket_paths": Counter(
-            {
-                ((73, "A", "B", "B"),): 2,
-                ((73, "A", "B", "A"),): 1,
-            }
-        )
+        "group_tables": {
+            "A": Counter(
+                {
+                    (("Alpha", 7, 3, 5), ("Beta", 5, 1, 4), ("Gamma", 3, -1, 2), ("Delta", 1, -3, 1)): 1,
+                    (("Beta", 6, 2, 4), ("Alpha", 4, 0, 3), ("Gamma", 4, 0, 2), ("Delta", 2, -2, 1)): 2,
+                }
+            )
+        }
     }
-    rows = modal_knockout_bracket(result, {"A": 1600, "B": 1400}, [0.2, 0.1, 0.0], {}, CFG)
-    assert rows[0]["winner"] == "B"
-    assert rows[0]["team_a_advance_probability"] > rows[0]["team_b_advance_probability"]
+    rows = modal_group_tables({"A": ["Alpha", "Beta", "Gamma", "Delta"]}, result)["A"]
+    assert [(row["position"], row["team"], row["expected_points"]) for row in rows] == [
+        (1, "Beta", 6),
+        (2, "Alpha", 4),
+        (3, "Gamma", 4),
+        (4, "Delta", 2),
+    ]
 
 
 def test_predict_smoke(tmp_path: Path) -> None:
@@ -94,9 +100,12 @@ def test_predict_smoke(tmp_path: Path) -> None:
     assert fixture["home_team"] == "Mexico"
     assert fixture["away_team"] == "South Africa"
     with (out / "most_likely_knockout_bracket.csv").open(encoding="utf-8") as handle:
-        realised = {int(row["match_no"]): row for row in csv.DictReader(handle)}
+        rows = list(csv.DictReader(handle))
+    realised = {int(row["match_no"]): row for row in rows if row["bracket_method"] == "expected-table"}
+    assert {row["bracket_method"] for row in rows} == {"expected-table", "modal-group-table"}
+    assert 103 in realised
     manifest = json.loads((out / "run_manifest.json").read_text(encoding="utf-8"))
-    assert manifest["bracket_method"] == "expected-table"
+    assert "bracket_method" not in manifest
     round_of_32_teams = [
         team
         for match_no in RO32

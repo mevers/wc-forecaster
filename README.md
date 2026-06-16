@@ -16,11 +16,6 @@ python3 -m pip install -e .
 wc-forecaster predict
 ```
 
-Use `--bracket-method modal-path` to write the same bracket artefacts from the
-most common simulated knockout bracket path. The default is `expected-table`,
-which ranks groups by average simulated table performance before building the
-bracket.
-
 The command reads `config/model.yaml` and writes forecast artefacts to `outputs/<as_of>/`.
 
 Key outputs are:
@@ -49,7 +44,12 @@ Use `most_likely_knockout_bracket.csv` when you need an internally consistent kn
 python3 scripts/draw_knockout_bracket.py --run-dir outputs/2026-06-14
 ```
 
-This reads `most_likely_knockout_bracket.csv` and `run_manifest.json` from that run directory, then writes `knockout_bracket.png` there.
+Use `--bracket-method modal-group-table` to render the bracket seeded from the
+most common complete table in each group. The default is `expected-table`,
+which ranks groups by average simulated table performance before building the
+bracket.
+
+This reads `most_likely_knockout_bracket.csv` and `run_manifest.json` from that run directory, then writes `knockout_bracket_<bracket-method>.png` there.
 
 ## Data
 
