@@ -175,7 +175,7 @@ def predict(config_path: Path) -> None:
             adjusted_ratings,
         ),
     )
-    write_csv(out / "fixture_probabilities.csv", fixture_rows)
+    write_csv(out / "group_fixture_1x2_probabilities.csv", fixture_rows)
     write_csv(out / "most_likely_group_tables.csv", group_table_rows)
     write_csv(out / "most_likely_knockout_bracket.csv", knockout_bracket_rows)
     write_csv(out / "match_slot_matchup_marginals.csv", matchup_marginal_rows)

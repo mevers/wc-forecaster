@@ -22,7 +22,7 @@ Key outputs are:
 
 - `winner_odds.csv`: Title probabilities by team.
 - `round_probabilities.csv`: Probabilities of reaching each tournament round.
-- `fixture_probabilities.csv`: Group-stage fixtures with 1X2 probabilities.
+- `group_fixture_1x2_probabilities.csv`: Group-stage fixtures with 1X2 probabilities.
 - `derived_team_ratings.csv`: Pre-simulation model rating snapshot. It is based on historical and completed 2026 WC games.
 - `team_adjustments.csv`: Squad cohesion, underdog magic, and adjusted forecast rating by team.
 - `most_likely_group_tables.csv`: Expected group standings after group stage. This is used to seed the knockout bracket.

@@ -5,6 +5,7 @@
 - Added squad cohesion and underdog-magic adjustments to forecast ratings.
 - Added squad data and `team_adjustments.csv`.
 - Renamed match-slot marginal artefacts.
+- Renamed group fixture 1X2 probability artefact.
 
 ## v0.3.0
 
