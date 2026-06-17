@@ -4,6 +4,7 @@ from collections import defaultdict
 from itertools import combinations
 from typing import Any
 
+from wc_forecaster.elo import apply_match
 from wc_forecaster.model import match_probs
 
 
@@ -108,3 +109,43 @@ def underdog_magic_boosts(residuals: dict[str, float], cfg: dict[str, Any]) -> d
         )
         for team, residual in residuals.items()
     }
+
+
+def compute_adjustments(
+    teams: list[str],
+    squads: list[dict[str, str]],
+    played: list[dict[str, Any]],
+    ratings: dict[str, float],
+    beta: list[float],
+    s: dict[str, bool],
+    cfg: dict[str, Any],
+) -> tuple[dict[str, float], dict[str, float], dict[str, float], dict[str, float], dict[str, float]]:
+    cohesion_score, cohesion_boost = (
+        cohesion(squads, teams, cfg) if cfg["cohesion"]["enabled"] else zero_adjustments(teams)
+    )
+    underdog_magic_residual, underdog_magic_boost = zero_adjustments(teams)
+    for match in played:
+        match["tournament"] = "FIFA World Cup"
+        if cfg["underdog_magic"]["enabled"]:
+            add_underdog_magic_residual(
+                underdog_magic_residual,
+                match,
+                ratings,
+                cohesion_boost,
+                beta,
+                s,
+                cfg,
+            )
+        apply_match(ratings, match, cfg)
+        s[match["home_team"]] = match["home_score"] > match["away_score"]
+        s[match["away_team"]] = match["away_score"] > match["home_score"]
+    if cfg["underdog_magic"]["enabled"]:
+        underdog_magic_boost = underdog_magic_boosts(underdog_magic_residual, cfg)
+    adjusted_ratings = boosted_ratings(ratings, cohesion_boost, underdog_magic_boost)
+    return (
+        cohesion_score,
+        cohesion_boost,
+        underdog_magic_residual,
+        underdog_magic_boost,
+        adjusted_ratings,
+    )
