@@ -88,7 +88,7 @@ def adjustment_rows(
     ]
 
 
-def predict(config_path: Path) -> None:
+def predict(config_path: Path, update_readme: bool = False) -> None:
     status(f"Reading config: {config_path}")
     cfg = load_config(config_path)
     as_of = date.fromisoformat(cfg["forecast"]["as_of"])
@@ -206,12 +206,19 @@ def predict(config_path: Path) -> None:
     chart(out / "winner_odds.png", winner_rows, "team", "probability", "World Cup winner odds")
     status(f"Wrote forecast to {out}")
     if next_rows:
-        print(f"\nNext match day: {next_rows[0]['date']}")
-        print(f"{'match':<5}  {'group':<5}  {'fixture':<28}  {'home':>6}  {'draw':>6}  {'away':>6}  {'xG':>9}")
+        table = [f"Next match day: {next_rows[0]['date']}", f"{'match':<5}  {'group':<5}  {'fixture':<28}  {'home':>6}  {'draw':>6}  {'away':>6}  {'xG':>9}"]
         for row in next_rows:
             fixture = f"{row['home_team']} vs {row['away_team']}"
             xg = f"{row['home_expected_goals']:.2f}-{row['away_expected_goals']:.2f}"
-            print(f"{row['match_no']:<5}  {row['group']:<5}  {fixture:<28}  {100 * row['home']:>5.1f}%  {100 * row['draw']:>5.1f}%  {100 * row['away']:>5.1f}%  {xg:>9}")
+            table.append(f"{row['match_no']:<5}  {row['group']:<5}  {fixture:<28}  {100 * row['home']:>5.1f}%  {100 * row['draw']:>5.1f}%  {100 * row['away']:>5.1f}%  {xg:>9}")
+        table_text = "\n".join(table)
+        print(f"\n{table_text}")
+        if update_readme:
+            readme = Path("README.md")
+            text = readme.read_text(encoding="utf-8")
+            start = text.index("```text\n", text.index("## Next match day forecasts")) + len("```text\n")
+            end = text.index("\n```", start)
+            readme.write_text(text[:start] + table_text + text[end:], encoding="utf-8")
 
 
 def main() -> None:
@@ -220,4 +227,4 @@ def main() -> None:
     predict_parser = sub.add_parser("predict")
     predict_parser.add_argument("--config", type=Path, default=Path("config/model.yaml"))
     args = parser.parse_args()
-    predict(args.config)
+    predict(args.config, update_readme=True)

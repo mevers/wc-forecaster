@@ -4,10 +4,8 @@
 
 - Added squad cohesion and underdog-magic adjustments to forecast ratings.
 - Added squad data and `team_adjustments.csv`.
-- Added next match-day CLI and CSV summary with expected goals.
-- Renamed match-slot marginal artefacts.
-- Renamed group fixture 1X2 probability artefact.
-- Renamed round reach probability artefact.
+- Added next match-day CLI, CSV, and README summary with expected goals.
+- Renamed output artefacts to have more meaningful names.
 
 ## v0.3.0
 

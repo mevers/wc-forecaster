@@ -2,6 +2,17 @@
 
 Minimal Python model for forecasting the live 2026 FIFA World Cup and rendering forecast artefacts.
 
+## Next match day forecasts
+
+```text
+Next match day: 2026-06-17
+match  group  fixture                         home    draw    away         xG
+21     L      Ghana vs Panama                23.8%   23.8%   52.4%  1.08-1.72
+22     L      England vs Croatia             49.3%   23.8%   26.9%  1.71-1.20
+23     K      Portugal vs DR Congo           65.2%   19.7%   15.2%  2.13-0.92
+24     K      Uzbekistan vs Colombia         20.4%   22.3%   57.3%  1.04-1.89
+```
+
 ## Setup
 
 ```sh
