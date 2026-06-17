@@ -24,6 +24,7 @@ Key outputs are:
 - `round_probabilities.csv`: Probabilities of reaching each tournament round.
 - `fixture_probabilities.csv`: Group-stage fixtures with 1X2 probabilities.
 - `derived_team_ratings.csv`: Pre-simulation model rating snapshot. It is based on historical and completed 2026 WC games.
+- `team_adjustments.csv`: Squad cohesion, underdog magic, and adjusted forecast rating by team.
 - `most_likely_group_tables.csv`: Expected group standings after group stage. This is used to seed the knockout bracket.
 - `most_likely_knockout_bracket.csv`: Canonical most likely knockout bracket.
 - `tuning_summary.json` and `run_manifest.json`: Tuning and run metadata. `run_manifest.json` is used in `scripts/draw_knockout_bracket.py`.
@@ -53,4 +54,4 @@ This reads `most_likely_knockout_bracket.csv` and `run_manifest.json` from that 
 
 ## Data
 
-Historical results live in `data/historical_results/`. Curated 2026 tournament data lives in `data/world_cup_2026/`. Source notes are in each directory's `SOURCES.md`.
+Historical results live in `data/historical_results/`. Curated 2026 tournament data lives in `data/world_cup_2026/`, including fixtures, groups, third-place slot eligibility, and final squad composition in `squads.csv`. Source notes are in each directory's `SOURCES.md`.

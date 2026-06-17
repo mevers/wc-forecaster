@@ -19,9 +19,16 @@ matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt  # noqa: E402
 
+from wc_forecaster.adjustments import (
+    add_underdog_magic_residual,
+    boosted_ratings,
+    cohesion,
+    underdog_magic_boosts,
+    zero_adjustments,
+)
+from wc_forecaster.bracket import expected_group_tables, knockout_bracket_options
 from wc_forecaster.data import read_matches, rows, team, write_csv
 from wc_forecaster.elo import apply_match
-from wc_forecaster.bracket import expected_group_tables, knockout_bracket_options
 from wc_forecaster.model import fit, match_probs, tune
 from wc_forecaster.tournament import simulate
 
@@ -65,6 +72,29 @@ def write_ratings(path: Path, ratings: dict[str, float]) -> None:
         writer.writerows({"team": k, "rating": round(v, 1)} for k, v in sorted(ratings.items(), key=lambda row: row[1], reverse=True))
 
 
+def adjustment_rows(
+    teams: list[str],
+    ratings: dict[str, float],
+    cohesion_score: dict[str, float],
+    cohesion_boost: dict[str, float],
+    underdog_magic_residual: dict[str, float],
+    underdog_magic_boost: dict[str, float],
+    adjusted_ratings: dict[str, float],
+) -> list[dict[str, Any]]:
+    return [
+        {
+            "team": team_name,
+            "base_rating": round(ratings[team_name], 1),
+            "cohesion_score": round(cohesion_score[team_name], 3),
+            "cohesion_boost": round(cohesion_boost[team_name], 3),
+            "underdog_magic_residual": round(underdog_magic_residual.get(team_name, 0.0), 3),
+            "underdog_magic_boost": round(underdog_magic_boost.get(team_name, 0.0), 3),
+            "adjusted_rating": round(adjusted_ratings[team_name], 1),
+        }
+        for team_name in sorted(teams)
+    ]
+
+
 def predict(config_path: Path) -> None:
     status(f"Reading config: {config_path}")
     cfg = load_config(config_path)
@@ -79,17 +109,37 @@ def predict(config_path: Path) -> None:
     ratings, beta, s = fit(training, cfg, as_of)
     status("Loading 2026 tournament state")
     groups = load_groups(cfg["data"]["groups"])
+    teams = [team_name for group in groups.values() for team_name in group]
+    cohesion_score, cohesion_boost = (
+        cohesion(rows(cfg["data"]["squads"]), teams, cfg)
+        if cfg["cohesion"]["enabled"]
+        else zero_adjustments(teams)
+    )
     fixtures = read_matches(cfg["data"]["fixtures"])
     fixtures = [{**m, "home_score": None, "away_score": None} if m["date"] > as_of else m for m in fixtures]
     played = sorted((m for m in fixtures if m["home_score"] is not None), key=lambda m: m["date"])
     status(f"Applying {len(played)} completed 2026 World Cup matches")
+    underdog_magic_residual, underdog_magic_boost = zero_adjustments(teams)
     for match in played:
         match["tournament"] = "FIFA World Cup"
+        if cfg["underdog_magic"]["enabled"]:
+            add_underdog_magic_residual(
+                underdog_magic_residual,
+                match,
+                ratings,
+                cohesion_boost,
+                beta,
+                s,
+                cfg,
+            )
         apply_match(ratings, match, cfg)
         s[match["home_team"]] = match["home_score"] > match["away_score"]
         s[match["away_team"]] = match["away_score"] > match["home_score"]
+    if cfg["underdog_magic"]["enabled"]:
+        underdog_magic_boost = underdog_magic_boosts(underdog_magic_residual, cfg)
+    adjusted_ratings = boosted_ratings(ratings, cohesion_boost, underdog_magic_boost)
     status(f"Simulating {cfg['forecast']['simulations']:,} tournaments")
-    result = simulate(groups, fixtures, load_slots(cfg["data"]["third_place_slots"]), ratings, beta, s, cfg, status)
+    result = simulate(groups, fixtures, load_slots(cfg["data"]["third_place_slots"]), adjusted_ratings, beta, s, cfg, status)
     sims = cfg["forecast"]["simulations"]
     status("Writing forecast artefacts")
     winner_rows = [{"team": k, "probability": v / sims} for k, v in result["title"].most_common()]
@@ -99,7 +149,7 @@ def predict(config_path: Path) -> None:
             round_rows.append({"team": team_name, "round": round_name, "probability": count / sims})
     fixture_rows = []
     for match in fixtures:
-        probs = match_probs(match["home_team"], match["away_team"], match["venue_advantage"], ratings, beta, s, cfg)
+        probs = match_probs(match["home_team"], match["away_team"], match["venue_advantage"], adjusted_ratings, beta, s, cfg)
         fixture_rows.append(
             {
                 "match_no": match["match_no"],
@@ -115,7 +165,7 @@ def predict(config_path: Path) -> None:
         for match, counter in sorted(result["matchups"].items())
         for pair, count in [counter.most_common(1)[0]]
     ]
-    group_tables = expected_group_tables(groups, result, sims, ratings)
+    group_tables = expected_group_tables(groups, result, sims, adjusted_ratings)
     group_table_rows = [
         {
             "group": row["group"],
@@ -128,10 +178,22 @@ def predict(config_path: Path) -> None:
         for group in groups
         for row in group_tables[group]
     ]
-    knockout_bracket_rows = knockout_bracket_options(groups, group_tables, result, load_slots(cfg["data"]["third_place_slots"]), ratings, beta, s, cfg)
+    knockout_bracket_rows = knockout_bracket_options(groups, group_tables, result, load_slots(cfg["data"]["third_place_slots"]), adjusted_ratings, beta, s, cfg)
     write_csv(out / "winner_odds.csv", winner_rows)
     write_csv(out / "round_probabilities.csv", sorted(round_rows, key=lambda r: (r["team"], r["round"])))
     write_ratings(out / "derived_team_ratings.csv", ratings)
+    write_csv(
+        out / "team_adjustments.csv",
+        adjustment_rows(
+            teams,
+            ratings,
+            cohesion_score,
+            cohesion_boost,
+            underdog_magic_residual,
+            underdog_magic_boost,
+            adjusted_ratings,
+        ),
+    )
     write_csv(out / "fixture_probabilities.csv", fixture_rows)
     write_csv(out / "most_likely_group_tables.csv", group_table_rows)
     write_csv(out / "most_likely_matchups.csv", matchup_rows)

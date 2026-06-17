@@ -3,6 +3,8 @@ author:
   name: Maurits Evers
   email: maurits.evers@gmail.com
 revisions:
+  - date: 2026-06-16
+    notes: Added squad cohesion and Iceland-effect forecast adjustments.
   - date: 2026-06-15
     notes: Clarified output artefacts, expected-table knockout bracket methodology, and 2026 World Cup cutoff handling.
   - date: 2026-06-14
@@ -22,9 +24,10 @@ Inputs are fixed by `config/model.yaml`:
 | `data/historical_results/results.csv` | CSV file downloaded and curated from the public GitHub repo [`martj42/international_results`](https://github.com/martj42/international_results). Expected columns are `date`, `home_team`, `away_team`, `home_score`, `away_score`, `tournament`, `country`, `neutral`. |
 | `data/world_cup_2026/groups.csv` | Team to group mapping. Expected columns are `group`, `position`, `team`. |
 | `data/world_cup_2026/fixtures.csv` | Group-stage fixtures, completed scores, and `venue_advantage`, where `1` means team `home` has venue advantage, `0` means neutral site, and `-1` means team `away` has venue advantage. Expected columns are `match_no` ,`group` ,`date` ,`home` ,`away` ,`home_score` , `away_score` ,`venue_advantage`. |
+| `data/world_cup_2026/squads.csv` | 2026 WC squad compositions derived from [2026 FIFA World Cup squads](https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads). Expected columns for the model are `team`, `player`, `club`, and `league`; the file also stores additional squad metadata such as number, position, date of birth, age, caps, and goals. The `league` value is the club's national association / league-system country, not the exact domestic division. |
 | `data/world_cup_2026/third_place_slots.csv` | Eligible third-place groups for each round-of-32 slot. Expected columns are `match_no` , `winner_slot`, `groups`. |
 
-Historical fitting excludes 2026 World Cup rows. Completed 2026 World Cup matches are applied only from the curated fixture file so they update the current tournament state exactly once. A 2026 fixture score is used only when the fixture date is on or before `forecast.as_of`; later scored rows are treated as unplayed for that forecast. Rows with missing/`NA` scores are treated as unplayed.
+Historical model fitting excludes any 2026 World Cup fixtures. Completed 2026 World Cup matches are sourced from the fixture file and applied once to the live tournament state, updating Elo ratings, previous-win form, underdog-magic residuals, and completed group results. They are _not_ used to update or re-estimate the fitted goal-model coefficients. A 2026 fixture score is used only when the fixture date is on or before `forecast.as_of`; later scored rows are treated as unplayed for that forecast. Rows with missing/`NA` scores are treated as unplayed.
 
 ## Derived team ratings
 
@@ -133,11 +136,109 @@ $$
 
 where \(K_i\) is the match-importance weight for match \(i\).
 
-The output `derived_team_ratings.csv` is the resulting rating snapshot after historical fitting and completed 2026 World Cup updates dated on or before `forecast.as_of`, immediately before simulating remaining fixtures. Predicted, simulated, and future-dated fixture scores do not update these ratings.
+For team \(k\), let \(\ell(k)\) be its last observed match on or before `forecast.as_of`. Define
+
+$$
+R_k^{\mathrm{derived}} = R_{k,\ell(k)}^{\mathrm{post}}.
+$$
+
+The output `derived_team_ratings.csv` stores this rating snapshot immediately before simulating remaining fixtures. Predicted, simulated, and future-dated fixture scores do not update these ratings.
+
+## Forecast rating adjustments
+
+Forecasts use derived ratings adjusted for two additional effects: squad cohesion and underdog magic ("Iceland effect").
+
+> [!NOTE]
+> These adjustments are forecast-only rating adjustments: they are added to derived ratings for prediction, but they are not included in `derived_team_ratings.csv` and they are not produced by the Elo match update process detailed in the previous section.
+
+For team \(k\), the adjusted forecast rating is
+
+$$
+R_k^{\mathrm{forecast}} = R_k^{\mathrm{derived}} + B_k^{\mathrm{cohesion}} + B_k^{\mathrm{underdog}}.
+$$
+
+The adjusted forecast ratings are used for remaining fixture probabilities, simulated match score probabilities, group-table rating tiebreakers, best-third ranking tiebreakers, and rating-based knockout advancement after drawn regulation-time scorelines.
+
+### Squad cohesion adjustment
+
+The cohesion boost is a heuristic adjustment based on 2026 WC squad composition: For every unordered pair of players in a squad, a same-club pair contributes `cohesion.same_club_weight`; otherwise, a same-league-system pair contributes `cohesion.same_league_weight`. Let this pair score be \(C_k\). The boost is
+
+$$
+B_k^{\mathrm{cohesion}} = \min\left(b_{\max}, b_{\max}\frac{C_k}{C_{\max}}\right),
+$$
+
+where \(b_{\max}=\) `cohesion.max_rating_boost` and \(C_{\max}=\) `cohesion.score_for_max_boost`.
+
+If `cohesion.enabled` is `false`, this boost is zero. When cohesion is enabled, the curated squad CSV must contain complete `team`, `player`, `club`, and `league` values for every forecast team.
+
+> [!NOTE]
+> The raw pair score rises quickly as more players share a club or league, but the final rating boost has diminishing returns through the cap at \(b_{\max}\).
+
+### Underdog magic adjustment
+
+The running team rating approach already captures part of an underdog run: if a lower-rated team draws or beats a stronger opponent, its derived rating increases through the match update process. The "Iceland effect" is a small additional post-hoc boost for genuine underdogs based on previous match results that significantly deviated from model-expected results.
+
+The model expresses expected results as expected points, \(\operatorname{EP}_{k,i}\). For each completed game \(i\), _before_ the team rating update, compute \(\operatorname{EP}_{k,i}\) from the model's pre-match 1X2 probabilities (defined in [Group-stage matches](#group-stage-matches)), excluding underdog magic:
+
+$$
+\operatorname{EP}_{k,i}=3P(k\text{ win in }i)+P(\text{draw in }i).
+$$
+
+Let \(A_{k,i}\) be team \(k\)'s actual points from fixture \(i\): 3 for a win, 1 for a draw, 0 for a loss. The positive points residual is
+
+$$
+Q_{k,i}=\max(0,A_{k,i}-\operatorname{EP}_{k,i}).
+$$
+
+For completed game \(i\), let \(k'\) be team \(k\)'s opponent, and let \(R_{k,i}^{\mathrm{pre}}\) be team \(k\)'s rolling team rating immediately before game \(i\), after earlier completed games have been applied. Define
+
+$$
+R_{k,i}^{\mathrm{base}}=R_{k,i}^{\mathrm{pre}}+B_k^{\mathrm{cohesion}}.
+$$
+
+Underdog magic is excluded from \(R^{\mathrm{base}}\). The pre-match rating gap for team \(k\) is
+
+$$
+g_{k,i}=R_{k',i}^{\mathrm{base}}-R_{k,i}^{\mathrm{base}}.
+$$
+
+The underdog weight is then
+
+$$
+w_{k,i} =
+\begin{cases}
+0, & g_{k,i} < g_{\min},\\
+\min\left(1,\displaystyle\frac{g_{k,i}-g_{\min}}{g_{\max}-g_{\min}}\right), & g_{k,i} \ge g_{\min}\,,
+\end{cases}
+$$
+
+where \(g_{\min}=\) `underdog_magic.min_rating_gap`  and \(g_{\max}=\) `underdog_magic.rating_gap_for_full_weight`.
+
+The accumulated underdog residual is
+
+$$
+D_k=\sum_i w_{k,i}Q_{k,i}.
+$$
+
+
+$$
+B_k^{\mathrm{underdog}} = \min\left(u_{\max}, u_{\max}\frac{D_k}{D_{\max}}\right),
+$$
+
+where \(u_{\max}=\) `underdog_magic.max_rating_boost` and \(D_{\max}=\) `underdog_magic.points_residual_for_max_boost`. 
+
+In plain words: If the pre-match rating gap is less than the threshold $g_{\min}$ then a team receives no underdog boost. If `underdog_magic.enabled` is `false`, this boost is zero. The Iceland effect is based only on observed completed fixtures; simulated future matches do not create further residuals inside Monte Carlo paths.
+
+<details>
+<summary>How is the threshold determined?</summary>
+
+The default threshold is calibrated around Iceland before Euro 2016: Portugal and England count as genuine underdog matches, while Hungary and Austria do not.
+
+</details>
 
 ## Goal model
 
-The score model is an independent Poisson model with log expected goals as a function of pre-match rating gap, venue advantage, and a fixed previous-win form offset. Independent Poisson goals are the standard baseline for football scores in the Maher/Dixon-Coles modelling lineage described in [Statistical association football predictions](https://en.wikipedia.org/wiki/Statistical_association_football_predictions). The rating-gap covariate is the compact team-strength signal, as in Elo-covariate World Cup prediction models such as [_On Elo based prediction models for the FIFA Worldcup 2018_](https://arxiv.org/abs/1806.01930) and Groll et al.’s [_Prediction of the FIFA World Cup 2018_](https://arxiv.org/abs/1806.03208).
+The score model is an independent Poisson model with log expected goals as a function of pre-match rating gap, venue advantage, and a fixed previous-win form offset. Independent Poisson goals are the standard baseline for football scores in the Maher/Dixon-Coles modelling lineage described in [Statistical association football predictions](https://en.wikipedia.org/wiki/Statistical_association_football_predictions). The rating-gap covariate is the compact team-strength signal, as in Elo-covariate World Cup prediction models such as [_On Elo based prediction models for the FIFA Worldcup 2018_](https://arxiv.org/abs/1806.01930) and Groll et al.’s [_Prediction of the FIFA World Cup 2018_](https://arxiv.org/abs/1806.03208). Fitting uses derived Elo ratings available before each historical match; forecasting remaining World Cup fixtures uses the temporary forecast ratings defined above.
 
 During a chronological pass through observed matches before cut-off \(T\), each match contributes two in-memory regression observations: one observation for team \(a\)’s goals and one for team \(b\)’s goals. For observation \(j\), define:
 
@@ -223,11 +324,12 @@ $$
 
 Probabilities use a capped Poisson support \(0,\ldots,c\), with residual tail mass \(P(X>c)\) folded into the final bucket \(c\) (default \(c=8\); so the \(c\) bucket means "\(c\) or more" goals). This is not a truncated Poisson distribution, because probabilities are not conditioned on \(X\leq c\) and renormalised.
 
-Let \(C_a\) and \(C_b\) denote the capped goal-count buckets for teams \(a\) and \(b\), and let \(r,u\in\{0,\ldots,c\}\) index possible capped scores. Fixture 1X2 probabilities sum scoreline probabilities:
+Let \(C_a\) and \(C_b\) denote the capped goal-count buckets for teams \(a\) and \(b\), and let \(r,u\in\{0,\ldots,c\}\) index possible capped scores. Fixture 1X2 probabilities are then the sum of individual scoreline probabilities:
 
 $$\begin{aligned}
 P(a\text{ win})&=\sum_{r>u}P(C_a=r)P(C_b=u)\\
-P(\text{draw})&=\sum_{r=u}P(C_a=r)P(C_b=u)\,.
+P(\text{draw})&=\sum_{r=u}P(C_a=r)P(C_b=u)\\
+P(b\text{ win})&=\sum_{r<u}P(C_a=r)P(C_b=u)\,.
 \end{aligned}
 $$
 
@@ -268,6 +370,7 @@ The probability artefacts are:
 The rating and run metadata artefacts are:
 
 - `derived_team_ratings.csv`: the model’s rating snapshot after historical fitting and completed 2026 World Cup updates dated on or before `forecast.as_of`, before simulating remaining fixtures.
+- `team_adjustments.csv`: one row per forecast team with base derived rating, squad cohesion score and boost, underdog-magic residual and boost, and final adjusted forecast rating.
 - `tuning_summary.json`: selected tuning values and backtest scores when tuning is enabled.
 - `run_manifest.json`: run metadata, including `as_of`, simulation count, fitted coefficients, and config path.
 
@@ -288,6 +391,6 @@ The rendered chart artefacts are:
 
 ## Reproducibility and limitations
 
-Default run state is `forecast.as_of=2026-06-14`, `forecast.simulations=50000`, `forecast.seed=20260614`. Outputs are deterministic for a fixed config, code version, curated tournament CSVs, and historical CSV.
+Default run state is `forecast.as_of=2026-06-15`, `forecast.simulations=50000`, `forecast.seed=20260614`. Outputs are deterministic for a fixed config, code version, curated tournament CSVs, squad CSV, and historical CSV.
 
-Known exclusions: player availability, squad strength, rest/travel, style-specific team interactions, injuries, weather, market priors, fair-play tiebreakers, the full Annex C third-place combination lookup table, and the official FIFA ranking formula. The local data stores eligible third-place groups per round-of-32 slot; the model assigns qualifying third-place teams by deterministic matching within those eligible slots. The model estimates calibrated probabilities and derives a canonical most likely knockout bracket from expected group standings plus head-to-head advancement probabilities.
+Known exclusions: player availability, individual player quality beyond national-team results, rest/travel, style-specific team interactions, injuries, weather, market priors, fair-play tiebreakers, the full Annex C third-place combination lookup table, and the official FIFA ranking formula. The local data stores eligible third-place groups per round-of-32 slot; the model assigns qualifying third-place teams by deterministic matching within those eligible slots. The model estimates calibrated probabilities and derives a canonical most likely knockout bracket from expected group standings plus head-to-head advancement probabilities.

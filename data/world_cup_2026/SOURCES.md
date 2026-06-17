@@ -13,3 +13,11 @@ https://raw.githubusercontent.com/martj42/international_results/master/results.c
 The third-place CSV stores official eligible groups per round-of-32 slot. The model resolves qualified third-place teams by deterministic matching because fair-play data and the full Annex C mapping are not part of the local data.
 
 `fixtures.csv` uses `venue_advantage = 1` when team `home` has host advantage, `-1` when team `away` has host advantage, and `0` for neutral-site matches.
+
+`squads.csv` is bootstrapped from the Wikipedia 2026 FIFA World Cup squads page:
+
+```text
+https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads
+```
+
+The squad metadata columns are taken from the Wikipedia squad table. The `league` column uses the club's national association / league-system country from the squad table's club flag, not the exact domestic division.

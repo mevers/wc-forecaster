@@ -1,5 +1,10 @@
 # Changelog
 
+## v0.4.0
+
+- Added squad cohesion and underdog-magic adjustments to forecast ratings.
+- Added squad data and `team_adjustments.csv`.
+
 ## v0.3.0
 
 - Store forecast artefacts under `outputs/<as_of>/`.

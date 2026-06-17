@@ -2,10 +2,11 @@ data:
   historical_results: data/historical_results/results.csv
   groups: data/world_cup_2026/groups.csv
   fixtures: data/world_cup_2026/fixtures.csv
+  squads: data/world_cup_2026/squads.csv
   third_place_slots: data/world_cup_2026/third_place_slots.csv
   output_dir: outputs
 forecast:
-  as_of: "2026-06-14"
+  as_of: "2026-06-15"
   simulations: 50000
   seed: 20260614
 fit:
@@ -41,3 +42,15 @@ goals:
   min_expected_goals_values: [0.05, 0.10, 0.15, 0.20]
 form:
   gamma: 0.05
+underdog_magic:
+  enabled: true
+  max_rating_boost: 40.0
+  points_residual_for_max_boost: 5.0
+  min_rating_gap: 200.0
+  rating_gap_for_full_weight: 300.0
+cohesion:
+  enabled: true
+  max_rating_boost: 25.0
+  same_club_weight: 1.0
+  same_league_weight: 0.25
+  score_for_max_boost: 20.0

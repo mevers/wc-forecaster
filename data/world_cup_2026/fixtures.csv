@@ -11,13 +11,13 @@ match_no,group,date,home,away,home_score,away_score,venue_advantage
 10,E,2026-06-14,Germany,Curacao,7,1,0
 11,F,2026-06-14,Netherlands,Japan,2,2,0
 12,F,2026-06-14,Sweden,Tunisia,5,1,0
-13,H,2026-06-15,Saudi Arabia,Uruguay,,,0
-14,H,2026-06-15,Spain,Cape Verde,,,0
-15,G,2026-06-15,Iran,New Zealand,,,0
-16,G,2026-06-15,Belgium,Egypt,,,0
-17,I,2026-06-16,France,Senegal,,,0
-18,I,2026-06-16,Iraq,Norway,,,0
-19,J,2026-06-16,Argentina,Algeria,,,0
+13,H,2026-06-15,Saudi Arabia,Uruguay,1,1,0
+14,H,2026-06-15,Spain,Cape Verde,0,0,0
+15,G,2026-06-15,Iran,New Zealand,2,2,0
+16,G,2026-06-15,Belgium,Egypt,1,1,0
+17,I,2026-06-16,France,Senegal,3,1,0
+18,I,2026-06-16,Iraq,Norway,1,4,0
+19,J,2026-06-16,Argentina,Algeria,3,0,0
 20,J,2026-06-16,Austria,Jordan,,,0
 21,L,2026-06-17,Ghana,Panama,,,0
 22,L,2026-06-17,England,Croatia,,,0
