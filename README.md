@@ -21,7 +21,7 @@ The command reads `config/model.yaml` and writes forecast artefacts to `outputs/
 Key outputs are:
 
 - `winner_odds.csv`: Title probabilities by team.
-- `round_probabilities.csv`: Probabilities of reaching each tournament round.
+- `round_reach_probabilities.csv`: Probabilities of reaching each tournament round.
 - `group_fixture_1x2_probabilities.csv`: Group-stage fixtures with 1X2 probabilities.
 - `derived_team_ratings.csv`: Pre-simulation model rating snapshot. It is based on historical and completed 2026 WC games.
 - `team_adjustments.csv`: Squad cohesion, underdog magic, and adjusted forecast rating by team.

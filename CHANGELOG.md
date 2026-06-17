@@ -6,6 +6,7 @@
 - Added squad data and `team_adjustments.csv`.
 - Renamed match-slot marginal artefacts.
 - Renamed group fixture 1X2 probability artefact.
+- Renamed round reach probability artefact.
 
 ## v0.3.0
 

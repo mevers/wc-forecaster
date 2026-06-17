@@ -128,10 +128,10 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
             left_team = winners[left]
             right_team = winners[right]
             matchups[match_no][(left_team, right_team)] += 1
+            reached[next(name for start, name in sorted(ROUNDS.items(), reverse=True) if match_no >= start)].update((left_team, right_team))
             winners[match_no] = winner(rng, left_team, right_team, ratings, beta, s_sim, cfg)
             match_winners[match_no][winners[match_no]] += 1
             knockout_teams[match_no] = (left_team, right_team)
-            reached[next(name for start, name in sorted(ROUNDS.items(), reverse=True) if match_no >= start)][winners[match_no]] += 1
         title[winners[104]] += 1
         if status and (sim % step == 0 or sim == sims):
             status(f"Simulated {sim:,}/{sims:,} tournaments")
