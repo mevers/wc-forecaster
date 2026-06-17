@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 from wc_forecaster.adjustments import compute_adjustments
 from wc_forecaster.bracket import expected_group_tables, knockout_bracket_options
 from wc_forecaster.data import read_matches, rows, team, write_csv
-from wc_forecaster.model import fit, match_probs, tune
+from wc_forecaster.model import fit, lambdas, match_probs, tune
 from wc_forecaster.tournament import simulate
 
 
@@ -180,10 +180,38 @@ def predict(config_path: Path) -> None:
     write_csv(out / "most_likely_knockout_bracket.csv", knockout_bracket_rows)
     write_csv(out / "match_slot_matchup_marginals.csv", matchup_marginal_rows)
     write_csv(out / "match_slot_winner_marginals.csv", winner_marginal_rows)
+    next_dates = sorted({match["date"] for match in fixtures if match["date"] > as_of})
+    next_rows = []
+    if next_dates:
+        next_rows = [
+            {
+                "date": next_dates[0].isoformat(),
+                "match_no": match["match_no"],
+                "group": match["group"],
+                "home_team": match["home_team"],
+                "away_team": match["away_team"],
+                "home": probs["home"],
+                "draw": probs["draw"],
+                "away": probs["away"],
+                "home_expected_goals": home_xg,
+                "away_expected_goals": away_xg,
+            }
+            for match, probs in zip(fixtures, fixture_rows)
+            if match["date"] == next_dates[0]
+            for home_xg, away_xg in [lambdas(match["home_team"], match["away_team"], match["venue_advantage"], adjusted_ratings, beta, s, cfg)]
+        ]
+        write_csv(out / "next_matchday_summary.csv", next_rows)
     (out / "tuning_summary.json").write_text(json.dumps(tuning, indent=2), encoding="utf-8")
     (out / "run_manifest.json").write_text(json.dumps({"as_of": cfg["forecast"]["as_of"], "simulations": sims, "coefficients": beta, "config": str(config_path)}, indent=2), encoding="utf-8")
     chart(out / "winner_odds.png", winner_rows, "team", "probability", "World Cup winner odds")
     status(f"Wrote forecast to {out}")
+    if next_rows:
+        print(f"\nNext match day: {next_rows[0]['date']}")
+        print(f"{'match':<5}  {'group':<5}  {'fixture':<28}  {'home':>6}  {'draw':>6}  {'away':>6}  {'xG':>9}")
+        for row in next_rows:
+            fixture = f"{row['home_team']} vs {row['away_team']}"
+            xg = f"{row['home_expected_goals']:.2f}-{row['away_expected_goals']:.2f}"
+            print(f"{row['match_no']:<5}  {row['group']:<5}  {fixture:<28}  {100 * row['home']:>5.1f}%  {100 * row['draw']:>5.1f}%  {100 * row['away']:>5.1f}%  {xg:>9}")
 
 
 def main() -> None:
