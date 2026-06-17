@@ -26,18 +26,14 @@ Key outputs are:
 - `derived_team_ratings.csv`: Pre-simulation model rating snapshot. It is based on historical and completed 2026 WC games.
 - `team_adjustments.csv`: Squad cohesion, underdog magic, and adjusted forecast rating by team.
 - `most_likely_group_tables.csv`: Expected group standings after group stage. This is used to seed the knockout bracket.
-- `most_likely_knockout_bracket.csv`: Canonical most likely knockout bracket.
-- `tuning_summary.json` and `run_manifest.json`: Tuning and run metadata. `run_manifest.json` is used in `scripts/draw_knockout_bracket.py`.
+- `most_likely_knockout_bracket.csv`: Canonical most likely knockout bracket. Used as bracket input.
+- `match_slot_matchup_marginals.csv`: Most common pairing for each knockout match slot across raw simulations. **Not a bracket input.**
+- `match_slot_winner_marginals.csv`: Most common winner for each knockout match slot across raw simulations. **Not a bracket input.**
+- `tuning_summary.json`: Tuning metadata
+- `run_manifest.json`: Run metadata. Used in `scripts/draw_knockout_bracket.py`.
 - `winner_odds.png`: WC winner probability chart.
 
-Deprecated outputs:
-
-- `most_likely_bracket.csv`: Deprecated legacy marginal winner summary for each knockout match slot; not a bracket input.
-- `most_likely_matchups.csv`: Deprecated legacy marginal pairing summary for each knockout match slot; not a bracket input.
-- `most_likely_tournament_bracket.csv`: Deprecated copy of the expected-table knockout bracket, with winners chosen by head-to-head advancement probability.
-- `most_likely_realised_bracket.csv`: Deprecated copy of the same expected-table knockout bracket, seeded from expected group standings and resolved by head-to-head advancement probability.
-
-Use `most_likely_knockout_bracket.csv` when you need an internally consistent knockout bracket. Do not use the deprecated marginal knockout files to draw or describe the bracket. See `docs/model_spec.md` for the full artefact definitions and `docs/most_likely_knockout_bracket_methodology.md` for the bracket methodology.
+Use `most_likely_knockout_bracket.csv` when you need an internally consistent knockout bracket. See `docs/model_spec.md` for the full artefact definitions and `docs/most_likely_knockout_bracket_methodology.md` for the bracket methodology.
 
 ## Render bracket
 

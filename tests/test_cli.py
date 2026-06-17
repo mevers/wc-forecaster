@@ -188,6 +188,11 @@ def test_predict_smoke(tmp_path: Path) -> None:
     assert (out / "team_adjustments.csv").exists()
     assert (out / "most_likely_group_tables.csv").exists()
     assert (out / "most_likely_knockout_bracket.csv").exists()
+    assert (out / "match_slot_matchup_marginals.csv").exists()
+    assert (out / "match_slot_winner_marginals.csv").exists()
+    assert not (out / "most_likely_bracket.csv").exists()
+    assert not (out / "most_likely_tournament_bracket.csv").exists()
+    assert not (out / "most_likely_realised_bracket.csv").exists()
     with (out / "fixture_probabilities.csv").open(encoding="utf-8") as handle:
         fixture = next(csv.DictReader(handle))
     assert fixture["home_team"] == "Mexico"

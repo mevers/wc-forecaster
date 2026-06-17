@@ -181,16 +181,11 @@ which method produced the row.
 `scripts/draw_knockout_bracket.py --bracket-method` selects which method to
 render. The default is `expected-table`.
 
-Two deprecated files contain the same method-indexed bracket rows:
+The marginal knockout files answer different questions and are not bracket
+inputs:
 
-- `most_likely_tournament_bracket.csv`: deprecated compatibility copy of `most_likely_knockout_bracket.csv`.
-- `most_likely_realised_bracket.csv`: deprecated compatibility copy of `most_likely_knockout_bracket.csv`.
-
-The deprecated legacy marginal knockout files answer different questions and
-are not bracket inputs:
-
-- `most_likely_bracket.csv`: in the raw Monte Carlo simulations, for each match slot, which team wins most often?
-- `most_likely_matchups.csv`: in the raw Monte Carlo simulations, for each match slot, which pairing appears most often?
+- `match_slot_winner_marginals.csv`: in the raw Monte Carlo simulations, for each match slot, which team wins most often?
+- `match_slot_matchup_marginals.csv`: in the raw Monte Carlo simulations, for each match slot, which pairing appears most often?
 
 ## References
 

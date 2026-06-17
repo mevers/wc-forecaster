@@ -137,10 +137,14 @@ def predict(config_path: Path) -> None:
                 "away": probs["away"],
             }
         )
-    matchup_rows = [
+    matchup_marginal_rows = [
         {"match_no": match, "team_a": pair[0], "team_b": pair[1], "probability": count / sims}
         for match, counter in sorted(result["matchups"].items())
         for pair, count in [counter.most_common(1)[0]]
+    ]
+    winner_marginal_rows = [
+        {"match_no": match, "team": counter.most_common(1)[0][0], "probability": counter.most_common(1)[0][1] / sims}
+        for match, counter in sorted(result["match_winners"].items())
     ]
     group_tables = expected_group_tables(groups, result, sims, adjusted_ratings)
     group_table_rows = [
@@ -173,11 +177,9 @@ def predict(config_path: Path) -> None:
     )
     write_csv(out / "fixture_probabilities.csv", fixture_rows)
     write_csv(out / "most_likely_group_tables.csv", group_table_rows)
-    write_csv(out / "most_likely_matchups.csv", matchup_rows)
     write_csv(out / "most_likely_knockout_bracket.csv", knockout_bracket_rows)
-    write_csv(out / "most_likely_tournament_bracket.csv", knockout_bracket_rows)
-    write_csv(out / "most_likely_realised_bracket.csv", knockout_bracket_rows)
-    write_csv(out / "most_likely_bracket.csv", [{"match_no": match, "team": counter.most_common(1)[0][0], "probability": counter.most_common(1)[0][1] / sims} for match, counter in sorted(result["match_winners"].items())])
+    write_csv(out / "match_slot_matchup_marginals.csv", matchup_marginal_rows)
+    write_csv(out / "match_slot_winner_marginals.csv", winner_marginal_rows)
     (out / "tuning_summary.json").write_text(json.dumps(tuning, indent=2), encoding="utf-8")
     (out / "run_manifest.json").write_text(json.dumps({"as_of": cfg["forecast"]["as_of"], "simulations": sims, "coefficients": beta, "config": str(config_path)}, indent=2), encoding="utf-8")
     chart(out / "winner_odds.png", winner_rows, "team", "probability", "World Cup winner odds")

@@ -377,12 +377,10 @@ The rating and run metadata artefacts are:
 The knockout summary artefacts are deliberately different from each other:
 
 - `most_likely_knockout_bracket.csv`: canonical most likely knockout bracket. Groups are ranked by expected table performance, and knockout winners are selected by head-to-head advancement probability. See `docs/most_likely_knockout_bracket_methodology.md`.
-- `most_likely_bracket.csv`: deprecated legacy marginal winner summary. For each knockout match number in the raw Monte Carlo simulations, it gives the team that wins that match most often across all simulations. It is not generated from the fixed expected-table knockout bracket and should not be used as a bracket input.
-- `most_likely_matchups.csv`: deprecated legacy marginal matchup summary. For each knockout match number in the raw Monte Carlo simulations, it gives the team pairing that appears most often across all simulations. It is not generated from the fixed expected-table knockout bracket and should not be used as a bracket input.
-- `most_likely_tournament_bracket.csv`: deprecated copy of the expected-table knockout bracket, with winners chosen by head-to-head advancement probability.
-- `most_likely_realised_bracket.csv`: deprecated copy of the same expected-table knockout bracket, seeded from expected group standings and resolved by head-to-head advancement probability.
+- `match_slot_matchup_marginals.csv`: for each knockout match slot in the raw Monte Carlo simulations, the team pairing that appears most often and its simulation frequency. It is not a bracket input.
+- `match_slot_winner_marginals.csv`: for each knockout match slot in the raw Monte Carlo simulations, the team that wins that slot most often and its simulation frequency. It is not a bracket input.
 
-The deprecated marginal knockout files are retained only for legacy analysis of raw simulation slot frequencies. Use `most_likely_knockout_bracket.csv` for any chart or report that needs one internally coherent knockout bracket.
+Use `most_likely_knockout_bracket.csv` for any chart or report that needs one internally coherent knockout bracket.
 
 The rendered chart artefacts are:
 
