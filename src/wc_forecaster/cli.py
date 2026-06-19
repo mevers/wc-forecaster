@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 from wc_forecaster.adjustments import compute_adjustments
 from wc_forecaster.bracket import expected_group_tables, knockout_bracket_options
 from wc_forecaster.data import read_matches, rows, team, write_csv
-from wc_forecaster.model import fit, lambdas, match_probs, tune
+from wc_forecaster.model import fit, lambdas, match_probs, poisson_probs, tune
 from wc_forecaster.tournament import simulate
 
 
@@ -195,10 +195,12 @@ def predict(config_path: Path, update_readme: bool = False) -> None:
                 "away": probs["away"],
                 "home_expected_goals": home_xg,
                 "away_expected_goals": away_xg,
+                "score": f"{max(range(len(home_probs)), key=home_probs.__getitem__)}-{max(range(len(away_probs)), key=away_probs.__getitem__)}",
             }
             for match, probs in zip(fixtures, fixture_rows)
             if match["date"] == next_dates[0]
             for home_xg, away_xg in [lambdas(match["home_team"], match["away_team"], match["venue_advantage"], adjusted_ratings, beta, s, cfg)]
+            for home_probs, away_probs in [(poisson_probs(home_xg, cfg["goals"]["score_cap"]), poisson_probs(away_xg, cfg["goals"]["score_cap"]))]
         ]
         write_csv(out / "next_matchday_summary.csv", next_rows)
     (out / "tuning_summary.json").write_text(json.dumps(tuning, indent=2), encoding="utf-8")
@@ -206,19 +208,20 @@ def predict(config_path: Path, update_readme: bool = False) -> None:
     chart(out / "winner_odds.png", winner_rows, "team", "probability", "World Cup winner odds")
     status(f"Wrote forecast to {out}")
     if next_rows:
-        table = [f"Next match day: {next_rows[0]['date']}", f"{'match':<5}  {'group':<5}  {'fixture':<28}  {'home':>6}  {'draw':>6}  {'away':>6}  {'xG':>9}"]
+        table = [f"Next match day: {next_rows[0]['date']}", f"{'match':<5}  {'group':<5}  {'fixture':<28}  {'home':>6}  {'draw':>6}  {'away':>6}  {'score':>5}  {'xG':>9}"]
         for row in next_rows:
             fixture = f"{row['home_team']} vs {row['away_team']}"
             xg = f"{row['home_expected_goals']:.2f}-{row['away_expected_goals']:.2f}"
-            table.append(f"{row['match_no']:<5}  {row['group']:<5}  {fixture:<28}  {100 * row['home']:>5.1f}%  {100 * row['draw']:>5.1f}%  {100 * row['away']:>5.1f}%  {xg:>9}")
+            table.append(f"{row['match_no']:<5}  {row['group']:<5}  {fixture:<28}  {100 * row['home']:>5.1f}%  {100 * row['draw']:>5.1f}%  {100 * row['away']:>5.1f}%  {row['score']:>5}  {xg:>9}")
         table_text = "\n".join(table)
         print(f"\n{table_text}")
         if update_readme:
+            readme_table = "\n".join([table[0], *(line.rsplit("  ", 1)[0] for line in table[1:])])
             readme = Path("README.md")
             text = readme.read_text(encoding="utf-8")
             start = text.index("```text\n", text.index("## Next match day forecasts")) + len("```text\n")
             end = text.index("\n```", start)
-            readme.write_text(text[:start] + table_text + text[end:], encoding="utf-8")
+            readme.write_text(text[:start] + readme_table + text[end:], encoding="utf-8")
 
 
 def main() -> None:

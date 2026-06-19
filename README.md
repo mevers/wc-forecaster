@@ -6,11 +6,11 @@ Minimal Python model for forecasting the live 2026 FIFA World Cup and rendering 
 
 ```text
 Next match day: 2026-06-19
-match  group  fixture                         home    draw    away         xG
-29     C      Brazil vs Haiti                71.4%   17.3%   11.3%  2.32-0.80
-30     C      Scotland vs Morocco            28.5%   24.5%   47.0%  1.21-1.62
-31     D      Turkey vs Paraguay             41.9%   25.5%   32.6%  1.47-1.27
-32     D      United States vs Australia     40.7%   24.8%   34.4%  1.51-1.37
+match  group  fixture                         home    draw    away  score
+29     C      Brazil vs Haiti                71.4%   17.3%   11.3%    2-0
+30     C      Scotland vs Morocco            28.5%   24.5%   47.0%    1-1
+31     D      Turkey vs Paraguay             41.9%   25.5%   32.6%    1-1
+32     D      United States vs Australia     40.7%   24.8%   34.4%    1-1
 ```
 
 ## Setup
