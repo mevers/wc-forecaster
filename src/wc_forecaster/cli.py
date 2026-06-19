@@ -88,9 +88,10 @@ def adjustment_rows(
     ]
 
 
-def predict(config_path: Path, update_readme: bool = False) -> None:
+def predict(config_path: Path, update_readme: bool = False, as_of_override: str | None = None) -> None:
     status(f"Reading config: {config_path}")
     cfg = load_config(config_path)
+    cfg["forecast"]["as_of"] = as_of_override or cfg["forecast"]["as_of"]
     as_of = date.fromisoformat(cfg["forecast"]["as_of"])
     out = Path(cfg["data"]["output_dir"]) / cfg["forecast"]["as_of"]
     status(f"Loading historical results: {cfg['data']['historical_results']}")
@@ -229,5 +230,6 @@ def main() -> None:
     sub = parser.add_subparsers(dest="command", required=True)
     predict_parser = sub.add_parser("predict")
     predict_parser.add_argument("--config", type=Path, default=Path("config/model.yaml"))
+    predict_parser.add_argument("--as-of")
     args = parser.parse_args()
-    predict(args.config, update_readme=True)
+    predict(args.config, update_readme=True, as_of_override=args.as_of)

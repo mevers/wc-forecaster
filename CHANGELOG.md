@@ -5,6 +5,7 @@
 - Replaced the log-transformed WLS model with a weighted Poisson GLM.
 - Added the most likely scoreline to next match-day forecasts.
 - Added a script for analysing outcome and scoreline upsets.
+- Added a CLI option `--as-of` to override the forecast date.
 
 ## v0.4.0
 
