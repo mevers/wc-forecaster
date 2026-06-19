@@ -216,7 +216,7 @@ def predict(config_path: Path, update_readme: bool = False) -> None:
         table_text = "\n".join(table)
         print(f"\n{table_text}")
         if update_readme:
-            readme_table = "\n".join([table[0], *(line.rsplit("  ", 1)[0] for line in table[1:])])
+            readme_table = "\n".join([table[0], *(line.rsplit("  ", 1)[0].rstrip() for line in table[1:])])
             readme = Path("README.md")
             text = readme.read_text(encoding="utf-8")
             start = text.index("```text\n", text.index("## Next match day forecasts")) + len("```text\n")

@@ -27,29 +27,38 @@ def fit(matches: list[dict[str, Any]], cfg: dict[str, Any], cutoff: date) -> tup
     ratings = defaultdict(lambda: float(cfg["elo"]["initial"]))
     s: dict[str, bool] = {}
     gamma = cfg["form"]["gamma"]
-    xwx = [[0.0] * 3 for _ in range(3)]
-    xwy = [0.0] * 3
+    goal_observations = []
     for match in sorted((m for m in matches if m["date"] <= cutoff and m["home_score"] is not None), key=lambda m: m["date"]):
         v_i = match["venue_advantage"]
         team_a = match["home_team"]
         team_b = match["away_team"]
         rating_a, rating_b = venue_adjusted(ratings[team_a], ratings[team_b], v_i, cfg)
-        observations = [
+        match_observations = [
             ([1.0, (rating_a - rating_b) / 100, v_i], match["home_score"], s.get(team_a, False)),
             ([1.0, (rating_b - rating_a) / 100, -v_i], match["away_score"], s.get(team_b, False)),
         ]
         age = (cutoff - match["date"]).days / 365.25
         weight = 0.5 ** (age / cfg["fit"]["half_life"])
-        for features, goals, s_j in observations:
-            response = math.log(goals + 0.5) - gamma * s_j
-            for i in range(3):
-                xwy[i] += weight * features[i] * response
-                for j in range(3):
-                    xwx[i][j] += weight * features[i] * features[j]
+        for features, goals, s_j in match_observations:
+            goal_observations.append((features, goals, gamma * s_j, weight))
         apply_match(ratings, match, cfg)
         s[team_a] = match["home_score"] > match["away_score"]
         s[team_b] = match["away_score"] > match["home_score"]
-    return ratings, solve3(xwx, xwy), s
+    beta = [0.0, 0.0, 0.0]
+    for _ in range(25):
+        information = [[0.0] * 3 for _ in range(3)]
+        score = [0.0] * 3
+        for features, goals, offset, weight in goal_observations:
+            expected_goals = math.exp(sum(x * b for x, b in zip(features, beta)) + offset)
+            for i in range(3):
+                score[i] += weight * features[i] * (goals - expected_goals)
+                for j in range(3):
+                    information[i][j] += weight * expected_goals * features[i] * features[j]
+        update = solve3(information, score)
+        beta = [value + change for value, change in zip(beta, update)]
+        if max(abs(change) for change in update) < 1e-10:
+            break
+    return ratings, beta, s
 
 
 def lambdas(team_a: str, team_b: str, v: int, ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> tuple[float, float]:

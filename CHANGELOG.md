@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.5.0
+
+- Replaced the log-transformed WLS model with a weighted Poisson GLM.
+- Added the most likely scoreline to next match-day forecasts.
+- Added a script for analysing outcome and scoreline upsets.
+
 ## v0.4.0
 
 - Added squad cohesion and underdog-magic adjustments to forecast ratings.
