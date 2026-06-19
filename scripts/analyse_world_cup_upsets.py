@@ -115,7 +115,10 @@ def ranked(rows: list[dict[str, Any]], probability: str) -> list[dict[str, Any]]
 
 def print_table(title: str, rows: list[dict[str, Any]], probability: str) -> None:
     print(f"\n{title}")
-    print(f"{'rank':>4}  {'date':<10}  {'result':<43}  {'xG':>11}  {'probability':>11}")
+    print(
+        f"{'rank':>4}  {'date':<10}  {'result':<43}  "
+        f"{'score':>5}  {'xG':>11}  {'probability':>11}"
+    )
     for row in rows:
         result = (
             f"{row['home_team']} {row['home_score']}-{row['away_score']} "
@@ -126,7 +129,8 @@ def print_table(title: str, rows: list[dict[str, Any]], probability: str) -> Non
         )
         print(
             f"{row['rank']:>4}  {row['date']:<10}  {result:<43}  "
-            f"{expected_goals:>11}  {row[probability]:>10.2%}"
+            f"{row['expected_score']:>5}  {expected_goals:>11}  "
+            f"{row[probability]:>10.2%}"
         )
 
 
@@ -148,6 +152,10 @@ def main() -> None:
     completed = [match for match in fixtures if match["home_score"] is not None]
     dates = snapshot_dates(Path(cfg["data"]["output_dir"]))
     snapshots: dict[date, dict[str, Any]] = {}
+    # Outcome upsets rank unexpected 1X2 results by realised-outcome probability.
+    # Exact-score upsets rank all matches by the probability of the observed scoreline.
+    # Winning-margin upsets rank decisive matches by the probability of that winner
+    # achieving at least the observed goal margin.
     outcome_rows = []
     exact_score_rows = []
     winning_margin_rows = []
@@ -187,6 +195,10 @@ def main() -> None:
             "forecast_as_of": forecast_date.isoformat(),
             "home_expected_goals": home_expected_goals,
             "away_expected_goals": away_expected_goals,
+            "expected_score": (
+                f"{max(range(len(home_probabilities)), key=home_probabilities.__getitem__)}-"
+                f"{max(range(len(away_probabilities)), key=away_probabilities.__getitem__)}"
+            ),
             "expected_outcome": expected_outcome,
             "actual_outcome": actual_outcome,
         }
