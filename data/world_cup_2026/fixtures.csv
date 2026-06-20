@@ -27,10 +27,10 @@ match_no,group,date,home,away,home_score,away_score,venue_advantage
 26,A,2026-06-18,Czechia,South Africa,1,1,0
 27,B,2026-06-18,Switzerland,Bosnia and Herzegovina,4,1,0
 28,B,2026-06-18,Canada,Qatar,6,0,1
-29,C,2026-06-19,Brazil,Haiti,,,0
-30,C,2026-06-19,Scotland,Morocco,,,0
-31,D,2026-06-19,Turkey,Paraguay,,,0
-32,D,2026-06-19,United States,Australia,,,1
+29,C,2026-06-19,Brazil,Haiti,3,0,0
+30,C,2026-06-19,Scotland,Morocco,0,1,0
+31,D,2026-06-19,Turkey,Paraguay,0,1,0
+32,D,2026-06-19,United States,Australia,2,0,1
 33,E,2026-06-20,Germany,Ivory Coast,,,0
 34,E,2026-06-20,Ecuador,Curacao,,,0
 35,F,2026-06-20,Netherlands,Tunisia,,,0
