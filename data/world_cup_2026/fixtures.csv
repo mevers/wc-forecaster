@@ -31,10 +31,10 @@ match_no,group,date,home,away,home_score,away_score,venue_advantage
 30,C,2026-06-19,Scotland,Morocco,0,1,0
 31,D,2026-06-19,Turkey,Paraguay,0,1,0
 32,D,2026-06-19,United States,Australia,2,0,1
-33,E,2026-06-20,Germany,Ivory Coast,,,0
-34,E,2026-06-20,Ecuador,Curacao,,,0
-35,F,2026-06-20,Netherlands,Sweden,,,0
-36,F,2026-06-20,Tunisia,Japan,,,0
+33,E,2026-06-20,Germany,Ivory Coast,2,1,0
+34,E,2026-06-20,Ecuador,Curacao,0,0,0
+35,F,2026-06-20,Netherlands,Sweden,5,1,0
+36,F,2026-06-20,Tunisia,Japan,0,4,0
 37,H,2026-06-21,Uruguay,Cape Verde,,,0
 38,H,2026-06-21,Spain,Saudi Arabia,,,0
 39,G,2026-06-21,New Zealand,Egypt,,,0
