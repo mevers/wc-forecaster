@@ -37,8 +37,8 @@ Key outputs are:
 - `next_matchday_summary.csv`: Next match-day fixtures with 1X2 probabilities and expected goals.
 - `derived_team_ratings.csv`: Pre-simulation model rating snapshot. It is based on historical and completed 2026 WC games.
 - `team_adjustments.csv`: Squad cohesion, underdog magic, and adjusted forecast rating by team.
-- `most_likely_group_tables.csv`: Expected group standings after group stage. This is used to seed the knockout bracket.
-- `most_likely_knockout_bracket.csv`: Canonical most likely knockout bracket. Used as bracket input.
+- `most_likely_group_tables.csv`: Expected group standings after group stage. Used to seed the knockout bracket and for the group table visualisation.
+- `most_likely_knockout_bracket.csv`: Canonical most likely knockout bracket. Used as input for the bracket visualisation.
 - `match_slot_matchup_marginals.csv`: Most common pairing for each knockout match slot across raw simulations. **Not a bracket input.**
 - `match_slot_winner_marginals.csv`: Most common winner for each knockout match slot across raw simulations. **Not a bracket input.**
 - `tuning_summary.json`: Tuning metadata
@@ -47,10 +47,11 @@ Key outputs are:
 
 Use `most_likely_knockout_bracket.csv` when you need an internally consistent knockout bracket. See `docs/model_spec.md` for the full artefact definitions and `docs/most_likely_knockout_bracket_methodology.md` for the bracket methodology.
 
-## Render bracket
+## Render visualisations
 
 ```sh
 python3 scripts/draw_knockout_bracket.py --run-dir outputs/2026-06-14
+python3 scripts/draw_group_tables.py --run-dir outputs/2026-06-14
 ```
 
 Use `--bracket-method modal-group-table` to render the bracket seeded from the
@@ -58,7 +59,7 @@ most common complete table in each group. The default is `expected-table`,
 which ranks groups by average simulated table performance before building the
 bracket.
 
-This reads `most_likely_knockout_bracket.csv` and `run_manifest.json` from that run directory, then writes `knockout_bracket_<bracket-method>.png` there.
+Both scripts read forecast artefacts from the run directory and write SVG and PNG visualisations there.
 
 ## Data
 
