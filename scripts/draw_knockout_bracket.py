@@ -509,13 +509,13 @@ def main() -> None:
     parser.add_argument("--flags-dir", type=Path, default=Path("outputs/flags"))
     args = parser.parse_args()
     draw_svg(
-        args.run_dir / f"knockout_bracket_{args.bracket_method}.svg",
+        args.run_dir / f"most_likely_knockout_bracket_{args.bracket_method}.svg",
         read_realised_bracket(args.run_dir / "most_likely_knockout_bracket.csv", args.bracket_method),
         read_manifest(args.run_dir / "run_manifest.json"),
         args.flags_dir,
         args.bracket_method,
     )
-    render_png(args.run_dir / f"knockout_bracket_{args.bracket_method}.svg", args.run_dir / f"knockout_bracket_{args.bracket_method}.png")
+    render_png(args.run_dir / f"most_likely_knockout_bracket_{args.bracket_method}.svg", args.run_dir / f"most_likely_knockout_bracket_{args.bracket_method}.png")
 
 
 if __name__ == "__main__":
