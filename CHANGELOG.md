@@ -1,5 +1,9 @@
 # Changelog
 
+## v0.5.1
+
+- Corrected the Group F and Group J fixtures in the 2026 World Cup schedule.
+
 ## v0.5.0
 
 - Replaced the log-transformed WLS model with a weighted Poisson GLM.
