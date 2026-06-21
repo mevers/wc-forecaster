@@ -21,6 +21,7 @@ from draw_knockout_bracket import (
     read_manifest,
     render_png,
     text,
+    watermark,
 )
 from wc_forecaster.cli import load_config, load_groups
 from wc_forecaster.data import read_matches
@@ -398,6 +399,7 @@ def draw_svg(
                 "middle",
                 0.86,
             ),
+            watermark(),
             "</svg>",
         ]
     )

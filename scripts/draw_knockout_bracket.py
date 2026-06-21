@@ -168,6 +168,14 @@ def text(
     )
 
 
+def watermark() -> str:
+    return (
+        '<a href="https://github.com/mevers/wc-forecaster" target="_blank">'
+        + text(2360, 1655, "github.com/mevers/wc-forecaster", 14, MUTED, 500, "end", 0.75)
+        + "</a>"
+    )
+
+
 def star_path(cx: float, cy: float, outer: float, inner: float) -> str:
     points = []
     for index in range(10):
@@ -485,6 +493,7 @@ def draw_svg(
     svg.append(match_card(flags_dir, third_box, 103, "Third-place play-off", third_place_teams, bracket[103].winner, flag_cache, BRONZE))
     svg.append(final_card(flags_dir, final_box, final_teams, bracket[104].winner, flag_cache))
     svg.append(text(1200, 1572, "Bold rows advance. Groups use expected table performance; knockouts use head-to-head advancement probability.", 18, MUTED, 500, "middle", 0.86))
+    svg.append(watermark())
     svg.append("</svg>")
     output.parent.mkdir(parents=True, exist_ok=True)
     output.write_text("\n".join(svg), encoding="utf-8")
