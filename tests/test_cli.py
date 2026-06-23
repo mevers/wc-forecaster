@@ -14,6 +14,7 @@ from wc_forecaster.bracket import (
     modal_group_tables,
 )
 from wc_forecaster.cli import load_config, predict
+from wc_forecaster.model import poisson_median
 from wc_forecaster.tournament import BRACKET, RO32
 
 
@@ -198,6 +199,12 @@ def test_predict_smoke(tmp_path: Path) -> None:
         fixture = next(csv.DictReader(handle))
     assert fixture["home_team"] == "Mexico"
     assert fixture["away_team"] == "South Africa"
+    with (out / "next_matchday_summary.csv").open(encoding="utf-8") as handle:
+        next_fixture = next(csv.DictReader(handle))
+    assert next_fixture["score"] == (
+        f"{poisson_median(float(next_fixture['home_expected_goals']), 4)}-"
+        f"{poisson_median(float(next_fixture['away_expected_goals']), 4)}"
+    )
     with (out / "most_likely_knockout_bracket.csv").open(encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
     realised = {

@@ -8,7 +8,7 @@ from wc_forecaster.adjustments import (
     underdog_magic_boosts,
 )
 from wc_forecaster.elo import apply_match
-from wc_forecaster.model import poisson_probs
+from wc_forecaster.model import poisson_median, poisson_probs
 from wc_forecaster.tournament import add_result, rank, third_assignment, winner
 
 
@@ -75,6 +75,14 @@ def test_elo_supports_second_team_venue_advantage() -> None:
 
 def test_poisson_probs_sum_to_one() -> None:
     assert round(sum(poisson_probs(1.4, 6)), 10) == 1
+
+
+@pytest.mark.parametrize(
+    ("expected_goals", "median"),
+    [(0.5, 0), (0.7, 1), (1.67, 1), (1.72, 2), (2.73, 3)],
+)
+def test_poisson_median(expected_goals: float, median: int) -> None:
+    assert poisson_median(expected_goals, 8) == median
 
 
 def test_group_rank_uses_points_goal_difference_goals_for_rating() -> None:

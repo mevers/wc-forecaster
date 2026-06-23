@@ -3,6 +3,7 @@ from __future__ import annotations
 import math
 from collections import defaultdict
 from datetime import date
+from itertools import accumulate
 from typing import Any
 
 from wc_forecaster.elo import apply_match, venue_adjusted
@@ -78,6 +79,14 @@ def poisson_probs(lam: float, cap: int) -> list[float]:
         probs.append(probs[-1] * lam / goals)
     probs[-1] += 1 - sum(probs)
     return probs
+
+
+def poisson_median(lam: float, cap: int) -> int:
+    return next(
+        goals
+        for goals, cumulative in enumerate(accumulate(poisson_probs(lam, cap)))
+        if cumulative >= 0.5
+    )
 
 
 def match_probs(team_a: str, team_b: str, v: int, ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> dict[str, float]:
