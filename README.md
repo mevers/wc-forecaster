@@ -5,12 +5,12 @@ Minimal Python model for forecasting the live 2026 FIFA World Cup and rendering 
 ## Next match day forecasts
 
 ```text
-Next match day: 2026-06-22
+Next match day: 2026-06-23
 match  group  fixture                         home    draw    away  score
-41     J      Argentina vs Austria           66.4%   20.3%   13.3%    1-0
-42     J      Jordan vs Algeria              24.8%   26.7%   48.5%    0-1
-43     I      France vs Iraq                 82.8%   12.1%    5.1%    2-0
-44     I      Norway vs Senegal              49.5%   26.1%   24.4%    1-0
+45     L      England vs Ghana               83.4%   11.6%    5.0%    3-0
+46     L      Panama vs Croatia              20.4%   25.2%   54.4%    1-1
+47     K      Portugal vs Uzbekistan         58.6%   23.8%   17.5%    2-1
+48     K      Colombia vs DR Congo           70.3%   18.8%   10.9%    2-0
 ```
 
 ## Setup
@@ -34,7 +34,7 @@ Key outputs are:
 - `winner_odds.csv`: Title probabilities by team.
 - `round_reach_probabilities.csv`: Probabilities of reaching each tournament round.
 - `group_fixture_1x2_probabilities.csv`: Group-stage fixtures with 1X2 probabilities.
-- `next_matchday_summary.csv`: Next match-day fixtures with 1X2 probabilities and expected goals.
+- `next_matchday_summary.csv`: Next match-day fixtures with 1X2 probabilities, expected goals, and a median scoreline.
 - `derived_team_ratings.csv`: Pre-simulation model rating snapshot. It is based on historical and completed 2026 WC games.
 - `team_adjustments.csv`: Squad cohesion, underdog magic, and adjusted forecast rating by team.
 - `most_likely_group_tables.csv`: Expected group standings after group stage. Used to seed the knockout bracket and for the group table visualisation.
