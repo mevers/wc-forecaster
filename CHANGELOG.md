@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.6.0
+
+- Added an expected group-table visualisation with to-date and forecast metrics.
+- Tweaked the expected group-table and bracket visualisations
+- Changed next match-day scoreline reporting from marginal Poisson modes to medians, minimising expected absolute goal error.
+
 ## v0.5.1
 
 - Corrected the Group F and Group J fixtures in the 2026 World Cup schedule.
