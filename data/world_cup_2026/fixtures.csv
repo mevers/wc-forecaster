@@ -43,10 +43,10 @@ match_no,group,date,home,away,home_score,away_score,venue_advantage
 42,J,2026-06-22,Jordan,Algeria,1,2,0
 43,I,2026-06-22,France,Iraq,3,0,0
 44,I,2026-06-22,Norway,Senegal,3,2,0
-45,L,2026-06-23,England,Ghana,,,0
-46,L,2026-06-23,Panama,Croatia,,,0
-47,K,2026-06-23,Portugal,Uzbekistan,,,0
-48,K,2026-06-23,Colombia,DR Congo,,,0
+45,L,2026-06-23,England,Ghana,0,0,0
+46,L,2026-06-23,Panama,Croatia,0,1,0
+47,K,2026-06-23,Portugal,Uzbekistan,5,0,0
+48,K,2026-06-23,Colombia,DR Congo,1,0,0
 49,A,2026-06-24,Czechia,Mexico,,,-1
 50,A,2026-06-24,South Africa,South Korea,,,0
 51,B,2026-06-24,Switzerland,Canada,,,-1
