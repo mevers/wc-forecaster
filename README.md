@@ -5,14 +5,14 @@ Minimal Python model for forecasting the live 2026 FIFA World Cup and rendering 
 ## Next match day forecasts
 
 ```text
-Next match day: 2026-06-24
+Next match day: 2026-06-25
 match  group  fixture                         home    draw    away  score
-49     A      Czechia vs Mexico               9.6%   17.6%   72.8%    0-2
-50     A      South Africa vs South Korea    16.5%   23.3%   60.2%    1-2
-51     B      Switzerland vs Canada          34.5%   27.3%   38.2%    1-1
-52     B      Bosnia and Herzegovina vs Qatar   42.5%   27.7%   29.8%    1-1
-53     C      Scotland vs Brazil             14.8%   21.8%   63.4%    1-2
-54     C      Morocco vs Haiti               76.4%   15.7%    7.9%    2-0
+55     D      Turkey vs United States        20.0%   24.6%   55.5%    1-1
+56     D      Paraguay vs Australia          36.5%   27.7%   35.8%    1-1
+57     E      Ecuador vs Germany             23.9%   26.0%   50.1%    1-1
+58     E      Curacao vs Ivory Coast         17.3%   23.7%   59.0%    1-2
+59     F      Japan vs Sweden                62.2%   22.3%   15.6%    2-1
+60     F      Tunisia vs Netherlands          7.1%   14.9%   78.0%    0-2
 ```
 
 ## Setup
