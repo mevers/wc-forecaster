@@ -53,12 +53,12 @@ match_no,group,date,home,away,home_score,away_score,venue_advantage
 52,B,2026-06-24,Bosnia and Herzegovina,Qatar,3,1,0
 53,C,2026-06-24,Scotland,Brazil,0,3,0
 54,C,2026-06-24,Morocco,Haiti,4,2,0
-55,D,2026-06-25,Turkey,United States,,,-1
-56,D,2026-06-25,Paraguay,Australia,,,0
-57,E,2026-06-25,Ecuador,Germany,,,0
-58,E,2026-06-25,Curacao,Ivory Coast,,,0
-59,F,2026-06-25,Japan,Sweden,,,0
-60,F,2026-06-25,Tunisia,Netherlands,,,0
+55,D,2026-06-25,Turkey,United States,3,2,-1
+56,D,2026-06-25,Paraguay,Australia,0,0,0
+57,E,2026-06-25,Ecuador,Germany,2,1,0
+58,E,2026-06-25,Curacao,Ivory Coast,0,2,0
+59,F,2026-06-25,Japan,Sweden,1,1,0
+60,F,2026-06-25,Tunisia,Netherlands,1,3,0
 61,G,2026-06-26,New Zealand,Belgium,,,0
 62,G,2026-06-26,Egypt,Iran,,,0
 63,H,2026-06-26,Uruguay,Spain,,,0

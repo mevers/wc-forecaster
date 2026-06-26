@@ -5,14 +5,14 @@ Minimal Python model for forecasting the live 2026 FIFA World Cup and rendering 
 ## Next match day forecasts
 
 ```text
-Next match day: 2026-06-25
+Next match day: 2026-06-26
 match  group  fixture                         home    draw    away  score
-55     D      Turkey vs United States        20.0%   24.6%   55.5%    1-1
-56     D      Paraguay vs Australia          36.5%   27.7%   35.8%    1-1
-57     E      Ecuador vs Germany             23.9%   26.0%   50.1%    1-1
-58     E      Curacao vs Ivory Coast         17.3%   23.7%   59.0%    1-2
-59     F      Japan vs Sweden                62.2%   22.3%   15.6%    2-1
-60     F      Tunisia vs Netherlands          7.1%   14.9%   78.0%    0-2
+61     G      New Zealand vs Belgium         14.7%   22.2%   63.1%    1-2
+62     G      Egypt vs Iran                  32.5%   27.6%   39.9%    1-1
+63     H      Uruguay vs Spain               11.9%   19.7%   68.4%    1-2
+64     H      Cape Verde vs Saudi Arabia     33.8%   28.1%   38.1%    1-1
+65     I      Norway vs France               22.4%   25.1%   52.5%    1-1
+66     I      Senegal vs Iraq                53.1%   25.6%   21.4%    1-1
 ```
 
 ## Setup
