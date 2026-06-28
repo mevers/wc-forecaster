@@ -22,7 +22,7 @@ import matplotlib.pyplot as plt  # noqa: E402
 from wc_forecaster.adjustments import compute_adjustments
 from wc_forecaster.bracket import expected_group_tables, knockout_bracket_options
 from wc_forecaster.data import read_matches, rows, team, write_csv
-from wc_forecaster.model import fit, lambdas, match_probs, poisson_median, tune
+from wc_forecaster.model import fit, lambdas, match_probs, outcome_constrained_median_scoreline, tune
 from wc_forecaster.tournament import simulate
 
 
@@ -196,7 +196,14 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
                 "away": probs["away"],
                 "home_expected_goals": home_xg,
                 "away_expected_goals": away_xg,
-                "score": f"{poisson_median(home_xg, cfg['goals']['score_cap'])}-{poisson_median(away_xg, cfg['goals']['score_cap'])}",
+                "score": "-".join(
+                    str(goal)
+                    for goal in outcome_constrained_median_scoreline(
+                        home_xg,
+                        away_xg,
+                        cfg["goals"]["score_cap"],
+                    )
+                ),
             }
             for match, probs in zip(fixtures, fixture_rows)
             if match["date"] == next_dates[0]

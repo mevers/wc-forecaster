@@ -3,6 +3,7 @@
 ## v0.7.0
 
 - Added confirmed round-of-32 fixtures and made knockout simulations use known fixtures per match while retaining seeded projections for unknown matchups.
+- Changed next match-day scoreline reporting to an outcome-constrained median scoreline.
 - Documented that `fixtures.csv` match numbers are internal model identifiers, not official FIFA match numbers.
 
 ## v0.6.0
