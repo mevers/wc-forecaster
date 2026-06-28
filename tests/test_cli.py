@@ -218,6 +218,8 @@ def test_predict_smoke(tmp_path: Path) -> None:
         adjustment = next(csv.DictReader(handle))
     assert adjustment["base_rating"]
     assert adjustment["adjusted_rating"]
+    assert (realised[73]["team_a"], realised[73]["team_b"]) == ("South Africa", "Canada")
+    assert (realised[79]["team_a"], realised[79]["team_b"]) == ("Mexico", "Ecuador")
     round_of_32_teams = [
         team
         for match_no in RO32

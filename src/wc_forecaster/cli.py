@@ -160,7 +160,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
         for group in groups
         for row in group_tables[group]
     ]
-    knockout_bracket_rows = knockout_bracket_options(groups, group_tables, result, load_slots(cfg["data"]["third_place_slots"]), adjusted_ratings, beta, s, cfg)
+    knockout_bracket_rows = knockout_bracket_options(groups, group_tables, result, load_slots(cfg["data"]["third_place_slots"]), fixtures, adjusted_ratings, beta, s, cfg)
     write_csv(out / "winner_odds.csv", winner_rows)
     write_csv(out / "round_reach_probabilities.csv", sorted(round_rows, key=lambda r: (r["team"], r["round"])))
     write_ratings(out / "derived_team_ratings.csv", ratings)
