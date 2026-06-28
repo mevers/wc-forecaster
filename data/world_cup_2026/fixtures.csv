@@ -59,15 +59,31 @@ match_no,group,date,home,away,home_score,away_score,venue_advantage
 58,E,2026-06-25,Curacao,Ivory Coast,0,2,0
 59,F,2026-06-25,Japan,Sweden,1,1,0
 60,F,2026-06-25,Tunisia,Netherlands,1,3,0
-61,G,2026-06-26,New Zealand,Belgium,,,0
-62,G,2026-06-26,Egypt,Iran,,,0
-63,H,2026-06-26,Uruguay,Spain,,,0
-64,H,2026-06-26,Cape Verde,Saudi Arabia,,,0
-65,I,2026-06-26,Norway,France,,,0
-66,I,2026-06-26,Senegal,Iraq,,,0
-67,J,2026-06-27,Jordan,Argentina,,,0
-68,J,2026-06-27,Algeria,Austria,,,0
-69,K,2026-06-27,Colombia,Portugal,,,0
-70,K,2026-06-27,DR Congo,Uzbekistan,,,0
-71,L,2026-06-27,Panama,England,,,0
-72,L,2026-06-27,Croatia,Ghana,,,0
+61,G,2026-06-26,New Zealand,Belgium,1,5,0
+62,G,2026-06-26,Egypt,Iran,1,1,0
+63,H,2026-06-26,Uruguay,Spain,0,1,0
+64,H,2026-06-26,Cape Verde,Saudi Arabia,0,0,0
+65,I,2026-06-26,Norway,France,1,4,0
+66,I,2026-06-26,Senegal,Iraq,5,0,0
+67,J,2026-06-27,Jordan,Argentina,1,3,0
+68,J,2026-06-27,Algeria,Austria,3,3,0
+69,K,2026-06-27,Colombia,Portugal,0,0,0
+70,K,2026-06-27,DR Congo,Uzbekistan,3,1,0
+71,L,2026-06-27,Panama,England,0,2,0
+72,L,2026-06-27,Croatia,Ghana,2,1,0
+73,R32,2026-06-28,South Africa,Canada,,,0
+74,R32,2026-06-29,Germany,Paraguay,,,0
+75,R32,2026-06-29,Netherlands,Morocco,,,0
+76,R32,2026-06-29,Brazil,Japan,,,0
+77,R32,2026-06-30,France,Sweden,,,0
+78,R32,2026-06-30,Ivory Coast,Norway,,,0
+79,R32,2026-06-30,Mexico,Ecuador,,,1
+80,R32,2026-07-01,England,DR Congo,,,0
+81,R32,2026-07-01,United States,Bosnia and Herzegovina,,,1
+82,R32,2026-07-01,Belgium,Senegal,,,0
+83,R32,2026-07-02,Portugal,Croatia,,,0
+84,R32,2026-07-02,Spain,Austria,,,0
+85,R32,2026-07-02,Switzerland,Algeria,,,0
+86,R32,2026-07-03,Argentina,Cape Verde,,,0
+87,R32,2026-07-03,Colombia,Ghana,,,0
+88,R32,2026-07-03,Australia,Egypt,,,0
