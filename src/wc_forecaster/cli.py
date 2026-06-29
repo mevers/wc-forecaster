@@ -8,16 +8,11 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
+import polars as pl
+import plotnine as p9
 import yaml
 
-os.environ.setdefault("MPLCONFIGDIR", "/tmp/wc_forecaster_matplotlib")
 os.environ.setdefault("XDG_CACHE_HOME", "/tmp/wc_forecaster_cache")
-
-import matplotlib  # noqa: E402
-
-matplotlib.use("Agg")
-
-import matplotlib.pyplot as plt  # noqa: E402
 
 from wc_forecaster.adjustments import compute_adjustments
 from wc_forecaster.bracket import expected_group_tables, knockout_bracket_options
@@ -47,13 +42,26 @@ def load_slots(path: str) -> dict[int, set[str]]:
 
 
 def chart(path: Path, rows_: list[dict[str, Any]], x: str, y: str, title: str) -> None:
-    plt.figure(figsize=(9, 5))
-    plt.bar([r[x] for r in rows_[:12]], [r[y] for r in rows_[:12]])
-    plt.title(title)
-    plt.xticks(rotation=45, ha="right")
-    plt.tight_layout()
-    plt.savefig(path)
-    plt.close()
+    data = pl.DataFrame(rows_[:12])
+    x_order = list(reversed(data[x].to_list()))
+    plot = (
+        p9.ggplot(data, p9.aes(x=x, y=y))
+        + p9.geom_col(fill="#1f4e79", width=0.72)
+        + p9.coord_flip()
+        + p9.scale_x_discrete(limits=x_order)
+        + p9.scale_y_continuous(labels=lambda values: [f"{100 * value:.1f}%" for value in values])
+        + p9.labs(title=title)
+        + p9.theme_minimal(base_size=9)
+        + p9.theme(
+            figure_size=(9, 5),
+            plot_background=p9.element_rect(fill="#fbfcfd", color="#fbfcfd"),
+            panel_background=p9.element_rect(fill="#ffffff", color="#ffffff"),
+            panel_grid_major_y=p9.element_blank(),
+            panel_grid_minor=p9.element_blank(),
+            axis_title=p9.element_blank(),
+        )
+    )
+    plot.save(str(path), width=9, height=5, dpi=180, verbose=False)
 
 
 def write_ratings(path: Path, ratings: dict[str, float]) -> None:
