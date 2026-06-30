@@ -72,6 +72,7 @@ def predict_config(
             "initial": 1500.0,
             "divisor": 400.0,
             "venue_advantage": 70.0,
+            "current_world_cup_k_multiplier": 1.25,
             "k": {"FIFA World Cup": 60.0, "Friendly": 20.0, "default": 30.0},
         },
         "goals": {

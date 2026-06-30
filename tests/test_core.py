@@ -56,6 +56,22 @@ def test_elo_updates_winner_up() -> None:
     assert ratings["B"] < 1500
 
 
+def test_elo_match_multiplier_scales_update() -> None:
+    base = {"A": 1500.0, "B": 1500.0}
+    boosted = {"A": 1500.0, "B": 1500.0}
+    match = {
+        "home_team": "A",
+        "away_team": "B",
+        "home_score": 2,
+        "away_score": 0,
+        "venue_advantage": 0,
+    }
+    apply_match(base, match, CFG)
+    apply_match(boosted, {**match, "elo_k_multiplier": 1.25}, CFG)
+
+    assert round(boosted["A"] - 1500, 10) == round(1.25 * (base["A"] - 1500), 10)
+
+
 def test_elo_supports_second_team_venue_advantage() -> None:
     ratings = {"A": 1500.0, "B": 1500.0}
     apply_match(

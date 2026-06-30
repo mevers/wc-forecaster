@@ -5,6 +5,7 @@
 - Added confirmed round-of-32 fixtures and made knockout simulations use known fixtures per match while retaining seeded projections for unknown matchups.
 - Added `fixture_winner` so completed knockout fixtures advance by the recorded winner.
 - Added a script for evaluating forecast outcome and exact-score accuracy through an as-of date.
+- Added a configurable live World Cup Elo multiplier with a 2018/2022 backtest script.
 - Changed next match-day scoreline reporting to an outcome-constrained median scoreline.
 - Added an R32 bracket convergence retro with daily comparison metrics and visual artefacts.
 - Documented that `fixtures.csv` match numbers are internal model identifiers, not official FIFA match numbers.

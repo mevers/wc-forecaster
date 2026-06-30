@@ -126,6 +126,7 @@ def compute_adjustments(
     underdog_magic_residual, underdog_magic_boost = zero_adjustments(teams)
     for match in played:
         match["tournament"] = "FIFA World Cup"
+        match["elo_k_multiplier"] = cfg["elo"]["current_world_cup_k_multiplier"]
         if cfg["underdog_magic"]["enabled"]:
             add_underdog_magic_residual(
                 underdog_magic_residual,

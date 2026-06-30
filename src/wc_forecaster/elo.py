@@ -31,7 +31,7 @@ def apply_match(ratings: dict[str, float], match: dict[str, Any], cfg: dict[str,
     team_b = match["away_team"]
     rating_a, rating_b = venue_adjusted(ratings[team_a], ratings[team_b], match["venue_advantage"], cfg)
     exp = expected(rating_a, rating_b, cfg["elo"]["divisor"])
-    delta = k_value(match.get("tournament", "FIFA World Cup"), cfg) * goal_difference_multiplier(match["home_score"], match["away_score"]) * (realised_score(match["home_score"], match["away_score"]) - exp)
+    delta = match.get("elo_k_multiplier", 1.0) * k_value(match.get("tournament", "FIFA World Cup"), cfg) * goal_difference_multiplier(match["home_score"], match["away_score"]) * (realised_score(match["home_score"], match["away_score"]) - exp)
     ratings[team_a] += delta
     ratings[team_b] -= delta
 
