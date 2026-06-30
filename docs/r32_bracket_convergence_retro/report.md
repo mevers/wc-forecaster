@@ -14,21 +14,44 @@
 
 ## Context and methodology
 
-This retro evaluates how daily R32 bracket projections converged to the confirmed R32 bracket.
+This retro evaluates how daily R32 bracket projections converged to the confirmed R32 bracket, and how the model's derived team ratings moved during the group stage.
 
-- Data: daily `most_likely_knockout_bracket.csv` files in `outputs/`, compared with confirmed R32 fixtures in `data/world_cup_2026/fixtures.csv`.
+### Data and projection methods
 
-- `expected-table`: average simulated group performance first, then seed the bracket from those expected tables.
+The bracket analysis uses daily `most_likely_knockout_bracket.csv` files in `outputs/`, compared with the confirmed R32 fixtures in `data/world_cup_2026/fixtures.csv`.
 
-- `modal-group-table`: choose each group's most common ordered table first, then seed the bracket from those modal tables.
+Two bracket-building methods are compared. `expected-table` averages simulated group performance first, then seeds the bracket from those expected tables. `modal-group-table` instead chooses each group's most common ordered table first, then seeds the bracket from those modal tables.
 
-- Team accuracy: how many confirmed R32 teams were included anywhere in the predicted R32 field.
+The rating-change analysis uses the confirmed R32 teams only. It measures changes in each team's derived rating from the opening snapshot on 2026-06-10 to the post-group-stage snapshot.
 
-- Placement accuracy: how many confirmed R32 teams were placed in the correct match slot.
+### Bracket accuracy metrics
 
-- Fixture accuracy: how many full R32 fixtures were placed in the correct match slot. Home/away order is ignored.
+Let \(A\) be the confirmed R32 team set, \(P\) the predicted R32 team set, and \(S\) the set of R32 match slots. For each slot \(s\), let \(A_s\) and \(P_s\) be the unordered two-team fixtures in that slot.
 
-Team accuracy answers who made the R32. Fixture accuracy answers who played whom. The distinction matters because a projection can have the right teams but the wrong bracket.
+\[
+\begin{aligned}
+\text{team accuracy} &= \frac{|A \cap P|}{|A|} \\
+\text{placement accuracy} &= \frac{\sum_{s \in S} |A_s \cap P_s|}{2|S|} \\
+\text{fixture accuracy} &= \frac{|\{s \in S : A_s = P_s\}|}{|S|}
+\end{aligned}
+\]
+
+Team accuracy answers who made the R32. Fixture accuracy answers who played whom. Placement accuracy sits between them: it gives half-credit when one confirmed team is in the right slot.
+
+### Rating movement metrics
+
+For each confirmed R32 team, let \(r_t\) be the derived rating at daily snapshot \(t\), from \(t = 0\) on 2026-06-10 to the post-group-stage snapshot \(T\). Let \(\Delta_t = r_t - r_{t-1}\) for each daily rating update. Let \(U\) be the number of updates where \(\Delta_t > 0\), and \(D\) the number of updates where \(\Delta_t < 0\).
+
+\[
+\begin{aligned}
+\text{net rating change} &= r_T - r_0 \\
+\text{gross rating movement} &= \sum_{t=1}^{T} |\Delta_t| \\
+\text{directional efficiency} &= \frac{r_T - r_0}{\sum_{t=1}^{T} |\Delta_t|} \\
+\text{directional balance} &= \frac{U - D}{U + D}
+\end{aligned}
+\]
+
+Net rating change measures final impact. Gross rating movement measures volatility. Directional efficiency shows how much movement resolved into the final rating change, while directional balance shows whether the updates mostly pointed up or down.
 
 ## Deep dive analysis
 
@@ -39,6 +62,18 @@ Team accuracy answers who made the R32. Fixture accuracy answers who played whom
 The first snapshot already picked 25/32 R32 teams. That looks strong, but the baseline check changes the interpretation: a simple top-32 cut from the 2026-06-10 ratings also picked 25/32. The model did not learn most of the R32 field from early group results; it started with a strong prior.
 
 The errors were concentrated near the qualification cut line: teams strong enough to be plausible R32 candidates, but not strong enough to be near-locks. The ratings baseline missed Bosnia and Herzegovina, Cape Verde, DR Congo, Egypt, Ghana, South Africa, Sweden and included Iran, Panama, Scotland, South Korea, Turkey, Uruguay, Uzbekistan instead. This is the main implication: early team accuracy says the ratings prior was good, not that the bracket was already reliable.
+
+### Finding 1b: Group-stage ratings still reshaped the field
+
+![R32 rating change rankings](r32_rating_change_rankings.png)
+
+France were the cleanest strong performer. They had the largest net gain (`+62.5`), and that matched their gross movement (`62.5`), meaning none of their group-stage rating updates went backwards. Their directional efficiency and balance were both perfect (`1.00`/`1.00`). Egypt, Cape Verde, Mexico, Argentina and Morocco were also clean risers: all three of their group-stage rating updates increased their derived rating.
+
+DR Congo (`+57.1`) and Ghana (`+56.9`) were almost as punchy on net change, but less clean: each had one negative update, leaving directional efficiency at `0.75` and `0.70` and directional balance at `0.33`. The United States were the clearest volatility case: a big net gain (`+53.3`) with the largest gross movement of any R32 team (`136.3`), but lower efficiency (`0.39`) because their path included a large rating drop as well as large gains.
+
+At the other end, Ecuador were the clearest underperformer: `-31.2` net change from `107.4` gross movement, with negative efficiency (`-0.29`) and balance (`-0.33`). That was choppy underperformance, not a simple one-way slide. Paraguay, Canada, Germany, Spain, Senegal and Croatia also finished below their starting rating.
+
+So the prior still explains much of the early R32 field, but the group stage meaningfully reshuffled strength inside that field. The team list was partly known early; the direction of travel was not.
 
 ### Finding 2: Fixture accuracy lagged because routes were unstable
 
@@ -93,3 +128,4 @@ The reproducible analysis artefacts are generated by `scripts/retro_r32_converge
 - [Daily convergence summary](r32_convergence_summary.csv)
 - [Slot-level audit](r32_convergence_slot_audit.csv)
 - [Ratings baseline audit](r32_ratings_baseline.csv)
+- [R32 rating change metrics](r32_rating_change_summary.csv)
