@@ -72,7 +72,7 @@ def append_match(rows_: list[dict[str, Any]], match_no: int, team_a: str, team_b
     return winner
 
 
-def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], slots: dict[int, set[str]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
+def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], slots: dict[int, set[str]], fixtures: list[dict[str, Any]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
     qualifiers = {}
     thirds = []
     for group, rows_ in group_tables.items():
@@ -96,11 +96,17 @@ def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], 
     rows_ = []
     winners = {}
     semi_losers = {}
+    knockout_fixtures = {int(match["match_no"]): match for match in fixtures if match["group"] == "R32"}
     s_bracket = s.copy()
     for match_no, pair in RO32.items():
-        team_a = qualifiers[pair[0]]
-        team_b = thirds_by_match[match_no].split(":")[0] if pair[1] == "3" else qualifiers[pair[1]]
+        match = knockout_fixtures.get(match_no)
+        team_a = match["home_team"] if match else qualifiers[pair[0]]
+        team_b = match["away_team"] if match else thirds_by_match[match_no].split(":")[0] if pair[1] == "3" else qualifiers[pair[1]]
         winners[match_no] = append_match(rows_, match_no, team_a, team_b, ratings, beta, s_bracket, cfg)
+        # First predict the winner; overwrite it only if the knockout match has already been played.
+        if match and match["home_score"] is not None and match["fixture_winner"]:
+            rows_[-1]["winner"] = winners[match_no] = match["fixture_winner"]
+            s_bracket[team_a], s_bracket[team_b] = winners[match_no] == team_a, winners[match_no] == team_b
     for match_no, left, right in BRACKET:
         if match_no == 104:
             append_match(rows_, 103, semi_losers[101], semi_losers[102], ratings, beta, s_bracket, cfg)
@@ -113,15 +119,15 @@ def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], 
     return sorted(rows_, key=lambda row: row["match_no"])
 
 
-def knockout_bracket(method: str, groups: dict[str, list[str]], group_tables: dict[str, list[dict[str, Any]]], result: dict[str, Any], slots: dict[int, set[str]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
+def knockout_bracket(method: str, groups: dict[str, list[str]], group_tables: dict[str, list[dict[str, Any]]], result: dict[str, Any], slots: dict[int, set[str]], fixtures: list[dict[str, Any]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
     if method == BRACKET_METHOD_MODAL_GROUP_TABLE:
         group_tables = modal_group_tables(groups, result)
-    return most_likely_knockout_bracket(group_tables, slots, ratings, beta, s, cfg)
+    return most_likely_knockout_bracket(group_tables, slots, fixtures, ratings, beta, s, cfg)
 
 
-def knockout_bracket_options(groups: dict[str, list[str]], group_tables: dict[str, list[dict[str, Any]]], result: dict[str, Any], slots: dict[int, set[str]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
+def knockout_bracket_options(groups: dict[str, list[str]], group_tables: dict[str, list[dict[str, Any]]], result: dict[str, Any], slots: dict[int, set[str]], fixtures: list[dict[str, Any]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
     return [
         {"bracket_method": method, **row}
         for method in BRACKET_METHODS
-        for row in knockout_bracket(method, groups, group_tables, result, slots, ratings, beta, s, cfg)
+        for row in knockout_bracket(method, groups, group_tables, result, slots, fixtures, ratings, beta, s, cfg)
     ]

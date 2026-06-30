@@ -3,7 +3,6 @@ from __future__ import annotations
 import math
 from collections import defaultdict
 from datetime import date
-from itertools import accumulate
 from typing import Any
 
 from wc_forecaster.elo import apply_match, venue_adjusted
@@ -81,12 +80,35 @@ def poisson_probs(lam: float, cap: int) -> list[float]:
     return probs
 
 
-def poisson_median(lam: float, cap: int) -> int:
-    return next(
-        goals
-        for goals, cumulative in enumerate(accumulate(poisson_probs(lam, cap)))
-        if cumulative >= 0.5
+def outcome_constrained_median_scoreline(lambda_a: float, lambda_b: float, cap: int) -> tuple[int, int]:
+    probs_a = poisson_probs(lambda_a, cap)
+    probs_b = poisson_probs(lambda_b, cap)
+    grid = [(i, j, pi * pj) for i, pi in enumerate(probs_a) for j, pj in enumerate(probs_b)]
+    outcome = max(
+        ("home", "draw", "away"),
+        key=lambda o: sum(
+            p
+            for i, j, p in grid
+            if (i > j if o == "home" else i == j if o == "draw" else i < j)
+        ),
     )
+
+    def matches_outcome(h: int, a: int) -> bool:
+        return h > a if outcome == "home" else h == a if outcome == "draw" else h < a
+
+    return min(
+        (
+            (
+                sum(p * (abs(i - h) + abs(j - a)) for i, j, p in grid),
+                -probs_a[h] * probs_b[a],
+                h,
+                a,
+            )
+            for h in range(cap + 1)
+            for a in range(cap + 1)
+            if matches_outcome(h, a)
+        )
+    )[2:]
 
 
 def match_probs(team_a: str, team_b: str, v: int, ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> dict[str, float]:

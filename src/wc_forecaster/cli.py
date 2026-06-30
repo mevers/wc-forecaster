@@ -8,21 +8,16 @@ from datetime import date, datetime
 from pathlib import Path
 from typing import Any
 
+import polars as pl
+import plotnine as p9
 import yaml
 
-os.environ.setdefault("MPLCONFIGDIR", "/tmp/wc_forecaster_matplotlib")
 os.environ.setdefault("XDG_CACHE_HOME", "/tmp/wc_forecaster_cache")
-
-import matplotlib  # noqa: E402
-
-matplotlib.use("Agg")
-
-import matplotlib.pyplot as plt  # noqa: E402
 
 from wc_forecaster.adjustments import compute_adjustments
 from wc_forecaster.bracket import expected_group_tables, knockout_bracket_options
 from wc_forecaster.data import read_matches, rows, team, write_csv
-from wc_forecaster.model import fit, lambdas, match_probs, poisson_median, tune
+from wc_forecaster.model import fit, lambdas, match_probs, outcome_constrained_median_scoreline, tune
 from wc_forecaster.tournament import simulate
 
 
@@ -47,13 +42,26 @@ def load_slots(path: str) -> dict[int, set[str]]:
 
 
 def chart(path: Path, rows_: list[dict[str, Any]], x: str, y: str, title: str) -> None:
-    plt.figure(figsize=(9, 5))
-    plt.bar([r[x] for r in rows_[:12]], [r[y] for r in rows_[:12]])
-    plt.title(title)
-    plt.xticks(rotation=45, ha="right")
-    plt.tight_layout()
-    plt.savefig(path)
-    plt.close()
+    data = pl.DataFrame(rows_[:12])
+    x_order = list(reversed(data[x].to_list()))
+    plot = (
+        p9.ggplot(data, p9.aes(x=x, y=y))
+        + p9.geom_col(fill="#1f4e79", width=0.72)
+        + p9.coord_flip()
+        + p9.scale_x_discrete(limits=x_order)
+        + p9.scale_y_continuous(labels=lambda values: [f"{100 * value:.1f}%" for value in values])
+        + p9.labs(title=title)
+        + p9.theme_minimal(base_size=9)
+        + p9.theme(
+            figure_size=(9, 5),
+            plot_background=p9.element_rect(fill="#fbfcfd", color="#fbfcfd"),
+            panel_background=p9.element_rect(fill="#ffffff", color="#ffffff"),
+            panel_grid_major_y=p9.element_blank(),
+            panel_grid_minor=p9.element_blank(),
+            axis_title=p9.element_blank(),
+        )
+    )
+    plot.save(str(path), width=9, height=5, dpi=180, verbose=False)
 
 
 def write_ratings(path: Path, ratings: dict[str, float]) -> None:
@@ -160,7 +168,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
         for group in groups
         for row in group_tables[group]
     ]
-    knockout_bracket_rows = knockout_bracket_options(groups, group_tables, result, load_slots(cfg["data"]["third_place_slots"]), adjusted_ratings, beta, s, cfg)
+    knockout_bracket_rows = knockout_bracket_options(groups, group_tables, result, load_slots(cfg["data"]["third_place_slots"]), fixtures, adjusted_ratings, beta, s, cfg)
     write_csv(out / "winner_odds.csv", winner_rows)
     write_csv(out / "round_reach_probabilities.csv", sorted(round_rows, key=lambda r: (r["team"], r["round"])))
     write_ratings(out / "derived_team_ratings.csv", ratings)
@@ -196,7 +204,14 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
                 "away": probs["away"],
                 "home_expected_goals": home_xg,
                 "away_expected_goals": away_xg,
-                "score": f"{poisson_median(home_xg, cfg['goals']['score_cap'])}-{poisson_median(away_xg, cfg['goals']['score_cap'])}",
+                "score": "-".join(
+                    str(goal)
+                    for goal in outcome_constrained_median_scoreline(
+                        home_xg,
+                        away_xg,
+                        cfg["goals"]["score_cap"],
+                    )
+                ),
             }
             for match, probs in zip(fixtures, fixture_rows)
             if match["date"] == next_dates[0]

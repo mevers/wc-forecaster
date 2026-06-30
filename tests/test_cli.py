@@ -12,9 +12,10 @@ from wc_forecaster.bracket import (
     advancement_probabilities,
     expected_group_tables,
     modal_group_tables,
+    most_likely_knockout_bracket,
 )
-from wc_forecaster.cli import load_config, predict
-from wc_forecaster.model import poisson_median
+from wc_forecaster.cli import load_config, load_groups, load_slots, predict
+from wc_forecaster.model import outcome_constrained_median_scoreline
 from wc_forecaster.tournament import BRACKET, RO32
 
 
@@ -166,6 +167,61 @@ def test_modal_group_tables_use_most_common_complete_group_table() -> None:
     ]
 
 
+def test_completed_knockout_fixtures_have_fixture_winner() -> None:
+    groups = set(load_groups("data/world_cup_2026/groups.csv"))
+    with Path("data/world_cup_2026/fixtures.csv").open(encoding="utf-8") as handle:
+        rows = csv.DictReader(handle)
+        for row in rows:
+            if row["group"] not in groups and row["home_score"]:
+                assert row["fixture_winner"] in {row["home"], row["away"]}
+
+
+def test_fixture_winner_overrides_completed_knockout_bracket_projection() -> None:
+    groups = load_groups("data/world_cup_2026/groups.csv")
+    group_tables = {
+        group: [
+            {
+                "group": group,
+                "position": position,
+                "team": team,
+                "expected_points": 0,
+                "expected_goal_difference": 0,
+                "expected_goals_for": 0,
+            }
+            for position, team in enumerate(teams, start=1)
+        ]
+        for group, teams in groups.items()
+    }
+    ratings = {team: 1500.0 for teams in groups.values() for team in teams}
+    ratings["Germany"] = 2200.0
+    ratings["Paraguay"] = 1000.0
+
+    for home_score, away_score in [(1, 1), (0, 1)]:
+        rows = most_likely_knockout_bracket(
+            group_tables,
+            load_slots("data/world_cup_2026/third_place_slots.csv"),
+            [
+                {
+                    "match_no": "74",
+                    "group": "R32",
+                    "home_team": "Germany",
+                    "away_team": "Paraguay",
+                    "home_score": home_score,
+                    "away_score": away_score,
+                    "fixture_winner": "Paraguay",
+                }
+            ],
+            ratings,
+            [0.2, 0.1, 0.0],
+            {},
+            CFG,
+        )
+        match = next(row for row in rows if row["match_no"] == 74)
+
+        assert match["winner"] == "Paraguay"
+        assert match["team_a_advance_probability"] > match["team_b_advance_probability"]
+
+
 def test_predict_smoke(tmp_path: Path) -> None:
     hist = tmp_path / "results.csv"
     hist.write_text(
@@ -201,9 +257,13 @@ def test_predict_smoke(tmp_path: Path) -> None:
     assert fixture["away_team"] == "South Africa"
     with (out / "next_matchday_summary.csv").open(encoding="utf-8") as handle:
         next_fixture = next(csv.DictReader(handle))
-    assert next_fixture["score"] == (
-        f"{poisson_median(float(next_fixture['home_expected_goals']), 4)}-"
-        f"{poisson_median(float(next_fixture['away_expected_goals']), 4)}"
+    assert next_fixture["score"] == "-".join(
+        str(goal)
+        for goal in outcome_constrained_median_scoreline(
+            float(next_fixture["home_expected_goals"]),
+            float(next_fixture["away_expected_goals"]),
+            4,
+        )
     )
     with (out / "most_likely_knockout_bracket.csv").open(encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
@@ -218,6 +278,8 @@ def test_predict_smoke(tmp_path: Path) -> None:
         adjustment = next(csv.DictReader(handle))
     assert adjustment["base_rating"]
     assert adjustment["adjusted_rating"]
+    assert (realised[73]["team_a"], realised[73]["team_b"]) == ("South Africa", "Canada")
+    assert (realised[79]["team_a"], realised[79]["team_b"]) == ("Mexico", "Ecuador")
     round_of_32_teams = [
         team
         for match_no in RO32

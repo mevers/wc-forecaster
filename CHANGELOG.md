@@ -1,5 +1,13 @@
 # Changelog
 
+## v0.7.0
+
+- Added confirmed round-of-32 fixtures and made knockout simulations use known fixtures per match while retaining seeded projections for unknown matchups.
+- Added `fixture_winner` so completed knockout fixtures advance by the recorded winner.
+- Changed next match-day scoreline reporting to an outcome-constrained median scoreline.
+- Added an R32 bracket convergence retro with daily comparison metrics and visual artefacts.
+- Documented that `fixtures.csv` match numbers are internal model identifiers, not official FIFA match numbers.
+
 ## v0.6.0
 
 - Added an expected group-table visualisation with to-date and forecast metrics.

@@ -64,8 +64,8 @@ def third_assignment(thirds: list[str], slots: dict[int, set[str]]) -> dict[int,
     return out
 
 
-def winner(rng: random.Random, team_a: str, team_b: str, ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> str:
-    goals_a, goals_b = sample_score(rng, team_a, team_b, 0, ratings, beta, s, cfg)
+def winner(rng: random.Random, team_a: str, team_b: str, ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any], venue_advantage: int = 0) -> str:
+    goals_a, goals_b = sample_score(rng, team_a, team_b, venue_advantage, ratings, beta, s, cfg)
     if goals_a != goals_b:
         won = team_a if goals_a > goals_b else team_b
     else:
@@ -84,6 +84,7 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
     group_tables = defaultdict(Counter)
     matchups = defaultdict(Counter)
     match_winners = defaultdict(Counter)
+    knockout_fixtures = {int(match["match_no"]): match for match in fixtures if match["group"] not in groups}
     sims = cfg["forecast"]["simulations"]
     step = max(1, sims // 10)
     for sim in range(1, sims + 1):
@@ -106,15 +107,19 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
             qualifiers[f"1{group}"] = ordered[0]
             qualifiers[f"2{group}"] = ordered[1]
             thirds.append((ordered[2], group, tab[ordered[2]]["points"], tab[ordered[2]]["gf"] - tab[ordered[2]]["ga"], tab[ordered[2]]["gf"]))
-        best_thirds = [f"{row[0]}:{row[1]}" for row in sorted(thirds, key=lambda r: (r[2], r[3], r[4], ratings[r[0]]), reverse=True)[:8]]
-        thirds_by_match = third_assignment(best_thirds, slots)
+        thirds_by_match = third_assignment([f"{row[0]}:{row[1]}" for row in sorted(thirds, key=lambda r: (r[2], r[3], r[4], ratings[r[0]]), reverse=True)[:8]], slots)
         winners = {}
         knockout_teams: dict[int, tuple[str, str]] = {}
         for match_no, pair in RO32.items():
-            home = qualifiers[pair[0]]
-            away = thirds_by_match[match_no].split(":")[0] if pair[1] == "3" else qualifiers[pair[1]]
+            match = knockout_fixtures.get(match_no)
+            home = match["home_team"] if match else qualifiers[pair[0]]
+            away = match["away_team"] if match else thirds_by_match[match_no].split(":")[0] if pair[1] == "3" else qualifiers[pair[1]]
             matchups[match_no][(home, away)] += 1
-            winners[match_no] = winner(rng, home, away, ratings, beta, s_sim, cfg)
+            winners[match_no] = winner(rng, home, away, ratings, beta, s_sim, cfg, match["venue_advantage"] if match else 0)
+            # First predict the winner; overwrite it only if the knockout match has already been played.
+            if match and match["home_score"] is not None and match["fixture_winner"]:
+                winners[match_no] = match["fixture_winner"]
+                s_sim[home], s_sim[away] = winners[match_no] == home, winners[match_no] == away
             match_winners[match_no][winners[match_no]] += 1
             reached["round_of_32"][home] += 1
             reached["round_of_32"][away] += 1

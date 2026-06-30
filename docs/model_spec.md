@@ -3,6 +3,8 @@ author:
   name: Maurits Evers
   email: maurits.evers@gmail.com
 revisions:
+  - date: 2026-06-29
+    notes: Documented outcome-constrained median scoreline reporting.
   - date: 2026-06-16
     notes: Added squad cohesion and Iceland-effect forecast adjustments.
   - date: 2026-06-15
@@ -23,11 +25,13 @@ Inputs are fixed by `config/model.yaml`:
 | :--- | :--- |
 | `data/historical_results/results.csv` | CSV file downloaded and curated from the public GitHub repo [`martj42/international_results`](https://github.com/martj42/international_results). Expected columns are `date`, `home_team`, `away_team`, `home_score`, `away_score`, `tournament`, `country`, `neutral`. |
 | `data/world_cup_2026/groups.csv` | Team to group mapping. Expected columns are `group`, `position`, `team`. |
-| `data/world_cup_2026/fixtures.csv` | Group-stage fixtures, completed scores, and `venue_advantage`, where `1` means team `home` has venue advantage, `0` means neutral site, and `-1` means team `away` has venue advantage. Expected columns are `match_no` ,`group` ,`date` ,`home` ,`away` ,`home_score` , `away_score` ,`venue_advantage`. |
+| `data/world_cup_2026/fixtures.csv` | Group-stage fixtures, completed scores, `fixture_winner`, and `venue_advantage`, where `1` means team `home` has venue advantage, `0` means neutral site, and `-1` means team `away` has venue advantage. Expected columns are `match_no` ,`group` ,`date` ,`home` ,`away` ,`home_score` , `away_score` ,`fixture_winner`, `venue_advantage`. |
 | `data/world_cup_2026/squads.csv` | 2026 WC squad compositions derived from [2026 FIFA World Cup squads](https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads). Expected columns for the model are `team`, `player`, `club`, and `league`; the file also stores additional squad metadata such as number, position, date of birth, age, caps, and goals. The `league` value is the club's national association / league-system country, not the exact domestic division. |
 | `data/world_cup_2026/third_place_slots.csv` | Eligible third-place groups for each round-of-32 slot. Expected columns are `match_no` , `winner_slot`, `groups`. |
 
 Historical model fitting excludes any 2026 World Cup fixtures. Completed 2026 World Cup matches are sourced from the fixture file and applied once to the live tournament state, updating Elo ratings, previous-win form, underdog-magic residuals, and completed group results. They are _not_ used to update or re-estimate the fitted goal-model coefficients. A 2026 fixture score is used only when the fixture date is on or before `forecast.as_of`; later scored rows are treated as unplayed for that forecast. Rows with missing/`NA` scores are treated as unplayed.
+
+The score columns record the football score before penalties. For completed fixtures, `fixture_winner` stores the team that won the fixture after all applicable tie-break procedures, and is blank when the fixture has no winner or is unplayed. For completed knockout fixtures, `fixture_winner` must be populated even when the score is drawn; this preserves draw-based Elo and goal-model updates while allowing the bracket to progress through the actual winner.
 
 ## Derived team ratings
 
@@ -335,6 +339,98 @@ $$
 
 In plain words, $P(a\text{ win})$ adds the probabilities of team $a$ scoring $r$ and team $b$ scoring $u$ goals, subject to team $a$ winning ($r > u$).
 
+### Reported scoreline
+
+The `score` field in `next_matchday_summary.csv` is a single scoreline point
+forecast derived from the same capped independent-Poisson grid as the 1X2
+probabilities. Let
+
+$$
+p_{r,u}=P(C_a=r)P(C_b=u)
+$$
+
+be the exact-score probability for capped scoreline \(r\)-\(u\).
+
+There are several natural one-score summaries of this grid:
+
+1. **Joint exact-score mode.** The modal scoreline is
+
+   $$
+   (\hat r,\hat u)_\text{mode}=\arg\max_{r,u} p_{r,u}.
+   $$
+
+   Under independent Poisson goals this is equivalent to taking each team's
+   marginal Poisson mode separately. It maximises exact-score hit probability,
+   but it tends to under-report goals because Poisson modes are usually below
+   their means when expected goals are in ordinary football ranges.
+
+2. **Marginal median scoreline.** The marginal-median scoreline is
+
+   $$
+   (\hat r,\hat u)_\text{median}
+   =
+   (\operatorname{median}(C_a),\operatorname{median}(C_b)).
+   $$
+
+   This minimises the unconstrained expected absolute goal error
+
+   $$
+   E(|C_a-\hat r|+|C_b-\hat u|),
+   $$
+
+   but it can conflict with the most likely 1X2 outcome. For example, if the
+   away-win probability is the largest outcome bucket, the unconstrained
+   marginal median can still be a draw.
+
+3. **Rounded expected-goals scoreline.** A simpler scoreline summary is
+
+   $$
+   (\hat r,\hat u)_\text{xG}
+   =
+   (\operatorname{round}(\lambda_a),\operatorname{round}(\lambda_b)).
+   $$
+
+   This is easy to interpret because it is a rounded version of the expected
+   goals already shown in the output. It is a mean-based summary, so it aligns
+   more closely with squared-error loss than with absolute goal error or exact
+   score probability. It also does not use the 1X2 probability buckets. As a
+   result, rounded xG can report a scoreline whose outcome is not the most
+   likely model outcome; for example, a low-scoring grid can have
+   \(\lambda_a=0.2\) and \(\lambda_b=0.7\), where rounded xG reports \(0\)-\(1\)
+   even though the draw bucket can be larger than the away-win bucket.
+
+The actual model reports an **outcome-constrained median scoreline**. First, choose the
+most likely 1X2 outcome:
+
+$$
+o^\star=\arg\max_{o\in\{a\text{ win},\text{draw},b\text{ win}\}}P(o).
+$$
+
+Then restrict candidate reported scorelines to those that realise \(o^\star\):
+
+$$
+S(o^\star)=
+\begin{cases}
+\{(r,u): r>u\}, & o^\star=a\text{ win}\\
+\{(r,u): r=u\}, & o^\star=\text{draw}\\
+\{(r,u): r<u\}, & o^\star=b\text{ win}.
+\end{cases}
+$$
+
+The reported scoreline is
+
+$$
+(\hat r,\hat u)
+=
+\arg\min_{(x,y)\in S(o^\star)}
+\sum_{r=0}^{c}\sum_{u=0}^{c}p_{r,u}\left(|r-x|+|u-y|\right).
+$$
+
+Ties are broken by the higher exact-score probability \(p_{x,y}\). This keeps
+the displayed scoreline consistent with the model's most likely 1X2 outcome
+while retaining the median-style absolute-error objective that avoids the
+low-score bias of the joint exact-score mode.
+
 Drawn group-stage fixtures remain draws and contribute one point to each team. After all group fixtures in a Monte Carlo path are complete, group tables are ranked and the knockout slots are populated.
 
 ### Knockout matches
@@ -365,7 +461,7 @@ The probability artefacts are:
 - `winner_odds.csv`: one row per team with `team` and `probability`. This is the empirical title probability.
 - `round_reach_probabilities.csv`: one row per team and round with `team`, `round`, and `probability`. This is the empirical probability that the team reaches that round.
 - `group_fixture_1x2_probabilities.csv`: one row per scheduled group fixture with `match_no`, `home_team`, `away_team`, `home`, `draw`, and `away`. The final three columns are 1X2 probabilities from the fitted score model at forecast time.
-- `next_matchday_summary.csv`: one row per fixture on the next fixture date after `forecast.as_of`, with 1X2 probabilities, expected goals, and a median scoreline. The scoreline uses each team's marginal Poisson median and therefore minimises expected absolute goal error.
+- `next_matchday_summary.csv`: one row per fixture on the next fixture date after `forecast.as_of`, with 1X2 probabilities, expected goals, and an outcome-constrained median scoreline.
 - `most_likely_group_tables.csv`: expected group tables with `group`, `position`, `team`, `expected_points`, `expected_goal_difference`, and `expected_goals_for`.
 
 The rating and run metadata artefacts are:

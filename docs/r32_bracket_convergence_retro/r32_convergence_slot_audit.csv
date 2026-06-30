@@ -1,0 +1,577 @@
+as_of,method,match_no,confirmed_fixture,predicted_fixture,correct_fixture,correct_display_order,confirmed_teams_in_this_slot,missing_confirmed_teams,extra_predicted_teams,confirmed_fixture_predicted_in_slot
+2026-06-10,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-10,expected-table,74,Germany v Paraguay,Germany v Czechia,no,no,1,Paraguay,Czechia,-
+2026-06-10,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-10,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-10,expected-table,77,France v Sweden,France v Paraguay,no,no,1,Sweden,Paraguay,-
+2026-06-10,expected-table,78,Ivory Coast v Norway,Ecuador v Norway,no,no,1,Ivory Coast,Ecuador,-
+2026-06-10,expected-table,79,Mexico v Ecuador,Mexico v Scotland,no,no,1,Ecuador,Scotland,-
+2026-06-10,expected-table,80,England v DR Congo,England v Ivory Coast,no,no,1,DR Congo,Ivory Coast,-
+2026-06-10,expected-table,81,United States v Bosnia and Herzegovina,Turkey v Senegal,no,no,0,"Bosnia and Herzegovina, United States","Senegal, Turkey",-
+2026-06-10,expected-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-10,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-10,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-10,expected-table,85,Switzerland v Algeria,Canada v Egypt,no,no,0,"Algeria, Switzerland","Canada, Egypt",-
+2026-06-10,expected-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-10,expected-table,87,Colombia v Ghana,Colombia v Panama,no,no,1,Ghana,Panama,-
+2026-06-10,expected-table,88,Australia v Egypt,United States v Iran,no,no,0,"Australia, Egypt","Iran, United States",-
+2026-06-10,modal-group-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-10,modal-group-table,74,Germany v Paraguay,Germany v Bosnia and Herzegovina,no,no,1,Paraguay,Bosnia and Herzegovina,-
+2026-06-10,modal-group-table,75,Netherlands v Morocco,Japan v Scotland,no,no,0,"Morocco, Netherlands","Japan, Scotland",-
+2026-06-10,modal-group-table,76,Brazil v Japan,Brazil v Netherlands,no,no,1,Japan,Netherlands,-
+2026-06-10,modal-group-table,77,France v Sweden,France v Australia,no,no,1,Sweden,Australia,-
+2026-06-10,modal-group-table,78,Ivory Coast v Norway,Ecuador v Senegal,no,no,0,"Ivory Coast, Norway","Ecuador, Senegal",-
+2026-06-10,modal-group-table,79,Mexico v Ecuador,Mexico v Morocco,no,no,1,Ecuador,Morocco,-
+2026-06-10,modal-group-table,80,England v DR Congo,Croatia v Ivory Coast,no,no,0,"DR Congo, England","Croatia, Ivory Coast",-
+2026-06-10,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Tunisia,no,no,1,Bosnia and Herzegovina,Tunisia,-
+2026-06-10,modal-group-table,82,Belgium v Senegal,Iran v Czechia,no,no,0,"Belgium, Senegal","Czechia, Iran",-
+2026-06-10,modal-group-table,83,Portugal v Croatia,Colombia v England,no,no,0,"Croatia, Portugal","Colombia, England",-
+2026-06-10,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-10,modal-group-table,85,Switzerland v Algeria,Canada v Algeria,no,no,1,Switzerland,Canada,-
+2026-06-10,modal-group-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-10,modal-group-table,87,Colombia v Ghana,Portugal v Panama,no,no,0,"Colombia, Ghana","Panama, Portugal",-
+2026-06-10,modal-group-table,88,Australia v Egypt,Paraguay v Belgium,no,no,0,"Australia, Egypt","Belgium, Paraguay",-
+2026-06-11,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-11,expected-table,74,Germany v Paraguay,Germany v Scotland,no,no,1,Paraguay,Scotland,-
+2026-06-11,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-11,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-11,expected-table,77,France v Sweden,France v Paraguay,no,no,1,Sweden,Paraguay,-
+2026-06-11,expected-table,78,Ivory Coast v Norway,Ecuador v Norway,no,no,1,Ivory Coast,Ecuador,-
+2026-06-11,expected-table,79,Mexico v Ecuador,Mexico v Ivory Coast,no,no,1,Ecuador,Ivory Coast,-
+2026-06-11,expected-table,80,England v DR Congo,England v Uzbekistan,no,no,1,DR Congo,Uzbekistan,-
+2026-06-11,expected-table,81,United States v Bosnia and Herzegovina,Turkey v Senegal,no,no,0,"Bosnia and Herzegovina, United States","Senegal, Turkey",-
+2026-06-11,expected-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-11,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-11,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-11,expected-table,85,Switzerland v Algeria,Canada v Egypt,no,no,0,"Algeria, Switzerland","Canada, Egypt",-
+2026-06-11,expected-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-11,expected-table,87,Colombia v Ghana,Colombia v Panama,no,no,1,Ghana,Panama,-
+2026-06-11,expected-table,88,Australia v Egypt,United States v Iran,no,no,0,"Australia, Egypt","Iran, United States",-
+2026-06-11,modal-group-table,73,South Africa v Canada,South Korea v Canada,no,no,1,South Africa,South Korea,-
+2026-06-11,modal-group-table,74,Germany v Paraguay,Germany v Scotland,no,no,1,Paraguay,Scotland,-
+2026-06-11,modal-group-table,75,Netherlands v Morocco,Japan v Morocco,no,no,1,Netherlands,Japan,-
+2026-06-11,modal-group-table,76,Brazil v Japan,Brazil v Netherlands,no,no,1,Japan,Netherlands,-
+2026-06-11,modal-group-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-11,modal-group-table,78,Ivory Coast v Norway,Ecuador v Senegal,no,no,0,"Ivory Coast, Norway","Ecuador, Senegal",-
+2026-06-11,modal-group-table,79,Mexico v Ecuador,Mexico v Norway,no,no,1,Ecuador,Norway,-
+2026-06-11,modal-group-table,80,England v DR Congo,England v Uzbekistan,no,no,1,DR Congo,Uzbekistan,-
+2026-06-11,modal-group-table,81,United States v Bosnia and Herzegovina,Australia v Ivory Coast,no,no,0,"Bosnia and Herzegovina, United States","Australia, Ivory Coast",-
+2026-06-11,modal-group-table,82,Belgium v Senegal,Belgium v Czechia,no,no,1,Senegal,Czechia,-
+2026-06-11,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-11,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-11,modal-group-table,85,Switzerland v Algeria,Switzerland v New Zealand,no,no,1,Algeria,New Zealand,-
+2026-06-11,modal-group-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-11,modal-group-table,87,Colombia v Ghana,Colombia v Turkey,no,no,1,Ghana,Turkey,-
+2026-06-11,modal-group-table,88,Australia v Egypt,United States v Iran,no,no,0,"Australia, Egypt","Iran, United States",-
+2026-06-12,expected-table,73,South Africa v Canada,South Korea v Canada,no,no,1,South Africa,South Korea,-
+2026-06-12,expected-table,74,Germany v Paraguay,Germany v Bosnia and Herzegovina,no,no,1,Paraguay,Bosnia and Herzegovina,-
+2026-06-12,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-12,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-12,expected-table,77,France v Sweden,France v Australia,no,no,1,Sweden,Australia,-
+2026-06-12,expected-table,78,Ivory Coast v Norway,Ecuador v Norway,no,no,1,Ivory Coast,Ecuador,-
+2026-06-12,expected-table,79,Mexico v Ecuador,Mexico v Scotland,no,no,1,Ecuador,Scotland,-
+2026-06-12,expected-table,80,England v DR Congo,England v Ivory Coast,no,no,1,DR Congo,Ivory Coast,-
+2026-06-12,expected-table,81,United States v Bosnia and Herzegovina,United States v Senegal,no,no,1,Bosnia and Herzegovina,Senegal,-
+2026-06-12,expected-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-12,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-12,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-12,expected-table,85,Switzerland v Algeria,Switzerland v Egypt,no,no,1,Algeria,Egypt,-
+2026-06-12,expected-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-12,expected-table,87,Colombia v Ghana,Colombia v Panama,no,no,1,Ghana,Panama,-
+2026-06-12,expected-table,88,Australia v Egypt,Turkey v Iran,no,no,0,"Australia, Egypt","Iran, Turkey",-
+2026-06-12,modal-group-table,73,South Africa v Canada,South Korea v Canada,no,no,1,South Africa,South Korea,-
+2026-06-12,modal-group-table,74,Germany v Paraguay,Ecuador v Czechia,no,no,0,"Germany, Paraguay","Czechia, Ecuador",-
+2026-06-12,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-12,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-12,modal-group-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-12,modal-group-table,78,Ivory Coast v Norway,Germany v Norway,no,no,1,Ivory Coast,Germany,-
+2026-06-12,modal-group-table,79,Mexico v Ecuador,Mexico v Scotland,no,no,1,Ecuador,Scotland,-
+2026-06-12,modal-group-table,80,England v DR Congo,England v Uzbekistan,no,no,1,DR Congo,Uzbekistan,-
+2026-06-12,modal-group-table,81,United States v Bosnia and Herzegovina,Turkey v Algeria,no,no,0,"Bosnia and Herzegovina, United States","Algeria, Turkey",-
+2026-06-12,modal-group-table,82,Belgium v Senegal,Belgium v Ivory Coast,no,no,1,Senegal,Ivory Coast,-
+2026-06-12,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-12,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-12,modal-group-table,85,Switzerland v Algeria,Switzerland v Iran,no,no,1,Algeria,Iran,-
+2026-06-12,modal-group-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-12,modal-group-table,87,Colombia v Ghana,Colombia v Panama,no,no,1,Ghana,Panama,-
+2026-06-12,modal-group-table,88,Australia v Egypt,United States v Egypt,no,no,1,Australia,United States,-
+2026-06-13,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-13,expected-table,74,Germany v Paraguay,Germany v Bosnia and Herzegovina,no,no,1,Paraguay,Bosnia and Herzegovina,-
+2026-06-13,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-13,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-13,expected-table,77,France v Sweden,France v Scotland,no,no,1,Sweden,Scotland,-
+2026-06-13,expected-table,78,Ivory Coast v Norway,Ecuador v Norway,no,no,1,Ivory Coast,Ecuador,-
+2026-06-13,expected-table,79,Mexico v Ecuador,Mexico v Ivory Coast,no,no,1,Ecuador,Ivory Coast,-
+2026-06-13,expected-table,80,England v DR Congo,England v Uzbekistan,no,no,1,DR Congo,Uzbekistan,-
+2026-06-13,expected-table,81,United States v Bosnia and Herzegovina,United States v Senegal,no,no,1,Bosnia and Herzegovina,Senegal,-
+2026-06-13,expected-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-13,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-13,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-13,expected-table,85,Switzerland v Algeria,Canada v Egypt,no,no,0,"Algeria, Switzerland","Canada, Egypt",-
+2026-06-13,expected-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-13,expected-table,87,Colombia v Ghana,Colombia v Panama,no,no,1,Ghana,Panama,-
+2026-06-13,expected-table,88,Australia v Egypt,Australia v Iran,no,no,1,Egypt,Iran,-
+2026-06-13,modal-group-table,73,South Africa v Canada,South Korea v Canada,no,no,1,South Africa,South Korea,-
+2026-06-13,modal-group-table,74,Germany v Paraguay,Germany v Qatar,no,no,1,Paraguay,Qatar,-
+2026-06-13,modal-group-table,75,Netherlands v Morocco,Japan v Brazil,no,no,0,"Morocco, Netherlands","Brazil, Japan",76
+2026-06-13,modal-group-table,76,Brazil v Japan,Morocco v Netherlands,no,no,0,"Brazil, Japan","Morocco, Netherlands",75
+2026-06-13,modal-group-table,77,France v Sweden,Norway v Turkey,no,no,0,"France, Sweden","Norway, Turkey",-
+2026-06-13,modal-group-table,78,Ivory Coast v Norway,Ecuador v France,no,no,0,"Ivory Coast, Norway","Ecuador, France",-
+2026-06-13,modal-group-table,79,Mexico v Ecuador,Mexico v Scotland,no,no,1,Ecuador,Scotland,-
+2026-06-13,modal-group-table,80,England v DR Congo,England v DR Congo,yes,yes,2,-,-,-
+2026-06-13,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Ivory Coast,no,no,1,Bosnia and Herzegovina,Ivory Coast,-
+2026-06-13,modal-group-table,82,Belgium v Senegal,Belgium v Austria,no,no,1,Senegal,Austria,-
+2026-06-13,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-13,modal-group-table,84,Spain v Austria,Spain v Algeria,no,no,1,Austria,Algeria,-
+2026-06-13,modal-group-table,85,Switzerland v Algeria,Switzerland v Iran,no,no,1,Algeria,Iran,-
+2026-06-13,modal-group-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-13,modal-group-table,87,Colombia v Ghana,Colombia v Panama,no,no,1,Ghana,Panama,-
+2026-06-13,modal-group-table,88,Australia v Egypt,Australia v Egypt,yes,yes,2,-,-,-
+2026-06-14,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-14,expected-table,74,Germany v Paraguay,Germany v Bosnia and Herzegovina,no,no,1,Paraguay,Bosnia and Herzegovina,-
+2026-06-14,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-14,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-14,expected-table,77,France v Sweden,France v Scotland,no,no,1,Sweden,Scotland,-
+2026-06-14,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-14,expected-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-14,expected-table,80,England v DR Congo,England v Senegal,no,no,1,DR Congo,Senegal,-
+2026-06-14,expected-table,81,United States v Bosnia and Herzegovina,United States v Sweden,no,no,1,Bosnia and Herzegovina,Sweden,-
+2026-06-14,expected-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-14,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-14,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-14,expected-table,85,Switzerland v Algeria,Canada v Egypt,no,no,0,"Algeria, Switzerland","Canada, Egypt",-
+2026-06-14,expected-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-14,expected-table,87,Colombia v Ghana,Colombia v Panama,no,no,1,Ghana,Panama,-
+2026-06-14,expected-table,88,Australia v Egypt,Australia v Iran,no,no,1,Egypt,Iran,-
+2026-06-14,modal-group-table,73,South Africa v Canada,South Korea v Canada,no,no,1,South Africa,South Korea,-
+2026-06-14,modal-group-table,74,Germany v Paraguay,Germany v Czechia,no,no,1,Paraguay,Czechia,-
+2026-06-14,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-14,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-14,modal-group-table,77,France v Sweden,France v Paraguay,no,no,1,Sweden,Paraguay,-
+2026-06-14,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Senegal,no,no,1,Norway,Senegal,-
+2026-06-14,modal-group-table,79,Mexico v Ecuador,Mexico v Sweden,no,no,1,Ecuador,Sweden,-
+2026-06-14,modal-group-table,80,England v DR Congo,England v Saudi Arabia,no,no,1,DR Congo,Saudi Arabia,-
+2026-06-14,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Norway,no,no,1,Bosnia and Herzegovina,Norway,-
+2026-06-14,modal-group-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-14,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-14,modal-group-table,84,Spain v Austria,Uruguay v Austria,no,no,1,Spain,Uruguay,-
+2026-06-14,modal-group-table,85,Switzerland v Algeria,Switzerland v Iran,no,no,1,Algeria,Iran,-
+2026-06-14,modal-group-table,86,Argentina v Cape Verde,Argentina v Spain,no,no,1,Cape Verde,Spain,-
+2026-06-14,modal-group-table,87,Colombia v Ghana,Colombia v Ecuador,no,no,1,Ghana,Ecuador,-
+2026-06-14,modal-group-table,88,Australia v Egypt,Australia v New Zealand,no,no,1,Egypt,New Zealand,-
+2026-06-15,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-15,expected-table,74,Germany v Paraguay,Germany v Bosnia and Herzegovina,no,no,1,Paraguay,Bosnia and Herzegovina,-
+2026-06-15,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-15,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-15,expected-table,77,France v Sweden,France v Scotland,no,no,1,Sweden,Scotland,-
+2026-06-15,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-15,expected-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-15,expected-table,80,England v DR Congo,England v Senegal,no,no,1,DR Congo,Senegal,-
+2026-06-15,expected-table,81,United States v Bosnia and Herzegovina,United States v Sweden,no,no,1,Bosnia and Herzegovina,Sweden,-
+2026-06-15,expected-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-15,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-15,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-15,expected-table,85,Switzerland v Algeria,Canada v Egypt,no,no,0,"Algeria, Switzerland","Canada, Egypt",-
+2026-06-15,expected-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-15,expected-table,87,Colombia v Ghana,Colombia v Panama,no,no,1,Ghana,Panama,-
+2026-06-15,expected-table,88,Australia v Egypt,Australia v Iran,no,no,1,Egypt,Iran,-
+2026-06-15,modal-group-table,73,South Africa v Canada,South Korea v Canada,no,no,1,South Africa,South Korea,-
+2026-06-15,modal-group-table,74,Germany v Paraguay,Germany v Paraguay,yes,yes,2,-,-,-
+2026-06-15,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-15,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-15,modal-group-table,77,France v Sweden,Norway v Scotland,no,no,0,"France, Sweden","Norway, Scotland",-
+2026-06-15,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v France,no,no,1,Norway,France,-
+2026-06-15,modal-group-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-15,modal-group-table,80,England v DR Congo,England v Uzbekistan,no,no,1,DR Congo,Uzbekistan,-
+2026-06-15,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Sweden,no,no,1,Bosnia and Herzegovina,Sweden,-
+2026-06-15,modal-group-table,82,Belgium v Senegal,Belgium v Czechia,no,no,1,Senegal,Czechia,-
+2026-06-15,modal-group-table,83,Portugal v Croatia,Colombia v Croatia,no,no,1,Portugal,Colombia,-
+2026-06-15,modal-group-table,84,Spain v Austria,Spain v Algeria,no,no,1,Austria,Algeria,-
+2026-06-15,modal-group-table,85,Switzerland v Algeria,Switzerland v Austria,no,no,1,Algeria,Austria,-
+2026-06-15,modal-group-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-15,modal-group-table,87,Colombia v Ghana,Portugal v Panama,no,no,0,"Colombia, Ghana","Panama, Portugal",-
+2026-06-15,modal-group-table,88,Australia v Egypt,Australia v Egypt,yes,yes,2,-,-,-
+2026-06-16,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-16,expected-table,74,Germany v Paraguay,Germany v Bosnia and Herzegovina,no,no,1,Paraguay,Bosnia and Herzegovina,-
+2026-06-16,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-16,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-16,expected-table,77,France v Sweden,France v Scotland,no,no,1,Sweden,Scotland,-
+2026-06-16,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-16,expected-table,79,Mexico v Ecuador,Mexico v Senegal,no,no,1,Ecuador,Senegal,-
+2026-06-16,expected-table,80,England v DR Congo,England v Uzbekistan,no,no,1,DR Congo,Uzbekistan,-
+2026-06-16,expected-table,81,United States v Bosnia and Herzegovina,United States v Sweden,no,no,1,Bosnia and Herzegovina,Sweden,-
+2026-06-16,expected-table,82,Belgium v Senegal,Belgium v Ecuador,no,no,1,Senegal,Ecuador,-
+2026-06-16,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-16,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-16,expected-table,85,Switzerland v Algeria,Canada v Egypt,no,no,0,"Algeria, Switzerland","Canada, Egypt",-
+2026-06-16,expected-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-16,expected-table,87,Colombia v Ghana,Colombia v Panama,no,no,1,Ghana,Panama,-
+2026-06-16,expected-table,88,Australia v Egypt,Australia v Iran,no,no,1,Egypt,Iran,-
+2026-06-16,modal-group-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-16,modal-group-table,74,Germany v Paraguay,Germany v Bosnia and Herzegovina,no,no,1,Paraguay,Bosnia and Herzegovina,-
+2026-06-16,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-16,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-16,modal-group-table,77,France v Sweden,France v Paraguay,no,no,1,Sweden,Paraguay,-
+2026-06-16,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-16,modal-group-table,79,Mexico v Ecuador,Mexico v Scotland,no,no,1,Ecuador,Scotland,-
+2026-06-16,modal-group-table,80,England v DR Congo,England v Uzbekistan,no,no,1,DR Congo,Uzbekistan,-
+2026-06-16,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Sweden,no,no,1,Bosnia and Herzegovina,Sweden,-
+2026-06-16,modal-group-table,82,Belgium v Senegal,Belgium v Czechia,no,no,1,Senegal,Czechia,-
+2026-06-16,modal-group-table,83,Portugal v Croatia,Colombia v Croatia,no,no,1,Portugal,Colombia,-
+2026-06-16,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-16,modal-group-table,85,Switzerland v Algeria,Canada v Ecuador,no,no,0,"Algeria, Switzerland","Canada, Ecuador",-
+2026-06-16,modal-group-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-16,modal-group-table,87,Colombia v Ghana,Portugal v Panama,no,no,0,"Colombia, Ghana","Panama, Portugal",-
+2026-06-16,modal-group-table,88,Australia v Egypt,Australia v Egypt,yes,yes,2,-,-,-
+2026-06-17,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-17,expected-table,74,Germany v Paraguay,Germany v Bosnia and Herzegovina,no,no,1,Paraguay,Bosnia and Herzegovina,-
+2026-06-17,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-17,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-17,expected-table,77,France v Sweden,France v Scotland,no,no,1,Sweden,Scotland,-
+2026-06-17,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-17,expected-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-17,expected-table,80,England v DR Congo,England v Senegal,no,no,1,DR Congo,Senegal,-
+2026-06-17,expected-table,81,United States v Bosnia and Herzegovina,United States v Sweden,no,no,1,Bosnia and Herzegovina,Sweden,-
+2026-06-17,expected-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-17,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-17,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-17,expected-table,85,Switzerland v Algeria,Canada v Egypt,no,no,0,"Algeria, Switzerland","Canada, Egypt",-
+2026-06-17,expected-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-17,expected-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-17,expected-table,88,Australia v Egypt,Australia v Iran,no,no,1,Egypt,Iran,-
+2026-06-17,modal-group-table,73,South Africa v Canada,South Korea v Canada,no,no,1,South Africa,South Korea,-
+2026-06-17,modal-group-table,74,Germany v Paraguay,Germany v Bosnia and Herzegovina,no,no,1,Paraguay,Bosnia and Herzegovina,-
+2026-06-17,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-17,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-17,modal-group-table,77,France v Sweden,France v Scotland,no,no,1,Sweden,Scotland,-
+2026-06-17,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-17,modal-group-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-17,modal-group-table,80,England v DR Congo,England v Uzbekistan,no,no,1,DR Congo,Uzbekistan,-
+2026-06-17,modal-group-table,81,United States v Bosnia and Herzegovina,Australia v Senegal,no,no,0,"Bosnia and Herzegovina, United States","Australia, Senegal",-
+2026-06-17,modal-group-table,82,Belgium v Senegal,Belgium v Czechia,no,no,1,Senegal,Czechia,-
+2026-06-17,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-17,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-17,modal-group-table,85,Switzerland v Algeria,Switzerland v Sweden,no,no,1,Algeria,Sweden,-
+2026-06-17,modal-group-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-17,modal-group-table,87,Colombia v Ghana,Colombia v Turkey,no,no,1,Ghana,Turkey,-
+2026-06-17,modal-group-table,88,Australia v Egypt,United States v Egypt,no,no,1,Australia,United States,-
+2026-06-18,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-18,expected-table,74,Germany v Paraguay,Germany v Scotland,no,no,1,Paraguay,Scotland,-
+2026-06-18,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-18,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-18,expected-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-18,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-18,expected-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-18,expected-table,80,England v DR Congo,England v Cape Verde,no,no,1,DR Congo,Cape Verde,-
+2026-06-18,expected-table,81,United States v Bosnia and Herzegovina,United States v Senegal,no,no,1,Bosnia and Herzegovina,Senegal,-
+2026-06-18,expected-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-18,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-18,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-18,expected-table,85,Switzerland v Algeria,Canada v Egypt,no,no,0,"Algeria, Switzerland","Canada, Egypt",-
+2026-06-18,expected-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-18,expected-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-18,expected-table,88,Australia v Egypt,Australia v Iran,no,no,1,Egypt,Iran,-
+2026-06-18,modal-group-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-18,modal-group-table,74,Germany v Paraguay,Germany v Scotland,no,no,1,Paraguay,Scotland,-
+2026-06-18,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-18,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-18,modal-group-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-18,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-18,modal-group-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-18,modal-group-table,80,England v DR Congo,England v DR Congo,yes,yes,2,-,-,-
+2026-06-18,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Senegal,no,no,1,Bosnia and Herzegovina,Senegal,-
+2026-06-18,modal-group-table,82,Belgium v Senegal,Iran v Algeria,no,no,0,"Belgium, Senegal","Algeria, Iran",-
+2026-06-18,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-18,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-18,modal-group-table,85,Switzerland v Algeria,Canada v Belgium,no,no,0,"Algeria, Switzerland","Belgium, Canada",-
+2026-06-18,modal-group-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-18,modal-group-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-18,modal-group-table,88,Australia v Egypt,Australia v New Zealand,no,no,1,Egypt,New Zealand,-
+2026-06-19,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-19,expected-table,74,Germany v Paraguay,Germany v Scotland,no,no,1,Paraguay,Scotland,-
+2026-06-19,expected-table,75,Netherlands v Morocco,Netherlands v Brazil,no,no,1,Morocco,Brazil,-
+2026-06-19,expected-table,76,Brazil v Japan,Morocco v Japan,no,no,1,Brazil,Morocco,-
+2026-06-19,expected-table,77,France v Sweden,France v Australia,no,no,1,Sweden,Australia,-
+2026-06-19,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-19,expected-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-19,expected-table,80,England v DR Congo,England v Senegal,no,no,1,DR Congo,Senegal,-
+2026-06-19,expected-table,81,United States v Bosnia and Herzegovina,United States v Sweden,no,no,1,Bosnia and Herzegovina,Sweden,-
+2026-06-19,expected-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-19,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-19,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-19,expected-table,85,Switzerland v Algeria,Canada v Egypt,no,no,0,"Algeria, Switzerland","Canada, Egypt",-
+2026-06-19,expected-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-19,expected-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-19,expected-table,88,Australia v Egypt,Paraguay v Iran,no,no,0,"Australia, Egypt","Iran, Paraguay",-
+2026-06-19,modal-group-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-19,modal-group-table,74,Germany v Paraguay,Germany v Scotland,no,no,1,Paraguay,Scotland,-
+2026-06-19,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-19,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-19,modal-group-table,77,France v Sweden,France v Paraguay,no,no,1,Sweden,Paraguay,-
+2026-06-19,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-19,modal-group-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-19,modal-group-table,80,England v DR Congo,England v Senegal,no,no,1,DR Congo,Senegal,-
+2026-06-19,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Sweden,no,no,1,Bosnia and Herzegovina,Sweden,-
+2026-06-19,modal-group-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-19,modal-group-table,83,Portugal v Croatia,Uzbekistan v Croatia,no,no,1,Portugal,Uzbekistan,-
+2026-06-19,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-19,modal-group-table,85,Switzerland v Algeria,Canada v Iran,no,no,0,"Algeria, Switzerland","Canada, Iran",-
+2026-06-19,modal-group-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-19,modal-group-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-19,modal-group-table,88,Australia v Egypt,Australia v Egypt,yes,yes,2,-,-,-
+2026-06-20,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-20,expected-table,74,Germany v Paraguay,Germany v Scotland,no,no,1,Paraguay,Scotland,-
+2026-06-20,expected-table,75,Netherlands v Morocco,Netherlands v Brazil,no,no,1,Morocco,Brazil,-
+2026-06-20,expected-table,76,Brazil v Japan,Morocco v Japan,no,no,1,Brazil,Morocco,-
+2026-06-20,expected-table,77,France v Sweden,France v Australia,no,no,1,Sweden,Australia,-
+2026-06-20,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-20,expected-table,79,Mexico v Ecuador,Mexico v Sweden,no,no,1,Ecuador,Sweden,-
+2026-06-20,expected-table,80,England v DR Congo,England v Cape Verde,no,no,1,DR Congo,Cape Verde,-
+2026-06-20,expected-table,81,United States v Bosnia and Herzegovina,United States v Senegal,no,no,1,Bosnia and Herzegovina,Senegal,-
+2026-06-20,expected-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-20,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-20,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-20,expected-table,85,Switzerland v Algeria,Canada v Egypt,no,no,0,"Algeria, Switzerland","Canada, Egypt",-
+2026-06-20,expected-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-20,expected-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-20,expected-table,88,Australia v Egypt,Paraguay v Iran,no,no,0,"Australia, Egypt","Iran, Paraguay",-
+2026-06-20,modal-group-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-20,modal-group-table,74,Germany v Paraguay,Germany v Paraguay,yes,yes,2,-,-,-
+2026-06-20,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-20,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-20,modal-group-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-20,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-20,modal-group-table,79,Mexico v Ecuador,Mexico v Scotland,no,no,1,Ecuador,Scotland,-
+2026-06-20,modal-group-table,80,England v DR Congo,England v Uzbekistan,no,no,1,DR Congo,Uzbekistan,-
+2026-06-20,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Algeria,no,no,1,Bosnia and Herzegovina,Algeria,-
+2026-06-20,modal-group-table,82,Belgium v Senegal,Belgium v Senegal,yes,yes,2,-,-,-
+2026-06-20,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-20,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-20,modal-group-table,85,Switzerland v Algeria,Canada v Iran,no,no,0,"Algeria, Switzerland","Canada, Iran",-
+2026-06-20,modal-group-table,86,Argentina v Cape Verde,Argentina v Uruguay,no,no,1,Cape Verde,Uruguay,-
+2026-06-20,modal-group-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-20,modal-group-table,88,Australia v Egypt,Australia v Egypt,yes,yes,2,-,-,-
+2026-06-21,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-21,expected-table,74,Germany v Paraguay,Germany v Australia,no,no,1,Paraguay,Australia,-
+2026-06-21,expected-table,75,Netherlands v Morocco,Netherlands v Brazil,no,no,1,Morocco,Brazil,-
+2026-06-21,expected-table,76,Brazil v Japan,Morocco v Japan,no,no,1,Brazil,Morocco,-
+2026-06-21,expected-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-21,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-21,expected-table,79,Mexico v Ecuador,Mexico v Scotland,no,no,1,Ecuador,Scotland,-
+2026-06-21,expected-table,80,England v DR Congo,England v DR Congo,yes,yes,2,-,-,-
+2026-06-21,expected-table,81,United States v Bosnia and Herzegovina,United States v Algeria,no,no,1,Bosnia and Herzegovina,Algeria,-
+2026-06-21,expected-table,82,Belgium v Senegal,Egypt v Senegal,no,no,1,Belgium,Egypt,-
+2026-06-21,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-21,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-21,expected-table,85,Switzerland v Algeria,Canada v Iran,no,no,0,"Algeria, Switzerland","Canada, Iran",-
+2026-06-21,expected-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-21,expected-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-21,expected-table,88,Australia v Egypt,Paraguay v Belgium,no,no,0,"Australia, Egypt","Belgium, Paraguay",-
+2026-06-21,modal-group-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-21,modal-group-table,74,Germany v Paraguay,Germany v Paraguay,yes,yes,2,-,-,-
+2026-06-21,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-21,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-21,modal-group-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-21,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-21,modal-group-table,79,Mexico v Ecuador,Mexico v Scotland,no,no,1,Ecuador,Scotland,-
+2026-06-21,modal-group-table,80,England v DR Congo,England v Portugal,no,no,1,DR Congo,Portugal,-
+2026-06-21,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Bosnia and Herzegovina,yes,yes,2,-,-,-
+2026-06-21,modal-group-table,82,Belgium v Senegal,Egypt v Senegal,no,no,1,Belgium,Egypt,-
+2026-06-21,modal-group-table,83,Portugal v Croatia,Uzbekistan v Croatia,no,no,1,Portugal,Uzbekistan,-
+2026-06-21,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-21,modal-group-table,85,Switzerland v Algeria,Canada v Iran,no,no,0,"Algeria, Switzerland","Canada, Iran",-
+2026-06-21,modal-group-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-21,modal-group-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-21,modal-group-table,88,Australia v Egypt,Australia v Belgium,no,no,1,Egypt,Belgium,-
+2026-06-22,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-22,expected-table,74,Germany v Paraguay,Germany v Scotland,no,no,1,Paraguay,Scotland,-
+2026-06-22,expected-table,75,Netherlands v Morocco,Netherlands v Brazil,no,no,1,Morocco,Brazil,-
+2026-06-22,expected-table,76,Brazil v Japan,Morocco v Japan,no,no,1,Brazil,Morocco,-
+2026-06-22,expected-table,77,France v Sweden,France v Australia,no,no,1,Sweden,Australia,-
+2026-06-22,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-22,expected-table,79,Mexico v Ecuador,Mexico v Uruguay,no,no,1,Ecuador,Uruguay,-
+2026-06-22,expected-table,80,England v DR Congo,England v DR Congo,yes,yes,2,-,-,-
+2026-06-22,expected-table,81,United States v Bosnia and Herzegovina,United States v Sweden,no,no,1,Bosnia and Herzegovina,Sweden,-
+2026-06-22,expected-table,82,Belgium v Senegal,Egypt v Algeria,no,no,0,"Belgium, Senegal","Algeria, Egypt",-
+2026-06-22,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-22,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-22,expected-table,85,Switzerland v Algeria,Canada v Iran,no,no,0,"Algeria, Switzerland","Canada, Iran",-
+2026-06-22,expected-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-22,expected-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-22,expected-table,88,Australia v Egypt,Paraguay v Belgium,no,no,0,"Australia, Egypt","Belgium, Paraguay",-
+2026-06-22,modal-group-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-22,modal-group-table,74,Germany v Paraguay,Germany v Paraguay,yes,yes,2,-,-,-
+2026-06-22,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-22,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-22,modal-group-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-22,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-22,modal-group-table,79,Mexico v Ecuador,Mexico v Scotland,no,no,1,Ecuador,Scotland,-
+2026-06-22,modal-group-table,80,England v DR Congo,England v DR Congo,yes,yes,2,-,-,-
+2026-06-22,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Algeria,no,no,1,Bosnia and Herzegovina,Algeria,-
+2026-06-22,modal-group-table,82,Belgium v Senegal,Egypt v Senegal,no,no,1,Belgium,Egypt,-
+2026-06-22,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-22,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-22,modal-group-table,85,Switzerland v Algeria,Canada v Iran,no,no,0,"Algeria, Switzerland","Canada, Iran",-
+2026-06-22,modal-group-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-22,modal-group-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-22,modal-group-table,88,Australia v Egypt,Australia v Belgium,no,no,1,Egypt,Belgium,-
+2026-06-23,expected-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-23,expected-table,74,Germany v Paraguay,Germany v Australia,no,no,1,Paraguay,Australia,-
+2026-06-23,expected-table,75,Netherlands v Morocco,Netherlands v Brazil,no,no,1,Morocco,Brazil,-
+2026-06-23,expected-table,76,Brazil v Japan,Morocco v Japan,no,no,1,Brazil,Morocco,-
+2026-06-23,expected-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-23,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-23,expected-table,79,Mexico v Ecuador,Mexico v Scotland,no,no,1,Ecuador,Scotland,-
+2026-06-23,expected-table,80,England v DR Congo,England v Uruguay,no,no,1,DR Congo,Uruguay,-
+2026-06-23,expected-table,81,United States v Bosnia and Herzegovina,United States v Bosnia and Herzegovina,yes,yes,2,-,-,-
+2026-06-23,expected-table,82,Belgium v Senegal,Egypt v Algeria,no,no,0,"Belgium, Senegal","Algeria, Egypt",-
+2026-06-23,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-23,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-23,expected-table,85,Switzerland v Algeria,Canada v Iran,no,no,0,"Algeria, Switzerland","Canada, Iran",-
+2026-06-23,expected-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-23,expected-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-23,expected-table,88,Australia v Egypt,Paraguay v Belgium,no,no,0,"Australia, Egypt","Belgium, Paraguay",-
+2026-06-23,modal-group-table,73,South Africa v Canada,South Korea v Switzerland,no,no,0,"Canada, South Africa","South Korea, Switzerland",-
+2026-06-23,modal-group-table,74,Germany v Paraguay,Germany v Scotland,no,no,1,Paraguay,Scotland,-
+2026-06-23,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-23,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-23,modal-group-table,77,France v Sweden,France v Paraguay,no,no,1,Sweden,Paraguay,-
+2026-06-23,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-23,modal-group-table,79,Mexico v Ecuador,Mexico v Sweden,no,no,1,Ecuador,Sweden,-
+2026-06-23,modal-group-table,80,England v DR Congo,England v Uruguay,no,no,1,DR Congo,Uruguay,-
+2026-06-23,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Senegal,no,no,1,Bosnia and Herzegovina,Senegal,-
+2026-06-23,modal-group-table,82,Belgium v Senegal,Egypt v Algeria,no,no,0,"Belgium, Senegal","Algeria, Egypt",-
+2026-06-23,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-23,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-23,modal-group-table,85,Switzerland v Algeria,Canada v Iran,no,no,0,"Algeria, Switzerland","Canada, Iran",-
+2026-06-23,modal-group-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-23,modal-group-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-23,modal-group-table,88,Australia v Egypt,Australia v Belgium,no,no,1,Egypt,Belgium,-
+2026-06-24,expected-table,73,South Africa v Canada,South Africa v Canada,yes,yes,2,-,-,-
+2026-06-24,expected-table,74,Germany v Paraguay,Germany v Australia,no,no,1,Paraguay,Australia,-
+2026-06-24,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-24,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-24,expected-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-24,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-24,expected-table,79,Mexico v Ecuador,Mexico v Scotland,no,no,1,Ecuador,Scotland,-
+2026-06-24,expected-table,80,England v DR Congo,England v Algeria,no,no,1,DR Congo,Algeria,-
+2026-06-24,expected-table,81,United States v Bosnia and Herzegovina,United States v Bosnia and Herzegovina,yes,yes,2,-,-,-
+2026-06-24,expected-table,82,Belgium v Senegal,Egypt v South Korea,no,no,0,"Belgium, Senegal","Egypt, South Korea",-
+2026-06-24,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-24,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-24,expected-table,85,Switzerland v Algeria,Switzerland v Iran,no,no,1,Algeria,Iran,-
+2026-06-24,expected-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-24,expected-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-24,expected-table,88,Australia v Egypt,Paraguay v Belgium,no,no,0,"Australia, Egypt","Belgium, Paraguay",-
+2026-06-24,modal-group-table,73,South Africa v Canada,South Africa v Canada,yes,yes,2,-,-,-
+2026-06-24,modal-group-table,74,Germany v Paraguay,Germany v South Korea,no,no,1,Paraguay,South Korea,-
+2026-06-24,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-24,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-24,modal-group-table,77,France v Sweden,France v Paraguay,no,no,1,Sweden,Paraguay,-
+2026-06-24,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-24,modal-group-table,79,Mexico v Ecuador,Mexico v Sweden,no,no,1,Ecuador,Sweden,-
+2026-06-24,modal-group-table,80,England v DR Congo,England v Senegal,no,no,1,DR Congo,Senegal,-
+2026-06-24,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Bosnia and Herzegovina,yes,yes,2,-,-,-
+2026-06-24,modal-group-table,82,Belgium v Senegal,Egypt v Algeria,no,no,0,"Belgium, Senegal","Algeria, Egypt",-
+2026-06-24,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-24,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-24,modal-group-table,85,Switzerland v Algeria,Switzerland v Iran,no,no,1,Algeria,Iran,-
+2026-06-24,modal-group-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-24,modal-group-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-24,modal-group-table,88,Australia v Egypt,Australia v Belgium,no,no,1,Egypt,Belgium,-
+2026-06-25,expected-table,73,South Africa v Canada,South Africa v Canada,yes,yes,2,-,-,-
+2026-06-25,expected-table,74,Germany v Paraguay,Germany v Paraguay,yes,yes,2,-,-,-
+2026-06-25,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-25,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-25,expected-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-25,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-25,expected-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-25,expected-table,80,England v DR Congo,England v Algeria,no,no,1,DR Congo,Algeria,-
+2026-06-25,expected-table,81,United States v Bosnia and Herzegovina,United States v Bosnia and Herzegovina,yes,yes,2,-,-,-
+2026-06-25,expected-table,82,Belgium v Senegal,Egypt v South Korea,no,no,0,"Belgium, Senegal","Egypt, South Korea",-
+2026-06-25,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-25,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-25,expected-table,85,Switzerland v Algeria,Switzerland v Iran,no,no,1,Algeria,Iran,-
+2026-06-25,expected-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-25,expected-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-25,expected-table,88,Australia v Egypt,Australia v Belgium,no,no,1,Egypt,Belgium,-
+2026-06-25,modal-group-table,73,South Africa v Canada,South Africa v Canada,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,74,Germany v Paraguay,Germany v Paraguay,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,80,England v DR Congo,England v Algeria,no,no,1,DR Congo,Algeria,-
+2026-06-25,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Bosnia and Herzegovina,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,82,Belgium v Senegal,Egypt v South Korea,no,no,0,"Belgium, Senegal","Egypt, South Korea",-
+2026-06-25,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,85,Switzerland v Algeria,Switzerland v Iran,no,no,1,Algeria,Iran,-
+2026-06-25,modal-group-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-25,modal-group-table,88,Australia v Egypt,Australia v Belgium,no,no,1,Egypt,Belgium,-
+2026-06-26,expected-table,73,South Africa v Canada,South Africa v Canada,yes,yes,2,-,-,-
+2026-06-26,expected-table,74,Germany v Paraguay,Germany v Bosnia and Herzegovina,no,no,1,Paraguay,Bosnia and Herzegovina,-
+2026-06-26,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-26,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-26,expected-table,77,France v Sweden,France v Paraguay,no,no,1,Sweden,Paraguay,-
+2026-06-26,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-26,expected-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-26,expected-table,80,England v DR Congo,England v Senegal,no,no,1,DR Congo,Senegal,-
+2026-06-26,expected-table,81,United States v Bosnia and Herzegovina,United States v Sweden,no,no,1,Bosnia and Herzegovina,Sweden,-
+2026-06-26,expected-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-26,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-26,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-26,expected-table,85,Switzerland v Algeria,Switzerland v Iran,no,no,1,Algeria,Iran,-
+2026-06-26,expected-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-26,expected-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-26,expected-table,88,Australia v Egypt,Australia v Egypt,yes,yes,2,-,-,-
+2026-06-26,modal-group-table,73,South Africa v Canada,South Africa v Canada,yes,yes,2,-,-,-
+2026-06-26,modal-group-table,74,Germany v Paraguay,Germany v Bosnia and Herzegovina,no,no,1,Paraguay,Bosnia and Herzegovina,-
+2026-06-26,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-26,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-26,modal-group-table,77,France v Sweden,France v Paraguay,no,no,1,Sweden,Paraguay,-
+2026-06-26,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-26,modal-group-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-26,modal-group-table,80,England v DR Congo,England v Senegal,no,no,1,DR Congo,Senegal,-
+2026-06-26,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Sweden,no,no,1,Bosnia and Herzegovina,Sweden,-
+2026-06-26,modal-group-table,82,Belgium v Senegal,Belgium v Algeria,no,no,1,Senegal,Algeria,-
+2026-06-26,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-26,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-26,modal-group-table,85,Switzerland v Algeria,Switzerland v Iran,no,no,1,Algeria,Iran,-
+2026-06-26,modal-group-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-26,modal-group-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-26,modal-group-table,88,Australia v Egypt,Australia v Egypt,yes,yes,2,-,-,-
+2026-06-27,expected-table,73,South Africa v Canada,South Africa v Canada,yes,yes,2,-,-,-
+2026-06-27,expected-table,74,Germany v Paraguay,Germany v Paraguay,yes,yes,2,-,-,-
+2026-06-27,expected-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-27,expected-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-27,expected-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-27,expected-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-27,expected-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-27,expected-table,80,England v DR Congo,England v DR Congo,yes,yes,2,-,-,-
+2026-06-27,expected-table,81,United States v Bosnia and Herzegovina,United States v Bosnia and Herzegovina,yes,yes,2,-,-,-
+2026-06-27,expected-table,82,Belgium v Senegal,Belgium v Senegal,yes,yes,2,-,-,-
+2026-06-27,expected-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-27,expected-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-27,expected-table,85,Switzerland v Algeria,Switzerland v Algeria,yes,yes,2,-,-,-
+2026-06-27,expected-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-27,expected-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-27,expected-table,88,Australia v Egypt,Australia v Egypt,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,73,South Africa v Canada,South Africa v Canada,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,74,Germany v Paraguay,Germany v Paraguay,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,75,Netherlands v Morocco,Netherlands v Morocco,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,76,Brazil v Japan,Brazil v Japan,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,77,France v Sweden,France v Sweden,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,78,Ivory Coast v Norway,Ivory Coast v Norway,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,79,Mexico v Ecuador,Mexico v Ecuador,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,80,England v DR Congo,England v DR Congo,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,81,United States v Bosnia and Herzegovina,United States v Bosnia and Herzegovina,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,82,Belgium v Senegal,Belgium v Senegal,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,83,Portugal v Croatia,Portugal v Croatia,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,84,Spain v Austria,Spain v Austria,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,85,Switzerland v Algeria,Switzerland v Algeria,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,86,Argentina v Cape Verde,Argentina v Cape Verde,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,87,Colombia v Ghana,Colombia v Ghana,yes,yes,2,-,-,-
+2026-06-27,modal-group-table,88,Australia v Egypt,Australia v Egypt,yes,yes,2,-,-,-

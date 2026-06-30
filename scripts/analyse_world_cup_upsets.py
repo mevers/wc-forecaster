@@ -10,7 +10,7 @@ from typing import Any
 import yaml  # pyright: ignore[reportMissingModuleSource]
 
 from wc_forecaster.data import read_matches, write_csv
-from wc_forecaster.model import fit, lambdas, poisson_probs
+from wc_forecaster.model import fit, lambdas, outcome_constrained_median_scoreline, poisson_probs
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -195,9 +195,13 @@ def main() -> None:
             "forecast_as_of": forecast_date.isoformat(),
             "home_expected_goals": home_expected_goals,
             "away_expected_goals": away_expected_goals,
-            "expected_score": (
-                f"{max(range(len(home_probabilities)), key=home_probabilities.__getitem__)}-"
-                f"{max(range(len(away_probabilities)), key=away_probabilities.__getitem__)}"
+            "expected_score": "-".join(
+                str(goal)
+                for goal in outcome_constrained_median_scoreline(
+                    home_expected_goals,
+                    away_expected_goals,
+                    forecast["cfg"]["goals"]["score_cap"],
+                )
             ),
             "expected_outcome": expected_outcome,
             "actual_outcome": actual_outcome,
