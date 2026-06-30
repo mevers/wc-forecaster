@@ -103,6 +103,10 @@ def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], 
         team_a = match["home_team"] if match else qualifiers[pair[0]]
         team_b = match["away_team"] if match else thirds_by_match[match_no].split(":")[0] if pair[1] == "3" else qualifiers[pair[1]]
         winners[match_no] = append_match(rows_, match_no, team_a, team_b, ratings, beta, s_bracket, cfg)
+        # First predict the winner; overwrite it only if the knockout match has already been played.
+        if match and match["home_score"] is not None and match["fixture_winner"]:
+            rows_[-1]["winner"] = winners[match_no] = match["fixture_winner"]
+            s_bracket[team_a], s_bracket[team_b] = winners[match_no] == team_a, winners[match_no] == team_b
     for match_no, left, right in BRACKET:
         if match_no == 104:
             append_match(rows_, 103, semi_losers[101], semi_losers[102], ratings, beta, s_bracket, cfg)

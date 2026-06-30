@@ -25,11 +25,13 @@ Inputs are fixed by `config/model.yaml`:
 | :--- | :--- |
 | `data/historical_results/results.csv` | CSV file downloaded and curated from the public GitHub repo [`martj42/international_results`](https://github.com/martj42/international_results). Expected columns are `date`, `home_team`, `away_team`, `home_score`, `away_score`, `tournament`, `country`, `neutral`. |
 | `data/world_cup_2026/groups.csv` | Team to group mapping. Expected columns are `group`, `position`, `team`. |
-| `data/world_cup_2026/fixtures.csv` | Group-stage fixtures, completed scores, and `venue_advantage`, where `1` means team `home` has venue advantage, `0` means neutral site, and `-1` means team `away` has venue advantage. Expected columns are `match_no` ,`group` ,`date` ,`home` ,`away` ,`home_score` , `away_score` ,`venue_advantage`. |
+| `data/world_cup_2026/fixtures.csv` | Group-stage fixtures, completed scores, `fixture_winner`, and `venue_advantage`, where `1` means team `home` has venue advantage, `0` means neutral site, and `-1` means team `away` has venue advantage. Expected columns are `match_no` ,`group` ,`date` ,`home` ,`away` ,`home_score` , `away_score` ,`fixture_winner`, `venue_advantage`. |
 | `data/world_cup_2026/squads.csv` | 2026 WC squad compositions derived from [2026 FIFA World Cup squads](https://en.wikipedia.org/wiki/2026_FIFA_World_Cup_squads). Expected columns for the model are `team`, `player`, `club`, and `league`; the file also stores additional squad metadata such as number, position, date of birth, age, caps, and goals. The `league` value is the club's national association / league-system country, not the exact domestic division. |
 | `data/world_cup_2026/third_place_slots.csv` | Eligible third-place groups for each round-of-32 slot. Expected columns are `match_no` , `winner_slot`, `groups`. |
 
 Historical model fitting excludes any 2026 World Cup fixtures. Completed 2026 World Cup matches are sourced from the fixture file and applied once to the live tournament state, updating Elo ratings, previous-win form, underdog-magic residuals, and completed group results. They are _not_ used to update or re-estimate the fitted goal-model coefficients. A 2026 fixture score is used only when the fixture date is on or before `forecast.as_of`; later scored rows are treated as unplayed for that forecast. Rows with missing/`NA` scores are treated as unplayed.
+
+The score columns record the football score before penalties. For completed fixtures, `fixture_winner` stores the team that won the fixture after all applicable tie-break procedures, and is blank when the fixture has no winner or is unplayed. For completed knockout fixtures, `fixture_winner` must be populated even when the score is drawn; this preserves draw-based Elo and goal-model updates while allowing the bracket to progress through the actual winner.
 
 ## Derived team ratings
 

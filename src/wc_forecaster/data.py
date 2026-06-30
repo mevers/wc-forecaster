@@ -32,6 +32,7 @@ def read_matches(path: str | Path) -> list[dict[str, Any]]:
         away_score = row["away_score"]
         home = team(row.get("home_team", row.get("home", "")))
         away = team(row.get("away_team", row.get("away", "")))
+        fixture_winner = team(row.get("fixture_winner", ""))
         out.append(
             {
                 **row,
@@ -40,6 +41,7 @@ def read_matches(path: str | Path) -> list[dict[str, Any]]:
                 "away_team": away,
                 "home_score": int(home_score) if home_score not in {"", "NA"} else None,
                 "away_score": int(away_score) if away_score not in {"", "NA"} else None,
+                "fixture_winner": fixture_winner or None,
                 "venue_advantage": venue_advantage(row, home, away),
             }
         )

@@ -116,6 +116,10 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
             away = match["away_team"] if match else thirds_by_match[match_no].split(":")[0] if pair[1] == "3" else qualifiers[pair[1]]
             matchups[match_no][(home, away)] += 1
             winners[match_no] = winner(rng, home, away, ratings, beta, s_sim, cfg, match["venue_advantage"] if match else 0)
+            # First predict the winner; overwrite it only if the knockout match has already been played.
+            if match and match["home_score"] is not None and match["fixture_winner"]:
+                winners[match_no] = match["fixture_winner"]
+                s_sim[home], s_sim[away] = winners[match_no] == home, winners[match_no] == away
             match_winners[match_no][winners[match_no]] += 1
             reached["round_of_32"][home] += 1
             reached["round_of_32"][away] += 1
