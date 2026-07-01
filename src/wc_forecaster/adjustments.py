@@ -8,6 +8,7 @@ from wc_forecaster.elo import apply_match
 from wc_forecaster.model import match_probs
 
 
+# Forms forecast ratings from derived ratings plus adjustment boosts.
 def boosted_ratings(ratings: dict[str, float], *boosts: dict[str, float]) -> dict[str, float]:
     teams = set(ratings)
     for boost in boosts:
@@ -15,6 +16,7 @@ def boosted_ratings(ratings: dict[str, float], *boosts: dict[str, float]) -> dic
     return {team: ratings[team] + sum(boost.get(team, 0.0) for boost in boosts) for team in teams}
 
 
+# Computes squad cohesion scores C_k and capped boosts B_cohesion.
 def cohesion(
     squads: list[dict[str, str]],
     teams: list[str],
@@ -47,14 +49,17 @@ def cohesion(
     return scores, boosts
 
 
+# Returns zero score and boost maps when an adjustment is disabled.
 def zero_adjustments(teams: list[str]) -> tuple[dict[str, float], dict[str, float]]:
     return dict.fromkeys(teams, 0.0), dict.fromkeys(teams, 0.0)
 
 
+# Converts a fixture scoreline into actual points A_k,i.
 def actual_points(goals_for: int, goals_against: int) -> float:
     return 3.0 if goals_for > goals_against else 1.0 if goals_for == goals_against else 0.0
 
 
+# Computes the underdog weight w_k,i from the pre-match rating gap.
 def underdog_weight(team_rating: float, opponent_rating: float, cfg: dict[str, Any]) -> float:
     params = cfg["underdog_magic"]
     gap = opponent_rating - team_rating
@@ -67,6 +72,7 @@ def underdog_weight(team_rating: float, opponent_rating: float, cfg: dict[str, A
     )
 
 
+# Accumulates one fixture's weighted positive residual Q_k,i.
 def add_underdog_magic_residual(
     residuals: dict[str, float],
     match: dict[str, Any],
@@ -76,6 +82,7 @@ def add_underdog_magic_residual(
     s: dict[str, bool],
     cfg: dict[str, Any],
 ) -> None:
+    # Build R_base from rolling ratings plus cohesion, excluding underdog magic.
     forecast_ratings = boosted_ratings(ratings, cohesion_boost)
     probs = match_probs(
         match["home_team"],
@@ -88,6 +95,7 @@ def add_underdog_magic_residual(
     )
     home = match["home_team"]
     away = match["away_team"]
+    # Add only points above model expectation, scaled by underdog weight.
     residuals[home] += max(
         0.0,
         actual_points(match["home_score"], match["away_score"]) - (3 * probs["home"] + probs["draw"]),
@@ -98,6 +106,7 @@ def add_underdog_magic_residual(
     ) * underdog_weight(forecast_ratings[away], forecast_ratings[home], cfg)
 
 
+# Converts accumulated residuals D_k into capped boosts B_underdog.
 def underdog_magic_boosts(residuals: dict[str, float], cfg: dict[str, Any]) -> dict[str, float]:
     params = cfg["underdog_magic"]
     return {
@@ -111,6 +120,7 @@ def underdog_magic_boosts(residuals: dict[str, float], cfg: dict[str, Any]) -> d
     }
 
 
+# Builds forecast-only adjustments and the final adjusted rating table.
 def compute_adjustments(
     teams: list[str],
     squads: list[dict[str, str]],
@@ -125,6 +135,7 @@ def compute_adjustments(
     )
     underdog_magic_residual, underdog_magic_boost = zero_adjustments(teams)
     for match in played:
+        # Treat played fixtures as current World Cup matches for live Elo updates.
         match["tournament"] = "FIFA World Cup"
         match["elo_k_multiplier"] = cfg["elo"]["current_world_cup_k_multiplier"]
         if cfg["underdog_magic"]["enabled"]:
@@ -137,6 +148,7 @@ def compute_adjustments(
                 s,
                 cfg,
             )
+        # Update rolling ratings only after measuring pre-match underdog residuals.
         apply_match(ratings, match, cfg)
         s[match["home_team"]] = match["home_score"] > match["away_score"]
         s[match["away_team"]] = match["away_score"] > match["home_score"]

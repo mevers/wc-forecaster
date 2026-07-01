@@ -21,15 +21,18 @@ from wc_forecaster.model import fit, lambdas, match_probs, outcome_constrained_m
 from wc_forecaster.tournament import simulate
 
 
+# Emits timestamped progress for long forecast runs.
 def status(message: str) -> None:
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {message}", flush=True)
 
 
+# Loads the model configuration that fixes inputs and tuning settings.
 def load_config(path: Path) -> dict[str, Any]:
     with path.open(encoding="utf-8") as handle:
         return yaml.safe_load(handle)
 
 
+# Loads the 2026 team-to-group mapping with canonical team names.
 def load_groups(path: str) -> dict[str, list[str]]:
     groups: dict[str, list[str]] = {}
     for row in rows(path):
@@ -37,10 +40,12 @@ def load_groups(path: str) -> dict[str, list[str]]:
     return groups
 
 
+# Loads eligible third-place groups for each round-of-32 slot.
 def load_slots(path: str) -> dict[int, set[str]]:
     return {int(row["match_no"]): set(row["groups"].split("/")) for row in rows(path)}
 
 
+# Renders a top-12 probability bar chart for report artefacts.
 def chart(path: Path, rows_: list[dict[str, Any]], x: str, y: str, title: str) -> None:
     data = pl.DataFrame(rows_[:12])
     x_order = list(reversed(data[x].to_list()))
@@ -64,6 +69,7 @@ def chart(path: Path, rows_: list[dict[str, Any]], x: str, y: str, title: str) -
     plot.save(str(path), width=9, height=5, dpi=180, verbose=False)
 
 
+# Writes the derived rating snapshot before remaining-fixture simulation.
 def write_ratings(path: Path, ratings: dict[str, float]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as handle:
@@ -73,6 +79,7 @@ def write_ratings(path: Path, ratings: dict[str, float]) -> None:
         writer.writerows({"team": k, "rating": round(v, 1)} for k, v in sorted(ratings.items(), key=lambda row: row[1], reverse=True))
 
 
+# Shapes forecast-only adjustment outputs for team_adjustments.csv.
 def adjustment_rows(
     teams: list[str],
     ratings: dict[str, float],
@@ -96,6 +103,7 @@ def adjustment_rows(
     ]
 
 
+# Runs the full configured forecast and writes all output artefacts.
 def predict(config_path: Path, update_readme: bool = False, as_of_override: str | None = None) -> None:
     status(f"Reading config: {config_path}")
     cfg = load_config(config_path)
@@ -104,6 +112,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
     out = Path(cfg["data"]["output_dir"]) / cfg["forecast"]["as_of"]
     status(f"Loading historical results: {cfg['data']['historical_results']}")
     historical = read_matches(cfg["data"]["historical_results"])
+    # Fit excludes 2026 World Cup rows so live fixtures only update tournament state.
     training = [m for m in historical if not (m["date"].year == 2026 and m["tournament"] == "FIFA World Cup")]
     status(f"Loaded {len(historical):,} historical rows; using {len(training):,} for model fitting")
     tuning = tune(training, cfg, status) if cfg["fit"]["tune"] else {"selected_half_life": cfg["fit"]["half_life"], "selected_min_expected_goals": cfg["goals"]["min_expected_goals"], "scores": []}
@@ -114,6 +123,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
     teams = [team_name for group in groups.values() for team_name in group]
     squads = rows(cfg["data"]["squads"])
     fixtures = read_matches(cfg["data"]["fixtures"])
+    # Future-dated scored rows are treated as unplayed for this forecast date.
     fixtures = [{**m, "home_score": None, "away_score": None} if m["date"] > as_of else m for m in fixtures]
     played = sorted((m for m in fixtures if m["home_score"] is not None), key=lambda m: m["date"])
     status(f"Applying {len(played)} completed 2026 World Cup matches")
@@ -128,6 +138,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
     result = simulate(groups, fixtures, load_slots(cfg["data"]["third_place_slots"]), adjusted_ratings, beta, s, cfg, status)
     sims = cfg["forecast"]["simulations"]
     status("Writing forecast artefacts")
+    # Convert empirical simulation counters into output probabilities.
     winner_rows = [{"team": k, "probability": v / sims} for k, v in result["title"].most_common()]
     round_rows = []
     for round_name, counter in result["reached"].items():
@@ -146,6 +157,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
                 "away": probs["away"],
             }
         )
+    # These marginal summaries are distinct from the coherent bracket artefact.
     matchup_marginal_rows = [
         {"match_no": match, "team_a": pair[0], "team_b": pair[1], "probability": count / sims}
         for match, counter in sorted(result["matchups"].items())
@@ -155,6 +167,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
         {"match_no": match, "team": counter.most_common(1)[0][0], "probability": counter.most_common(1)[0][1] / sims}
         for match, counter in sorted(result["match_winners"].items())
     ]
+    # Build expected group tables and coherent knockout bracket rows.
     group_tables = expected_group_tables(groups, result, sims, adjusted_ratings)
     group_table_rows = [
         {
@@ -192,6 +205,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
     next_dates = sorted({match["date"] for match in fixtures if match["date"] > as_of})
     next_rows = []
     if next_dates:
+        # Summarise only the next fixture date after forecast.as_of.
         next_rows = [
             {
                 "date": next_dates[0].isoformat(),
@@ -231,6 +245,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
         table_text = "\n".join(table)
         print(f"\n{table_text}")
         if update_readme:
+            # Keep README next-matchday probabilities synced with CLI output.
             readme_table = "\n".join([table[0], *(line.rsplit("  ", 1)[0].rstrip() for line in table[1:])])
             readme = Path("README.md")
             text = readme.read_text(encoding="utf-8")
@@ -239,6 +254,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
             readme.write_text(text[:start] + readme_table + text[end:], encoding="utf-8")
 
 
+# Parses the CLI entry point and dispatches the predict command.
 def main() -> None:
     parser = argparse.ArgumentParser(prog="wc-forecaster")
     sub = parser.add_subparsers(dest="command", required=True)

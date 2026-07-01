@@ -8,15 +8,18 @@ from typing import Any
 ALIASES = {"Curaçao": "Curacao", "Côte d'Ivoire": "Ivory Coast", "Czech Republic": "Czechia", "USA": "United States", "Türkiye": "Turkey"}
 
 
+# Normalises source team names to the model's canonical labels.
 def team(name: str) -> str:
     return ALIASES.get(name, name)
 
 
+# Reads a CSV into raw string-keyed rows.
 def rows(path: str | Path) -> list[dict[str, str]]:
     with Path(path).open(newline="", encoding="utf-8") as handle:
         return list(csv.DictReader(handle))
 
 
+# Derives the venue indicator from either curated fixtures or historical rows.
 def venue_advantage(row: dict[str, str], home: str, away: str) -> int:
     if "venue_advantage" in row:
         return int(row["venue_advantage"])
@@ -25,11 +28,13 @@ def venue_advantage(row: dict[str, str], home: str, away: str) -> int:
     return -1 if team(row["country"]) == away else 1
 
 
+# Converts result CSV rows into the match records consumed by the model.
 def read_matches(path: str | Path) -> list[dict[str, Any]]:
     out = []
     for row in rows(path):
         home_score = row["home_score"]
         away_score = row["away_score"]
+        # Support both historical result and 2026 fixture team column names.
         home = team(row.get("home_team", row.get("home", "")))
         away = team(row.get("away_team", row.get("away", "")))
         fixture_winner = team(row.get("fixture_winner", ""))
@@ -48,6 +53,7 @@ def read_matches(path: str | Path) -> list[dict[str, Any]]:
     return out
 
 
+# Writes model output rows using the first row's field order.
 def write_csv(path: Path, rows_: list[dict[str, Any]]) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", newline="", encoding="utf-8") as handle:

@@ -28,10 +28,12 @@ BRACKET = [(89, 73, 75), (90, 74, 77), (91, 76, 78), (92, 79, 80), (93, 83, 84),
 ROUNDS = {73: "round_of_32", 89: "round_of_16", 97: "quarter_final", 101: "semi_final", 104: "final"}
 
 
+# Creates the mutable group table state for one simulation path.
 def table(teams: list[str]) -> dict[str, dict[str, int]]:
     return {team: {"points": 0, "gf": 0, "ga": 0} for team in teams}
 
 
+# Applies one regulation-time group result to points and goals.
 def add_result(tab: dict[str, dict[str, int]], home: str, away: str, hs: int, aw: int) -> None:
     tab[home]["gf"] += hs
     tab[home]["ga"] += aw
@@ -41,14 +43,17 @@ def add_result(tab: dict[str, dict[str, int]], home: str, away: str, hs: int, aw
     tab[away]["points"] += 3 if aw > hs else 1 if hs == aw else 0
 
 
+# Ranks group teams by points, goal difference, goals for, then rating.
 def rank(tab: dict[str, dict[str, int]], ratings: dict[str, float]) -> list[str]:
     return sorted(tab, key=lambda t: (tab[t]["points"], tab[t]["gf"] - tab[t]["ga"], tab[t]["gf"], ratings[t]), reverse=True)
 
 
+# Assigns best third-place teams to eligible round-of-32 slots.
 def third_assignment(thirds: list[str], slots: dict[int, set[str]]) -> dict[int, str]:
     groups = {team[-1]: team for team in thirds}
     out: dict[int, str] = {}
 
+    # Backtracks over constrained slots so each third-place group is used once.
     def search(matches: list[int]) -> bool:
         if not matches:
             return True
@@ -64,6 +69,7 @@ def third_assignment(thirds: list[str], slots: dict[int, set[str]]) -> dict[int,
     return out
 
 
+# Simulates or resolves one knockout match and updates previous-win state.
 def winner(rng: random.Random, team_a: str, team_b: str, ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any], venue_advantage: int = 0) -> str:
     goals_a, goals_b = sample_score(rng, team_a, team_b, venue_advantage, ratings, beta, s, cfg)
     if goals_a != goals_b:
@@ -76,6 +82,7 @@ def winner(rng: random.Random, team_a: str, team_b: str, ratings: dict[str, floa
     return won
 
 
+# Runs Monte Carlo tournament paths and accumulates empirical output counters.
 def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots: dict[int, set[str]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any], status: Any = None) -> dict[str, Any]:
     rng = random.Random(cfg["forecast"]["seed"])
     title = Counter()
@@ -88,12 +95,14 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
     sims = cfg["forecast"]["simulations"]
     step = max(1, sims // 10)
     for sim in range(1, sims + 1):
+        # Keep previous-win form state path-local across simulated fixtures.
         s_sim = s.copy()
         qualifiers = {}
         thirds = []
         for group, teams in groups.items():
             tab = table(teams)
             for match in sorted((f for f in fixtures if f["group"] == group), key=lambda f: f["date"]):
+                # Use recorded scores for completed fixtures and sample unplayed ones.
                 hs, aw = (match["home_score"], match["away_score"]) if match["home_score"] is not None else sample_score(rng, match["home_team"], match["away_team"], match["venue_advantage"], ratings, beta, s_sim, cfg)
                 add_result(tab, match["home_team"], match["away_team"], hs, aw)
                 s_sim[match["home_team"]] = hs > aw
@@ -107,6 +116,7 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
             qualifiers[f"1{group}"] = ordered[0]
             qualifiers[f"2{group}"] = ordered[1]
             thirds.append((ordered[2], group, tab[ordered[2]]["points"], tab[ordered[2]]["gf"] - tab[ordered[2]]["ga"], tab[ordered[2]]["gf"]))
+        # Select eight best third-place teams and map them into eligible slots.
         thirds_by_match = third_assignment([f"{row[0]}:{row[1]}" for row in sorted(thirds, key=lambda r: (r[2], r[3], r[4], ratings[r[0]]), reverse=True)[:8]], slots)
         winners = {}
         knockout_teams: dict[int, tuple[str, str]] = {}
@@ -116,7 +126,7 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
             away = match["away_team"] if match else thirds_by_match[match_no].split(":")[0] if pair[1] == "3" else qualifiers[pair[1]]
             matchups[match_no][(home, away)] += 1
             winners[match_no] = winner(rng, home, away, ratings, beta, s_sim, cfg, match["venue_advantage"] if match else 0)
-            # First predict the winner; overwrite it only if the knockout match has already been played.
+            # Use recorded knockout winners when completed fixtures exist.
             if match and match["home_score"] is not None and match["fixture_winner"]:
                 winners[match_no] = match["fixture_winner"]
                 s_sim[home], s_sim[away] = winners[match_no] == home, winners[match_no] == away
@@ -125,6 +135,7 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
             reached["round_of_32"][away] += 1
         for match_no, left, right in BRACKET:
             if match_no == 104:
+                # Resolve match 103 from the two semi-final losers before the final.
                 team_a = next(team for team in knockout_teams[101] if team != winners[101])
                 team_b = next(team for team in knockout_teams[102] if team != winners[102])
                 matchups[103][(team_a, team_b)] += 1
