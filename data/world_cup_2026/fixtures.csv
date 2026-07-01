@@ -75,9 +75,9 @@ match_no,group,date,home,away,home_score,away_score,fixture_winner,venue_advanta
 74,R32,2026-06-29,Germany,Paraguay,1,1,Paraguay,0
 75,R32,2026-06-29,Netherlands,Morocco,1,1,Morocco,0
 76,R32,2026-06-29,Brazil,Japan,2,1,Brazil,0
-77,R32,2026-06-30,France,Sweden,,,,0
-78,R32,2026-06-30,Ivory Coast,Norway,,,,0
-79,R32,2026-06-30,Mexico,Ecuador,,,,1
+77,R32,2026-06-30,France,Sweden,3,0,France,0
+78,R32,2026-06-30,Ivory Coast,Norway,1,2,Norway,0
+79,R32,2026-06-30,Mexico,Ecuador,2,0,Mexico,1
 80,R32,2026-07-01,England,DR Congo,,,,0
 81,R32,2026-07-01,United States,Bosnia and Herzegovina,,,,1
 82,R32,2026-07-01,Belgium,Senegal,,,,0

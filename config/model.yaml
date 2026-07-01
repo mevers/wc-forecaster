@@ -6,7 +6,7 @@ data:
   third_place_slots: data/world_cup_2026/third_place_slots.csv
   output_dir: outputs
 forecast:
-  as_of: "2026-06-29"
+  as_of: "2026-06-30"
   simulations: 50000
   seed: 20260614
 fit:
