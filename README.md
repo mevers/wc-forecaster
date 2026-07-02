@@ -5,11 +5,11 @@ Minimal Python model for forecasting the live 2026 FIFA World Cup and rendering 
 ## Next match day forecasts
 
 ```text
-Next match day: 2026-07-01
+Next match day: 2026-07-02
 match  group  fixture                         home    draw    away  score
-80     R32    England vs DR Congo            70.3%   18.6%   11.1%    2-1
-81     R32    United States vs Bosnia and Herzegovina   68.5%   19.6%   11.9%    2-1
-82     R32    Belgium vs Senegal             44.8%   26.7%   28.6%    2-1
+83     R32    Portugal vs Croatia            44.3%   27.1%   28.6%    2-1
+84     R32    Spain vs Austria               70.2%   18.9%   11.0%    2-0
+85     R32    Switzerland vs Algeria         51.0%   25.8%   23.2%    2-1
 ```
 
 ## Setup

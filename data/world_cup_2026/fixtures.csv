@@ -78,9 +78,9 @@ match_no,group,date,home,away,home_score,away_score,fixture_winner,venue_advanta
 77,R32,2026-06-30,France,Sweden,3,0,France,0
 78,R32,2026-06-30,Ivory Coast,Norway,1,2,Norway,0
 79,R32,2026-06-30,Mexico,Ecuador,2,0,Mexico,1
-80,R32,2026-07-01,England,DR Congo,,,,0
-81,R32,2026-07-01,United States,Bosnia and Herzegovina,,,,1
-82,R32,2026-07-01,Belgium,Senegal,,,,0
+80,R32,2026-07-01,England,DR Congo,2,1,England,0
+81,R32,2026-07-01,United States,Bosnia and Herzegovina,2,0,United States,1
+82,R32,2026-07-01,Belgium,Senegal,3,2,Belgium,0
 83,R32,2026-07-02,Portugal,Croatia,,,,0
 84,R32,2026-07-02,Spain,Austria,,,,0
 85,R32,2026-07-02,Switzerland,Algeria,,,,0
