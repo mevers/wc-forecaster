@@ -124,7 +124,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
     squads = rows(cfg["data"]["squads"])
     fixtures = read_matches(cfg["data"]["fixtures"])
     # Future-dated scored rows are treated as unplayed for this forecast date.
-    fixtures = [{**m, "home_score": None, "away_score": None} if m["date"] > as_of else m for m in fixtures]
+    fixtures = [{**m, "home_score": None, "away_score": None, "fixture_winner": None} if m["date"] > as_of else m for m in fixtures]
     played = sorted((m for m in fixtures if m["home_score"] is not None), key=lambda m: m["date"])
     status(f"Applying {len(played)} completed 2026 World Cup matches")
     (

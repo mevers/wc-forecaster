@@ -136,7 +136,7 @@ def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], 
     rows_ = []
     winners = {}
     semi_losers = {}
-    knockout_fixtures = {int(match["match_no"]): match for match in fixtures if match["group"] == "R32"}
+    knockout_fixtures = {int(match["match_no"]): match for match in fixtures if match["group"] not in group_tables}
     s_bracket = s.copy()
     # Seed the round of 32 from direct qualifiers and eligible third-place slots.
     for match_no, pair in RO32.items():
@@ -154,7 +154,16 @@ def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], 
             append_match(rows_, 103, semi_losers[101], semi_losers[102], ratings, beta, s_bracket, cfg)
         team_a = winners[left]
         team_b = winners[right]
+        fixture = knockout_fixtures.get(match_no)
+        if fixture and {fixture["home_team"], fixture["away_team"]} == {team_a, team_b}:
+            team_a = fixture["home_team"]
+            team_b = fixture["away_team"]
+        else:
+            fixture = None
         winner = append_match(rows_, match_no, team_a, team_b, ratings, beta, s_bracket, cfg)
+        if fixture and fixture["home_score"] is not None and fixture["fixture_winner"]:
+            rows_[-1]["winner"] = winner = fixture["fixture_winner"]
+            s_bracket[team_a], s_bracket[team_b] = winner == team_a, winner == team_b
         winners[match_no] = winner
         # Keep semi-final losers for the third-place play-off.
         if match_no in {101, 102}:

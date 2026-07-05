@@ -15,8 +15,9 @@ from wc_forecaster.bracket import (
     most_likely_knockout_bracket,
 )
 from wc_forecaster.cli import load_config, load_groups, load_slots, predict
+from wc_forecaster.data import read_matches
 from wc_forecaster.model import outcome_constrained_median_scoreline
-from wc_forecaster.tournament import BRACKET, RO32
+from wc_forecaster.tournament import BRACKET, RO32, simulate
 
 
 CFG = {
@@ -221,6 +222,89 @@ def test_fixture_winner_overrides_completed_knockout_bracket_projection() -> Non
 
         assert match["winner"] == "Paraguay"
         assert match["team_a_advance_probability"] > match["team_b_advance_probability"]
+
+
+def test_fixture_winner_overrides_completed_round_of_16_projection() -> None:
+    groups = load_groups("data/world_cup_2026/groups.csv")
+    group_tables = {
+        group: [
+            {
+                "group": group,
+                "position": position,
+                "team": team,
+                "expected_points": 0,
+                "expected_goal_difference": 0,
+                "expected_goals_for": 0,
+            }
+            for position, team in enumerate(teams, start=1)
+        ]
+        for group, teams in groups.items()
+    }
+    ratings = {team: 1500.0 for teams in groups.values() for team in teams}
+    ratings["Canada"] = 2200.0
+    ratings["Morocco"] = 1000.0
+    fixtures = [
+        {
+            "match_no": "73",
+            "group": "R32",
+            "home_team": "South Africa",
+            "away_team": "Canada",
+            "home_score": 0,
+            "away_score": 1,
+            "fixture_winner": "Canada",
+        },
+        {
+            "match_no": "75",
+            "group": "R32",
+            "home_team": "Netherlands",
+            "away_team": "Morocco",
+            "home_score": 1,
+            "away_score": 1,
+            "fixture_winner": "Morocco",
+        },
+        {
+            "match_no": "89",
+            "group": "R16",
+            "home_team": "Canada",
+            "away_team": "Morocco",
+            "home_score": 0,
+            "away_score": 3,
+            "fixture_winner": "Morocco",
+        },
+    ]
+
+    rows = most_likely_knockout_bracket(
+        group_tables,
+        load_slots("data/world_cup_2026/third_place_slots.csv"),
+        fixtures,
+        ratings,
+        [0.2, 0.1, 0.0],
+        {},
+        CFG,
+    )
+    match = next(row for row in rows if row["match_no"] == 89)
+
+    assert match["winner"] == "Morocco"
+    assert match["team_a_advance_probability"] > match["team_b_advance_probability"]
+
+
+def test_simulation_uses_completed_round_of_16_fixture_winner() -> None:
+    groups = load_groups("data/world_cup_2026/groups.csv")
+    ratings = {team: 1500.0 for teams in groups.values() for team in teams}
+    cfg = {**CFG, "forecast": {"seed": 1, "simulations": 1}}
+
+    result = simulate(
+        groups,
+        read_matches("data/world_cup_2026/fixtures.csv"),
+        load_slots("data/world_cup_2026/third_place_slots.csv"),
+        ratings,
+        [0.2, 0.1, 0.0],
+        {},
+        cfg,
+    )
+
+    assert result["matchups"][89][("Canada", "Morocco")] == 1
+    assert result["match_winners"][89]["Morocco"] == 1
 
 
 def test_predict_smoke(tmp_path: Path) -> None:

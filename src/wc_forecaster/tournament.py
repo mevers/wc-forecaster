@@ -147,9 +147,18 @@ def simulate(groups: dict[str, list[str]], fixtures: list[dict[str, Any]], slots
                 knockout_path.append((103, team_a, team_b, winners[103]))
             left_team = winners[left]
             right_team = winners[right]
+            fixture = knockout_fixtures.get(match_no)
+            if fixture and {fixture["home_team"], fixture["away_team"]} == {left_team, right_team}:
+                left_team = fixture["home_team"]
+                right_team = fixture["away_team"]
+            else:
+                fixture = None
             matchups[match_no][(left_team, right_team)] += 1
             reached[next(name for start, name in sorted(ROUNDS.items(), reverse=True) if match_no >= start)].update((left_team, right_team))
-            winners[match_no] = winner(rng, left_team, right_team, ratings, beta, s_sim, cfg)
+            winners[match_no] = winner(rng, left_team, right_team, ratings, beta, s_sim, cfg, fixture["venue_advantage"] if fixture else 0)
+            if fixture and fixture["home_score"] is not None and fixture["fixture_winner"]:
+                winners[match_no] = fixture["fixture_winner"]
+                s_sim[left_team], s_sim[right_team] = winners[match_no] == left_team, winners[match_no] == right_team
             match_winners[match_no][winners[match_no]] += 1
             knockout_teams[match_no] = (left_team, right_team)
             knockout_path.append((match_no, left_team, right_team, winners[match_no]))
