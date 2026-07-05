@@ -268,11 +268,28 @@ def test_predict_smoke(tmp_path: Path) -> None:
     )
     with (out / "most_likely_knockout_bracket.csv").open(encoding="utf-8") as handle:
         rows = list(csv.DictReader(handle))
+    with (out / "winner_odds.csv").open(encoding="utf-8") as handle:
+        title_favourite = next(csv.DictReader(handle))["team"]
     realised = {
         int(row["match_no"]): row for row in rows if row["bracket_method"] == "expected-table"
     }
-    assert {row["bracket_method"] for row in rows} == {"expected-table", "modal-group-table"}
+    title_favourite_bracket = {
+        int(row["match_no"]): row for row in rows if row["bracket_method"] == "title-favourite-bracket"
+    }
+    title_field_consensus_bracket = {
+        int(row["match_no"]): row
+        for row in rows
+        if row["bracket_method"] == "title-field-consensus-bracket"
+    }
+    assert {row["bracket_method"] for row in rows} == {
+        "expected-table",
+        "modal-group-table",
+        "title-favourite-bracket",
+        "title-field-consensus-bracket",
+    }
     assert 103 in realised
+    assert title_favourite_bracket[104]["winner"] == title_favourite
+    assert title_field_consensus_bracket[104]["winner"] == title_favourite
     manifest = json.loads((out / "run_manifest.json").read_text(encoding="utf-8"))
     assert "bracket_method" not in manifest
     with (out / "team_adjustments.csv").open(encoding="utf-8") as handle:

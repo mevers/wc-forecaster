@@ -473,7 +473,7 @@ The rating and run metadata artefacts are:
 
 The knockout summary artefacts are deliberately different from each other:
 
-- `most_likely_knockout_bracket.csv`: canonical most likely knockout bracket. Groups are ranked by expected table performance, and knockout winners are selected by head-to-head advancement probability. See `docs/most_likely_knockout_bracket_methodology.md`.
+- `most_likely_knockout_bracket.csv`: labelled knockout bracket options. `expected-table` ranks groups by expected table performance and selects knockout winners by head-to-head advancement probability. `modal-group-table` uses each group's modal complete ordered table before applying the same knockout rule. `title-favourite-bracket` selects a representative simulated route conditional on the empirical title favourite winning the tournament. `title-field-consensus-bracket` selects the recommended title-conditioned route using weighted QF/SF/final/champion field consensus. See `docs/bracket_prediction_methods.md`.
 - `match_slot_matchup_marginals.csv`: for each knockout match slot in the raw Monte Carlo simulations, the team pairing that appears most often and its simulation frequency. It is not a bracket input.
 - `match_slot_winner_marginals.csv`: for each knockout match slot in the raw Monte Carlo simulations, the team that wins that slot most often and its simulation frequency. It is not a bracket input.
 
@@ -488,4 +488,4 @@ The rendered chart artefacts are:
 
 Default run state is `forecast.as_of=2026-06-15`, `forecast.simulations=50000`, `forecast.seed=20260614`. Outputs are deterministic for a fixed config, code version, curated tournament CSVs, squad CSV, and historical CSV.
 
-Known exclusions: player availability, individual player quality beyond national-team results, rest/travel, style-specific team interactions, injuries, weather, market priors, fair-play tiebreakers, the full Annex C third-place combination lookup table, and the official FIFA ranking formula. The local data stores eligible third-place groups per round-of-32 slot; the model assigns qualifying third-place teams by deterministic matching within those eligible slots. The model estimates calibrated probabilities and derives a canonical most likely knockout bracket from expected group standings plus head-to-head advancement probabilities.
+Known exclusions: player availability, individual player quality beyond national-team results, rest/travel, style-specific team interactions, injuries, weather, market priors, fair-play tiebreakers, the full Annex C third-place combination lookup table, and the official FIFA ranking formula. The local data stores eligible third-place groups per round-of-32 slot; the model assigns qualifying third-place teams by deterministic matching within those eligible slots. The model estimates calibrated probabilities and derives labelled knockout bracket summaries from the simulation distribution.

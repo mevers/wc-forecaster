@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from collections import Counter
 from typing import Any
 
 from wc_forecaster.model import match_probs
@@ -7,7 +8,32 @@ from wc_forecaster.tournament import BRACKET, RO32, third_assignment
 
 BRACKET_METHOD_EXPECTED_TABLE = "expected-table"
 BRACKET_METHOD_MODAL_GROUP_TABLE = "modal-group-table"
-BRACKET_METHODS = [BRACKET_METHOD_EXPECTED_TABLE, BRACKET_METHOD_MODAL_GROUP_TABLE]
+BRACKET_METHOD_TITLE_FAVOURITE_BRACKET = "title-favourite-bracket"
+BRACKET_METHOD_TITLE_FIELD_CONSENSUS_BRACKET = "title-field-consensus-bracket"
+BRACKET_METHODS = [
+    BRACKET_METHOD_EXPECTED_TABLE,
+    BRACKET_METHOD_MODAL_GROUP_TABLE,
+    BRACKET_METHOD_TITLE_FAVOURITE_BRACKET,
+    BRACKET_METHOD_TITLE_FIELD_CONSENSUS_BRACKET,
+]
+BRACKET_SCORE_WEIGHTS = {
+    **dict.fromkeys(range(73, 89), 1),
+    **dict.fromkeys(range(89, 97), 2),
+    **dict.fromkeys(range(97, 101), 4),
+    **dict.fromkeys(range(101, 103), 8),
+    104: 16,
+}
+STAGE_OVERLAP_WEIGHTS = {
+    "QF": 1,
+    "SF": 2,
+    "F": 4,
+    "champion": 8,
+}
+STAGE_MATCHES = {
+    "QF": range(97, 101),
+    "SF": range(101, 103),
+    "F": (104,),
+}
 
 
 # Averages simulated points, goal difference, and goals for into expected tables.
@@ -77,6 +103,13 @@ def append_match(rows_: list[dict[str, Any]], match_no: int, team_a: str, team_b
     return winner
 
 
+def append_selected_match(rows_: list[dict[str, Any]], match_no: int, team_a: str, team_b: str, winner: str, ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> None:
+    team_a_prob, team_b_prob = advancement_probabilities(team_a, team_b, ratings, beta, s, cfg)
+    rows_.append({"match_no": match_no, "team_a": team_a, "team_b": team_b, "winner": winner, "team_a_advance_probability": team_a_prob, "team_b_advance_probability": team_b_prob})
+    s[team_a] = winner == team_a
+    s[team_b] = winner == team_b
+
+
 # Seeds a coherent bracket, then propagates head-to-head winners.
 def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], slots: dict[int, set[str]], fixtures: list[dict[str, Any]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
     qualifiers = {}
@@ -129,8 +162,65 @@ def most_likely_knockout_bracket(group_tables: dict[str, list[dict[str, Any]]], 
     return sorted(rows_, key=lambda row: row["match_no"])
 
 
+def title_favourite_bracket(result: dict[str, Any], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
+    champion = result["title"].most_common(1)[0][0]
+    paths = [path for path in result["knockout_paths"] if path[-1][3] == champion]
+    winner_counts = {match_no: Counter() for match_no in BRACKET_SCORE_WEIGHTS}
+    for path in paths:
+        for match_no, _, _, winner in path:
+            if match_no in BRACKET_SCORE_WEIGHTS:
+                winner_counts[match_no][winner] += 1
+    selected = max(paths, key=lambda path: sum(BRACKET_SCORE_WEIGHTS[match_no] * winner_counts[match_no][winner] for match_no, _, _, winner in path if match_no in BRACKET_SCORE_WEIGHTS))
+    rows_ = []
+    s_bracket = s.copy()
+    for match_no, team_a, team_b, winner in selected:
+        append_selected_match(rows_, match_no, team_a, team_b, winner, ratings, beta, s_bracket, cfg)
+    return sorted(rows_, key=lambda row: row["match_no"])
+
+
+def path_fields(path: tuple[tuple[int, str, str, str], ...]) -> dict[str, set[str]]:
+    by_match = {match_no: (team_a, team_b, winner) for match_no, team_a, team_b, winner in path}
+    return {
+        **{
+            stage: {
+                team
+                for match_no in matches
+                for team in by_match[match_no][:2]
+            }
+            for stage, matches in STAGE_MATCHES.items()
+        },
+        "champion": {by_match[104][2]},
+    }
+
+
+def title_field_consensus_bracket(result: dict[str, Any], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
+    champion = result["title"].most_common(1)[0][0]
+    paths = [path for path in result["knockout_paths"] if path[-1][3] == champion]
+    field_counts = {
+        stage: Counter(team for path in paths for team in path_fields(path)[stage])
+        for stage in STAGE_OVERLAP_WEIGHTS
+    }
+    selected = max(
+        paths,
+        key=lambda path: sum(
+            STAGE_OVERLAP_WEIGHTS[stage] * field_counts[stage][team]
+            for stage, teams in path_fields(path).items()
+            for team in teams
+        ),
+    )
+    rows_ = []
+    s_bracket = s.copy()
+    for match_no, team_a, team_b, winner in selected:
+        append_selected_match(rows_, match_no, team_a, team_b, winner, ratings, beta, s_bracket, cfg)
+    return sorted(rows_, key=lambda row: row["match_no"])
+
+
 # Builds one bracket; only the group-table construction method changes.
 def knockout_bracket(method: str, groups: dict[str, list[str]], group_tables: dict[str, list[dict[str, Any]]], result: dict[str, Any], slots: dict[int, set[str]], fixtures: list[dict[str, Any]], ratings: dict[str, float], beta: list[float], s: dict[str, bool], cfg: dict[str, Any]) -> list[dict[str, Any]]:
+    if method == BRACKET_METHOD_TITLE_FAVOURITE_BRACKET:
+        return title_favourite_bracket(result, ratings, beta, s, cfg)
+    if method == BRACKET_METHOD_TITLE_FIELD_CONSENSUS_BRACKET:
+        return title_field_consensus_bracket(result, ratings, beta, s, cfg)
     if method == BRACKET_METHOD_MODAL_GROUP_TABLE:
         group_tables = modal_group_tables(groups, result)
     return most_likely_knockout_bracket(group_tables, slots, fixtures, ratings, beta, s, cfg)

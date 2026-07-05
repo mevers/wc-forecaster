@@ -14,6 +14,7 @@ from xml.sax.saxutils import escape
 from wc_forecaster.bracket import BRACKET_METHOD_EXPECTED_TABLE, BRACKET_METHODS
 
 
+BRACKET_METHOD_ALL = "all"
 WIDTH = 2400
 HEIGHT = 1695
 INK = "#18232d"
@@ -360,6 +361,14 @@ def round_name(match_no: int) -> str:
     return "Semi-final"
 
 
+def method_note(bracket_method: str) -> str:
+    if bracket_method == "title-field-consensus-bracket":
+        return "Recommended bracket: title-favourite simulations, selected by weighted QF/SF/final/champion field consensus."
+    if bracket_method == "title-favourite-bracket":
+        return "Title-favourite bracket: conditional simulated route where the empirical title favourite wins."
+    return "Groups use expected/modal table performance; knockouts use head-to-head advancement probability."
+
+
 def draw_svg(
     output: Path,
     bracket: dict[int, RealisedMatch],
@@ -492,7 +501,7 @@ def draw_svg(
         )
     svg.append(match_card(flags_dir, third_box, 103, "Third-place play-off", third_place_teams, bracket[103].winner, flag_cache, BRONZE))
     svg.append(final_card(flags_dir, final_box, final_teams, bracket[104].winner, flag_cache))
-    svg.append(text(1200, 1572, "Bold rows advance. Groups use expected table performance; knockouts use head-to-head advancement probability.", 18, MUTED, 500, "middle", 0.86))
+    svg.append(text(1200, 1572, f"Bold rows advance. {method_note(bracket_method)}", 18, MUTED, 500, "middle", 0.86))
     svg.append(watermark())
     svg.append("</svg>")
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -511,20 +520,32 @@ def render_png(svg_path: Path, png_path: Path) -> None:
     )
 
 
+def render_method(run_dir: Path, flags_dir: Path, bracket_method: str) -> None:
+    svg_path = run_dir / f"most_likely_knockout_bracket_{bracket_method}.svg"
+    png_path = run_dir / f"most_likely_knockout_bracket_{bracket_method}.png"
+    draw_svg(
+        svg_path,
+        read_realised_bracket(run_dir / "most_likely_knockout_bracket.csv", bracket_method),
+        read_manifest(run_dir / "run_manifest.json"),
+        flags_dir,
+        bracket_method,
+    )
+    render_png(svg_path, png_path)
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--run-dir", type=Path, required=True)
-    parser.add_argument("--bracket-method", choices=BRACKET_METHODS, default=BRACKET_METHOD_EXPECTED_TABLE)
+    parser.add_argument(
+        "--bracket-method",
+        choices=[*BRACKET_METHODS, BRACKET_METHOD_ALL],
+        default=BRACKET_METHOD_EXPECTED_TABLE,
+    )
     parser.add_argument("--flags-dir", type=Path, default=Path("outputs/flags"))
     args = parser.parse_args()
-    draw_svg(
-        args.run_dir / f"most_likely_knockout_bracket_{args.bracket_method}.svg",
-        read_realised_bracket(args.run_dir / "most_likely_knockout_bracket.csv", args.bracket_method),
-        read_manifest(args.run_dir / "run_manifest.json"),
-        args.flags_dir,
-        args.bracket_method,
-    )
-    render_png(args.run_dir / f"most_likely_knockout_bracket_{args.bracket_method}.svg", args.run_dir / f"most_likely_knockout_bracket_{args.bracket_method}.png")
+    methods = BRACKET_METHODS if args.bracket_method == BRACKET_METHOD_ALL else [args.bracket_method]
+    for method in methods:
+        render_method(args.run_dir, args.flags_dir, method)
 
 
 if __name__ == "__main__":
