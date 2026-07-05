@@ -5,11 +5,11 @@ Minimal Python model for forecasting the live 2026 FIFA World Cup and rendering 
 ## Next match day forecasts
 
 ```text
-Next match day: 2026-07-02
+Next match day: 2026-07-03
 match  group  fixture                         home    draw    away  score
-83     R32    Portugal vs Croatia            44.3%   27.1%   28.6%    2-1
-84     R32    Spain vs Austria               70.2%   18.9%   11.0%    2-0
-85     R32    Switzerland vs Algeria         51.0%   25.8%   23.2%    2-1
+86     R32    Argentina vs Cape Verde        89.1%    8.1%    2.8%    3-0
+87     R32    Colombia vs Ghana              74.5%   16.9%    8.6%    2-0
+88     R32    Australia vs Egypt             40.1%   27.9%   32.0%    2-1
 ```
 
 ## Setup
@@ -37,14 +37,14 @@ Key outputs are:
 - `derived_team_ratings.csv`: Pre-simulation model rating snapshot. It is based on historical and completed 2026 WC games.
 - `team_adjustments.csv`: Squad cohesion, underdog magic, and adjusted forecast rating by team.
 - `most_likely_group_tables.csv`: Expected group standings after group stage. Used to seed the knockout bracket and for the group table visualisation.
-- `most_likely_knockout_bracket.csv`: Canonical most likely knockout bracket. Used as input for the bracket visualisation.
+- `most_likely_knockout_bracket.csv`: Labelled knockout bracket options. Used as input for the bracket visualisation. It includes `expected-table`, `modal-group-table`, `title-favourite-bracket`, and `title-field-consensus-bracket` rows.
 - `match_slot_matchup_marginals.csv`: Most common pairing for each knockout match slot across raw simulations. **Not a bracket input.**
 - `match_slot_winner_marginals.csv`: Most common winner for each knockout match slot across raw simulations. **Not a bracket input.**
 - `tuning_summary.json`: Tuning metadata
 - `run_manifest.json`: Run metadata. Used in `scripts/draw_knockout_bracket.py`.
 - `winner_odds.png`: WC winner probability chart.
 
-Use `most_likely_knockout_bracket.csv` when you need an internally consistent knockout bracket. See `docs/model_spec.md` for the full artefact definitions and `docs/most_likely_knockout_bracket_methodology.md` for the bracket methodology.
+Use `most_likely_knockout_bracket.csv` when you need an internally consistent knockout bracket. See `docs/model_spec.md` for the full artefact definitions and `docs/bracket_prediction_methods.md` for the bracket methodology.
 
 ## Render visualisations
 
@@ -53,10 +53,13 @@ python3 scripts/draw_knockout_bracket.py --run-dir outputs/2026-06-14
 python3 scripts/draw_group_tables.py --run-dir outputs/2026-06-14
 ```
 
-Use `--bracket-method modal-group-table` to render the bracket seeded from the
-most common complete table in each group. The default is `expected-table`,
-which ranks groups by average simulated table performance before building the
-bracket.
+Choose the rendered bracket with `--bracket-method`:
+
+- `all`: Render every implemented bracket method.
+- `expected-table`: Default. Ranks groups by average simulated table performance, then advances the head-to-head favourite in each displayed knockout pairing.
+- `modal-group-table`: Seeds the bracket from the most common complete ordered table in each group, then advances the head-to-head favourite in each displayed knockout pairing.
+- `title-favourite-bracket`: Finds the empirical title favourite from `winner_odds.csv`, filters to simulations where that team wins the tournament, then renders the actual simulated route with the highest conditional bracket score.
+- `title-field-consensus-bracket`: Recommended for bracket prediction. Filters to simulations where the empirical title favourite wins, then renders the route with the highest weighted QF/SF/final/champion field-consensus score.
 
 Both scripts read forecast artefacts from the run directory and write SVG and PNG visualisations there.
 
