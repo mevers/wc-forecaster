@@ -81,9 +81,9 @@ match_no,group,date,home,away,home_score,away_score,fixture_winner,venue_advanta
 80,R32,2026-07-01,England,DR Congo,2,1,England,0
 81,R32,2026-07-01,United States,Bosnia and Herzegovina,2,0,United States,1
 82,R32,2026-07-01,Belgium,Senegal,3,2,Belgium,0
-83,R32,2026-07-02,Portugal,Croatia,,,,0
-84,R32,2026-07-02,Spain,Austria,,,,0
-85,R32,2026-07-02,Switzerland,Algeria,,,,0
+83,R32,2026-07-02,Portugal,Croatia,2,1,Portugal,0
+84,R32,2026-07-02,Spain,Austria,3,0,Spain,0
+85,R32,2026-07-02,Switzerland,Algeria,2,0,Switzerland,0
 86,R32,2026-07-03,Argentina,Cape Verde,,,,0
 87,R32,2026-07-03,Colombia,Ghana,,,,0
 88,R32,2026-07-03,Australia,Egypt,,,,0
