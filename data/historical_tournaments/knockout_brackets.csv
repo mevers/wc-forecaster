@@ -1,0 +1,91 @@
+tournament,edition,source_year,round,slot,date,home_team,away_team,home_score,away_score,actual_advancer,parent_left,parent_right
+FIFA World Cup,2014,2014,R16,R16_1,2014-06-28,Brazil,Chile,1,1,Brazil,,
+FIFA World Cup,2014,2014,R16,R16_2,2014-06-28,Colombia,Uruguay,2,0,Colombia,,
+FIFA World Cup,2014,2014,R16,R16_3,2014-06-30,France,Nigeria,2,0,France,,
+FIFA World Cup,2014,2014,R16,R16_4,2014-06-30,Germany,Algeria,2,1,Germany,,
+FIFA World Cup,2014,2014,R16,R16_5,2014-07-01,Argentina,Switzerland,1,0,Argentina,,
+FIFA World Cup,2014,2014,R16,R16_6,2014-07-01,Belgium,United States,2,1,Belgium,,
+FIFA World Cup,2014,2014,R16,R16_7,2014-06-29,Netherlands,Mexico,2,1,Netherlands,,
+FIFA World Cup,2014,2014,R16,R16_8,2014-06-29,Costa Rica,Greece,1,1,Costa Rica,,
+FIFA World Cup,2014,2014,QF,QF_1,2014-07-04,Brazil,Colombia,2,1,Brazil,R16_1,R16_2
+FIFA World Cup,2014,2014,QF,QF_2,2014-07-04,France,Germany,0,1,Germany,R16_3,R16_4
+FIFA World Cup,2014,2014,QF,QF_3,2014-07-05,Argentina,Belgium,1,0,Argentina,R16_5,R16_6
+FIFA World Cup,2014,2014,QF,QF_4,2014-07-05,Netherlands,Costa Rica,0,0,Netherlands,R16_7,R16_8
+FIFA World Cup,2014,2014,SF,SF_1,2014-07-08,Brazil,Germany,1,7,Germany,QF_1,QF_2
+FIFA World Cup,2014,2014,SF,SF_2,2014-07-09,Netherlands,Argentina,0,0,Argentina,QF_4,QF_3
+FIFA World Cup,2014,2014,F,F_1,2014-07-13,Germany,Argentina,1,0,Germany,SF_1,SF_2
+FIFA World Cup,2018,2018,R16,R16_1,2018-06-30,France,Argentina,4,3,France,,
+FIFA World Cup,2018,2018,R16,R16_2,2018-06-30,Uruguay,Portugal,2,1,Uruguay,,
+FIFA World Cup,2018,2018,R16,R16_3,2018-07-02,Brazil,Mexico,2,0,Brazil,,
+FIFA World Cup,2018,2018,R16,R16_4,2018-07-02,Belgium,Japan,3,2,Belgium,,
+FIFA World Cup,2018,2018,R16,R16_5,2018-07-03,Sweden,Switzerland,1,0,Sweden,,
+FIFA World Cup,2018,2018,R16,R16_6,2018-07-03,Colombia,England,1,1,England,,
+FIFA World Cup,2018,2018,R16,R16_7,2018-07-01,Russia,Spain,1,1,Russia,,
+FIFA World Cup,2018,2018,R16,R16_8,2018-07-01,Croatia,Denmark,1,1,Croatia,,
+FIFA World Cup,2018,2018,QF,QF_1,2018-07-06,Uruguay,France,0,2,France,R16_2,R16_1
+FIFA World Cup,2018,2018,QF,QF_2,2018-07-06,Brazil,Belgium,1,2,Belgium,R16_3,R16_4
+FIFA World Cup,2018,2018,QF,QF_3,2018-07-07,Sweden,England,0,2,England,R16_5,R16_6
+FIFA World Cup,2018,2018,QF,QF_4,2018-07-07,Russia,Croatia,2,2,Croatia,R16_7,R16_8
+FIFA World Cup,2018,2018,SF,SF_1,2018-07-10,France,Belgium,1,0,France,QF_1,QF_2
+FIFA World Cup,2018,2018,SF,SF_2,2018-07-11,Croatia,England,2,1,Croatia,QF_4,QF_3
+FIFA World Cup,2018,2018,F,F_1,2018-07-15,France,Croatia,4,2,France,SF_1,SF_2
+FIFA World Cup,2022,2022,R16,R16_1,2022-12-03,Netherlands,United States,3,1,Netherlands,,
+FIFA World Cup,2022,2022,R16,R16_2,2022-12-03,Argentina,Australia,2,1,Argentina,,
+FIFA World Cup,2022,2022,R16,R16_3,2022-12-05,Japan,Croatia,1,1,Croatia,,
+FIFA World Cup,2022,2022,R16,R16_4,2022-12-05,Brazil,South Korea,4,1,Brazil,,
+FIFA World Cup,2022,2022,R16,R16_5,2022-12-06,Morocco,Spain,0,0,Morocco,,
+FIFA World Cup,2022,2022,R16,R16_6,2022-12-06,Portugal,Switzerland,6,1,Portugal,,
+FIFA World Cup,2022,2022,R16,R16_7,2022-12-04,France,Poland,3,1,France,,
+FIFA World Cup,2022,2022,R16,R16_8,2022-12-04,England,Senegal,3,0,England,,
+FIFA World Cup,2022,2022,QF,QF_1,2022-12-09,Netherlands,Argentina,2,2,Argentina,R16_1,R16_2
+FIFA World Cup,2022,2022,QF,QF_2,2022-12-09,Croatia,Brazil,1,1,Croatia,R16_3,R16_4
+FIFA World Cup,2022,2022,QF,QF_3,2022-12-10,Morocco,Portugal,1,0,Morocco,R16_5,R16_6
+FIFA World Cup,2022,2022,QF,QF_4,2022-12-10,England,France,1,2,France,R16_8,R16_7
+FIFA World Cup,2022,2022,SF,SF_1,2022-12-13,Argentina,Croatia,3,0,Argentina,QF_1,QF_2
+FIFA World Cup,2022,2022,SF,SF_2,2022-12-14,France,Morocco,2,0,France,QF_4,QF_3
+FIFA World Cup,2022,2022,F,F_1,2022-12-18,Argentina,France,3,3,Argentina,SF_1,SF_2
+UEFA Euro,2020,2021,R16,R16_1,2021-06-26,Wales,Denmark,0,4,Denmark,,
+UEFA Euro,2020,2021,R16,R16_2,2021-06-26,Italy,Austria,2,1,Italy,,
+UEFA Euro,2020,2021,R16,R16_3,2021-06-27,Netherlands,Czech Republic,0,2,Czech Republic,,
+UEFA Euro,2020,2021,R16,R16_4,2021-06-27,Belgium,Portugal,1,0,Belgium,,
+UEFA Euro,2020,2021,R16,R16_5,2021-06-28,Croatia,Spain,3,5,Spain,,
+UEFA Euro,2020,2021,R16,R16_6,2021-06-28,France,Switzerland,3,3,Switzerland,,
+UEFA Euro,2020,2021,R16,R16_7,2021-06-29,England,Germany,2,0,England,,
+UEFA Euro,2020,2021,R16,R16_8,2021-06-29,Sweden,Ukraine,1,2,Ukraine,,
+UEFA Euro,2020,2021,QF,QF_1,2021-07-02,Switzerland,Spain,1,1,Spain,R16_6,R16_5
+UEFA Euro,2020,2021,QF,QF_2,2021-07-02,Belgium,Italy,1,2,Italy,R16_4,R16_2
+UEFA Euro,2020,2021,QF,QF_3,2021-07-03,Czech Republic,Denmark,1,2,Denmark,R16_3,R16_1
+UEFA Euro,2020,2021,QF,QF_4,2021-07-03,Ukraine,England,0,4,England,R16_8,R16_7
+UEFA Euro,2020,2021,SF,SF_1,2021-07-06,Italy,Spain,1,1,Italy,QF_2,QF_1
+UEFA Euro,2020,2021,SF,SF_2,2021-07-07,England,Denmark,2,1,England,QF_4,QF_3
+UEFA Euro,2020,2021,F,F_1,2021-07-11,England,Italy,1,1,Italy,SF_2,SF_1
+UEFA Euro,2016,2016,R16,R16_1,2016-06-25,Switzerland,Poland,1,1,Poland,,
+UEFA Euro,2016,2016,R16,R16_2,2016-06-25,Croatia,Portugal,0,1,Portugal,,
+UEFA Euro,2016,2016,R16,R16_3,2016-06-25,Wales,Northern Ireland,1,0,Wales,,
+UEFA Euro,2016,2016,R16,R16_4,2016-06-26,Hungary,Belgium,0,4,Belgium,,
+UEFA Euro,2016,2016,R16,R16_5,2016-06-26,Germany,Slovakia,3,0,Germany,,
+UEFA Euro,2016,2016,R16,R16_6,2016-06-27,Italy,Spain,2,0,Italy,,
+UEFA Euro,2016,2016,R16,R16_7,2016-06-26,France,Republic of Ireland,2,1,France,,
+UEFA Euro,2016,2016,R16,R16_8,2016-06-27,England,Iceland,1,2,Iceland,,
+UEFA Euro,2016,2016,QF,QF_1,2016-06-30,Poland,Portugal,1,1,Portugal,R16_1,R16_2
+UEFA Euro,2016,2016,QF,QF_2,2016-07-01,Wales,Belgium,3,1,Wales,R16_3,R16_4
+UEFA Euro,2016,2016,QF,QF_3,2016-07-02,Germany,Italy,1,1,Germany,R16_5,R16_6
+UEFA Euro,2016,2016,QF,QF_4,2016-07-03,France,Iceland,5,2,France,R16_7,R16_8
+UEFA Euro,2016,2016,SF,SF_1,2016-07-06,Portugal,Wales,2,0,Portugal,QF_1,QF_2
+UEFA Euro,2016,2016,SF,SF_2,2016-07-07,France,Germany,2,0,France,QF_4,QF_3
+UEFA Euro,2016,2016,F,F_1,2016-07-10,France,Portugal,0,1,Portugal,SF_2,SF_1
+UEFA Euro,2024,2024,R16,R16_1,2024-06-29,Switzerland,Italy,2,0,Switzerland,,
+UEFA Euro,2024,2024,R16,R16_2,2024-06-29,Germany,Denmark,2,0,Germany,,
+UEFA Euro,2024,2024,R16,R16_3,2024-06-30,England,Slovakia,2,1,England,,
+UEFA Euro,2024,2024,R16,R16_4,2024-06-30,Spain,Georgia,4,1,Spain,,
+UEFA Euro,2024,2024,R16,R16_5,2024-07-01,France,Belgium,1,0,France,,
+UEFA Euro,2024,2024,R16,R16_6,2024-07-01,Portugal,Slovenia,0,0,Portugal,,
+UEFA Euro,2024,2024,R16,R16_7,2024-07-02,Romania,Netherlands,0,3,Netherlands,,
+UEFA Euro,2024,2024,R16,R16_8,2024-07-02,Austria,Turkey,1,2,Turkey,,
+UEFA Euro,2024,2024,QF,QF_1,2024-07-05,Germany,Spain,1,2,Spain,R16_2,R16_4
+UEFA Euro,2024,2024,QF,QF_2,2024-07-05,Portugal,France,0,0,France,R16_6,R16_5
+UEFA Euro,2024,2024,QF,QF_3,2024-07-06,England,Switzerland,1,1,England,R16_3,R16_1
+UEFA Euro,2024,2024,QF,QF_4,2024-07-06,Netherlands,Turkey,2,1,Netherlands,R16_7,R16_8
+UEFA Euro,2024,2024,SF,SF_1,2024-07-09,Spain,France,2,1,Spain,QF_1,QF_2
+UEFA Euro,2024,2024,SF,SF_2,2024-07-10,Netherlands,England,1,2,England,QF_4,QF_3
+UEFA Euro,2024,2024,F,F_1,2024-07-14,Spain,England,2,1,Spain,SF_1,SF_2

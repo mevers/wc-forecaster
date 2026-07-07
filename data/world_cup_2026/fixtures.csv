@@ -89,9 +89,9 @@ match_no,group,date,home,away,home_score,away_score,fixture_winner,venue_advanta
 88,R32,2026-07-03,Australia,Egypt,1,1,Egypt,0
 89,R16,2026-07-04,Canada,Morocco,0,3,Morocco,0
 90,R16,2026-07-04,Paraguay,France,0,1,France,0
-91,R16,2026-07-05,Brazil,Norway,,,,0
-92,R16,2026-07-05,Mexico,England,,,,1
-93,R16,2026-07-06,Portugal,Spain,,,,0
-94,R16,2026-07-06,United States,Belgium,,,,1
+91,R16,2026-07-05,Brazil,Norway,1,2,Norway,0
+92,R16,2026-07-05,Mexico,England,2,3,England,1
+93,R16,2026-07-06,Portugal,Spain,0,1,Spain,0
+94,R16,2026-07-06,United States,Belgium,1,4,Belgium,1
 95,R16,2026-07-07,Argentina,Egypt,,,,0
 96,R16,2026-07-07,Switzerland,Colombia,,,,0
