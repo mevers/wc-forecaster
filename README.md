@@ -5,10 +5,9 @@ Minimal Python model for forecasting the live 2026 FIFA World Cup and rendering 
 ## Next match day forecasts
 
 ```text
-Next match day: 2026-07-07
+Next match day: 2026-07-14
 match  group  fixture                         home    draw    away  score
-95     R16    Argentina vs Egypt             77.1%   15.4%    7.5%    2-0
-96     R16    Switzerland vs Colombia        32.8%   27.2%   40.1%    1-2
+101    SF     France vs Spain                35.7%   27.3%   37.0%    1-2
 ```
 
 ## Setup
