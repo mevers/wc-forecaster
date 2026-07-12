@@ -202,13 +202,13 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
     write_csv(out / "most_likely_knockout_bracket.csv", knockout_bracket_rows)
     write_csv(out / "match_slot_matchup_marginals.csv", matchup_marginal_rows)
     write_csv(out / "match_slot_winner_marginals.csv", winner_marginal_rows)
-    next_dates = sorted({match["date"] for match in fixtures if match["date"] > as_of})
+    next_matches = sorted((match for match in fixtures if match["date"] > as_of), key=lambda match: (match["date"], int(match["match_no"])))
     next_rows = []
-    if next_dates:
-        # Summarise only the next fixture date after forecast.as_of.
+    if next_matches:
+        next_key = "date" if next_matches[0]["group"] in groups else "group"
         next_rows = [
             {
-                "date": next_dates[0].isoformat(),
+                "date": match["date"].isoformat(),
                 "match_no": match["match_no"],
                 "group": match["group"],
                 "home_team": match["home_team"],
@@ -228,7 +228,7 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
                 ),
             }
             for match, probs in zip(fixtures, fixture_rows)
-            if match["date"] == next_dates[0]
+            if match[next_key] == next_matches[0][next_key]
             for home_xg, away_xg in [lambdas(match["home_team"], match["away_team"], match["venue_advantage"], adjusted_ratings, beta, s, cfg)]
         ]
         write_csv(out / "next_matchday_summary.csv", next_rows)
@@ -237,11 +237,11 @@ def predict(config_path: Path, update_readme: bool = False, as_of_override: str 
     chart(out / "winner_odds.png", winner_rows, "team", "probability", "World Cup winner odds")
     status(f"Wrote forecast to {out}")
     if next_rows:
-        table = [f"Next match day: {next_rows[0]['date']}", f"{'match':<5}  {'group':<5}  {'fixture':<28}  {'home':>6}  {'draw':>6}  {'away':>6}  {'score':>5}  {'xG':>9}"]
+        table = ["Next match day", f"{'date':<10}  {'match':<5}  {'group':<5}  {'fixture':<28}  {'home':>6}  {'draw':>6}  {'away':>6}  {'score':>5}  {'xG':>9}"]
         for row in next_rows:
             fixture = f"{row['home_team']} vs {row['away_team']}"
             xg = f"{row['home_expected_goals']:.2f}-{row['away_expected_goals']:.2f}"
-            table.append(f"{row['match_no']:<5}  {row['group']:<5}  {fixture:<28}  {100 * row['home']:>5.1f}%  {100 * row['draw']:>5.1f}%  {100 * row['away']:>5.1f}%  {row['score']:>5}  {xg:>9}")
+            table.append(f"{row['date']:<10}  {row['match_no']:<5}  {row['group']:<5}  {fixture:<28}  {100 * row['home']:>5.1f}%  {100 * row['draw']:>5.1f}%  {100 * row['away']:>5.1f}%  {row['score']:>5}  {xg:>9}")
         table_text = "\n".join(table)
         print(f"\n{table_text}")
         if update_readme:

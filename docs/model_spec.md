@@ -461,7 +461,7 @@ The probability artefacts are:
 - `winner_odds.csv`: one row per team with `team` and `probability`. This is the empirical title probability.
 - `round_reach_probabilities.csv`: one row per team and round with `team`, `round`, and `probability`. This is the empirical probability that the team reaches that round.
 - `group_fixture_1x2_probabilities.csv`: one row per scheduled group fixture with `match_no`, `home_team`, `away_team`, `home`, `draw`, and `away`. The final three columns are 1X2 probabilities from the fitted score model at forecast time.
-- `next_matchday_summary.csv`: one row per fixture on the next fixture date after `forecast.as_of`, with 1X2 probabilities, expected goals, and an outcome-constrained median scoreline.
+- `next_matchday_summary.csv`: one row per fixture on the next group-stage fixture date after `forecast.as_of`, or per fixture in the next knockout round after `forecast.as_of`, with 1X2 probabilities, expected goals, and an outcome-constrained median scoreline.
 - `most_likely_group_tables.csv`: expected group tables with `group`, `position`, `team`, `expected_points`, `expected_goal_difference`, and `expected_goals_for`.
 
 The rating and run metadata artefacts are:
